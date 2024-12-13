@@ -1,0 +1,3 @@
+class ImmovableCard extends Card{
+
+}

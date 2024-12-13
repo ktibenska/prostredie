@@ -1,0 +1,79 @@
+
+body {
+}
+
+canvas {
+    border: 2px solid #888;
+    border-radius: 4px;
+
+    width: 100%;
+    padding: 0 !important;
+
+    /*image-rendering: pixelated;*/
+}
+
+main {
+    padding: 5px;
+}
+
+#settings_col .btn {
+    margin-bottom: 1px
+}
+
+#settings_col input {
+    padding: 0 !important;
+    /*border-radius: 2px;*/
+    /*border: 1px solid #888;*/
+    /*margin: 5px 0*/
+}
+
+#navbar{
+    /*min-height: 6vh;*/
+    /*max-height: 6vh;*/
+    /*margin: 0;*/
+    /*padding: 0;*/
+    position: sticky;
+    top: 0;
+    background-color: white;
+}
+
+#canvas-row {
+    min-height: 75vh;
+    max-height: 75vh;
+    /*position: relative;*/
+
+    padding: 0;
+    margin: 0;
+}
+
+
+.object-list-item {
+    border-bottom: 1px solid #888;
+    text-align: left;
+
+}
+
+.btn {
+    align-items: center;
+}
+
+.btn img {
+    height: 80%;
+}
+
+
+.row {
+    padding: 0 !important;
+}
+
+/*dolezite pre schovanie vkladania obrazkov*/
+#reveal:not(:checked) ~ #email{
+    display: none;
+}
+#reveal:checked ~ #email{
+    display: block;
+}
+#email{
+    display: none;
+}
+/**/
