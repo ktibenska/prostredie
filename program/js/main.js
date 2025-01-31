@@ -5,6 +5,8 @@ var Main = /** @class */ (function () {
         this.y = -10;
         this.imageInput = document.getElementById('id_email');
         this.submitButton = document.getElementById('submit');
+        this.bgImageInput = document.getElementById('id_bg');
+        this.bgSubmitButton = document.getElementById('bg_submit');
         this.canvas = new Canvas('sketchpad_main');
         this.mode = "move" /* Types.MOVE */;
         this.canvas.addEventListeners(function (e) { return _this.onMouseDown(e); }, function (e) { return _this.onMouseMove(e); }, function (e) { return _this.onMouseUp(e); }, function (e) { return _this.onMouseEnter(e); }, function (e) { return _this.onMouseLeave(e); });
@@ -35,6 +37,23 @@ var Main = /** @class */ (function () {
             c.half_size = +x / 2;
             _this.canvas.cards.push(c);
             _this.redraw();
+        });
+        this.bgSubmitButton.addEventListener('click', function (event) {
+            var image = new Image();
+            var files = _this.bgImageInput.files;
+            if (files && files[0]) { //todo kontrola if checked text/obrazok
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    image.src = e.target.result;
+                };
+                reader.readAsDataURL(files[0]);
+                _this.canvas.setBg(image);
+                _this.homecanvas.setBg(image);
+                _this.finalcanvas.setBg(image);
+            }
+            _this.redraw();
+            _this.homecanvas.redraw();
+            _this.finalcanvas.redraw();
         });
     }
     Main.prototype.setMode = function (mode) {

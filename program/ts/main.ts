@@ -8,6 +8,9 @@ class Main {
     imageInput = document.getElementById('id_email') as HTMLInputElement;
     submitButton = document.getElementById('submit') as HTMLInputElement;
 
+    bgImageInput = document.getElementById('id_bg') as HTMLInputElement;
+    bgSubmitButton = document.getElementById('bg_submit') as HTMLInputElement;
+
     finalcanvas: Canvas;
     homecanvas: Canvas;
 
@@ -56,6 +59,28 @@ class Main {
             this.canvas.cards.push(c)
             this.redraw();
 
+        });
+
+
+        this.bgSubmitButton.addEventListener('click', (event: Event) => {
+            let image = new Image();
+            const files = this.bgImageInput.files;
+
+            if (files && files[0]) { //todo kontrola if checked text/obrazok
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    image.src = e.target.result as string;
+                };
+                reader.readAsDataURL(files[0]);
+
+                this.canvas.setBg(image)
+                this.homecanvas.setBg(image)
+                this.finalcanvas.setBg(image)
+            }
+
+            this.redraw();
+            this.homecanvas.redraw();
+            this.finalcanvas.redraw();
         });
     }
 

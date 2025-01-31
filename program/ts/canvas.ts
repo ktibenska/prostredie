@@ -3,6 +3,8 @@ class Canvas {
     private ctx;
     public cards: Card[] = [];
 
+    private image = null;
+
     private viewX: number = 0;
     private viewY: number = 0;
 
@@ -22,6 +24,7 @@ class Canvas {
     }
 
     public bg() {
+
         this.canvas.width = document.getElementById('canvas-row').offsetWidth;
         this.canvas.height = document.getElementById('canvas-row').offsetHeight;
 
@@ -33,6 +36,13 @@ class Canvas {
 
         let w = this.canvas.width;
         let h = this.canvas.height;
+
+
+        if (this.image) {
+            this.ctx.drawImage(this.image, 0, 0, w, h)
+            return
+        }
+
 
         this.ctx.fillStyle = 'white';
         this.ctx.fillRect(0, 0, w, h);
@@ -94,12 +104,16 @@ class Canvas {
         this.cards.map(o => o.draw(this.ctx));
     }
 
-    public clear() :void{
+    public clear(): void {
+        this.image=null;
         this.bg();
-        this.cards=[];
-
+        this.cards = [];
     }
 
+
+    public setBg(image){
+        this.image=image
+    }
 
 }
 

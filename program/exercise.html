@@ -4,10 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>prostredie</title>
-
     <link rel="stylesheet" href="bootstrap/bootstrap-icons-1.10.5/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="bootstrap/bootstrap-5.3.0-dist/css/bootstrap.min.css">
-
     <link rel="stylesheet" href="css/general.css">
 </head>
 
@@ -81,10 +79,10 @@
 
                     <div>
 
-                        <input type="radio" name="d" id="reveal">
+                        <input type="radio" name="d" id="reveal" checked>
                         <label for="reveal">obrázok</label>
 
-                        <input type="radio" name="d" id="hideBack" checked>
+                        <input type="radio" name="d" id="hideBack">
                         <label for="hideBack">text</label>
 
                         <div id="email">
@@ -93,7 +91,6 @@
                                 <input type="hidden" name="name" id="id_name_email">
                             </form>
                         </div>
-
 
                     </div>
 
@@ -106,7 +103,6 @@
                         <input class="form-control form-control-sm" type="text" placeholder="100" id="yvalue">
                     </label>
 
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal" id="submit">ok
@@ -116,57 +112,97 @@
         </div>
     </div>
 
-    <div class="container-fluid">
-        <!--        <input type="file" id="imageInput" hidden="hidden" accept="image/*">-->
 
-        <div class="row">
-            <div class="col-1 bg-secondary-subtle" id="settings_col">
-
-
-
-                <div class="col">
-                    <button class="input-block-level btn btn-warning bi bi-square" title='nová aktivita'
-                            id="new_activity_button">
+    <div class="modal fade" id="bgChangeModal" tabindex="-1" role="dialog" aria-labelledby="bgChangeModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bgChangeModalLabel">Zmena pozadia</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
 
-                <div class="row" id="select_type"></div>
+                <div class="modal-body">
+                    <div class="form-check">
+                    </div>
+
+                    <div>
+                        <div id="bg">
+                            <form id="bg-form" class="nice" action="" method="post">
+                                <input type="file" accept="image/*" name="EMAIL" id="id_bg">
+                            </form>
+                        </div>
+
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="bg_submit">ok
+                    </button>
+                </div>
             </div>
+        </div>
+    </div>
 
-            <div class="col-9">
-                <div class="row">
 
-                    <div class="col">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-1 bg-secondary-subtle" id="settings_col">
+                <div id="left_panel_content">
+
+                    <div class="row">
+                        <button class="input-block-level btn btn-warning bi bi-square" title='nová aktivita'
+                                id="new_activity_button">
+                        </button>
+                    </div>
+
+                    <div class="row">
                         <button type="button" class="btn btn-warning bi bi-plus" data-toggle="modal"
                                 data-target="#exampleModal"
                                 title='pridaj kartičku'>
                         </button>
 
                     </div>
-                    <div class="col">
-
+                    <div class="row">
                         <button class="input-block-level btn btn-warning bi bi-arrows-move" title='posúvaj kartičky'
                                 id="move_button">
                         </button>
                     </div>
 
-                    <div class="col">
-                        <button class="input-block-level btn btn-warning bi bi-plus" title='pridaj prázdnu kartičku'
+                    <div class="row">
+                        <button class="input-block-level btn btn-warning bi bi-square-fill"
+                                title='pridaj prázdnu kartičku'
                                 id="add_button">
                         </button>
                     </div>
 
-                    <div class="col">
-                        <button class="input-block-level btn btn-secondary bi bi-dot" title='...'>
+                    <div class="row">
+                        <button class="input-block-level btn btn-secondary bi bi-tree" data-toggle="modal"
+                                data-target="#bgChangeModal" title='zmena pozadia'>
                         </button>
                     </div>
 
+                </div>
 
-                    <div class="col">
-                        <button class="input-block-level btn btn-secondary bi bi-dot" title='...'>
+            </div>
+
+            <div class="col-9">
+                <div class="row">
+
+                    <div class="col" style="height: 3em">
+                        <button type="button" class="btn btn-warning bi bi-x"
+                                id="close_button" title='zavri'>
                         </button>
-                    </div>
 
+                        <button type="button" class="btn btn-warning bi bi-question"
+                                id="check_answer_button" title='kontrola riešenia'>
+                        </button>
+
+                    </div>
 
                 </div>
 
@@ -178,40 +214,42 @@
 
             <div class="col-2 bg-secondary-subtle" id="steps_col">
                 <div class="row border-right">
+                    <div id="right_panel_content">
 
-                    <div class="row">
+                        <div class="row">
 
-                        <div class="col-6">
+                            <div class="col-6">
 
-                            <button class="btn btn-warning bi-house" title="ulož domáci stav"
-                                    id="home_state_button"></button>
-                        </div>
+                                <button class="btn btn-warning bi-house" title="ulož domáci stav"
+                                        id="home_state_button"></button>
+                            </div>
 
-                        <div class="col-6">
-                            <button class="btn btn-warning bi-check" title="ulož finálny stav"
-                                    id="final_state_button"></button>
-                        </div>
+                            <div class="col-6">
+                                <button class="btn btn-warning bi-check" title="ulož finálny stav"
+                                        id="final_state_button"></button>
+                            </div>
 
-                        <div>
-                            <label>domáci stav</label>
-                            <canvas id="home_state_canvas"></canvas>
-                        </div>
+                            <div>
+                                <label>domáci stav</label>
+                                <canvas id="home_state_canvas"></canvas>
+                            </div>
 
-                        <div>
-                            <label>finálny stav</label>
-                            <canvas id="final_state_canvas"></canvas>
-                        </div>
+                            <div>
+                                <label>finálny stav</label>
+                                <canvas id="final_state_canvas"></canvas>
+                            </div>
 
-                        <div class="col">
-                            <button class="input-block-level btn btn-secondary bi bi-save" title='ulož'>
-                            </button>
-                        </div>
-                        <div class="col">
-                            <button class="input-block-level btn btn-secondary bi bi-play" title='spusti aktivitu'>
-                            </button>
+                            <div class="col">
+                                <button class="input-block-level btn btn-secondary bi bi-save" title='ulož'>
+                                </button>
+                            </div>
+                            <div class="col">
+                                <button class="input-block-level btn btn-secondary bi bi-play" title='spusti aktivitu'
+                                        id="run_button">
+                                </button>
+                            </div>
                         </div>
                     </div>
-
                 </div>
 
             </div>

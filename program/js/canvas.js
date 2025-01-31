@@ -1,6 +1,7 @@
 var Canvas = /** @class */ (function () {
     function Canvas(id) {
         this.cards = [];
+        this.image = null;
         this.viewX = 0;
         this.viewY = 0;
         this.canvas = document.getElementById(id);
@@ -23,6 +24,10 @@ var Canvas = /** @class */ (function () {
         }
         var w = this.canvas.width;
         var h = this.canvas.height;
+        if (this.image) {
+            this.ctx.drawImage(this.image, 0, 0, w, h);
+            return;
+        }
         this.ctx.fillStyle = 'white';
         this.ctx.fillRect(0, 0, w, h);
         this.ctx.lineWidth = 0.3;
@@ -73,8 +78,12 @@ var Canvas = /** @class */ (function () {
         this.cards.map(function (o) { return o.draw(_this.ctx); });
     };
     Canvas.prototype.clear = function () {
+        this.image = null;
         this.bg();
         this.cards = [];
+    };
+    Canvas.prototype.setBg = function (image) {
+        this.image = image;
     };
     return Canvas;
 }());
