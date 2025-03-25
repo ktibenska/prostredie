@@ -11,32 +11,43 @@ var Main = /** @class */ (function () {
         this.mode = "move" /* Types.MOVE */;
         this.canvas.addEventListeners(function (e) { return _this.onMouseDown(e); }, function (e) { return _this.onMouseMove(e); }, function (e) { return _this.onMouseUp(e); }, function (e) { return _this.onMouseEnter(e); }, function (e) { return _this.onMouseLeave(e); });
         this.redraw();
-        this.homecanvas = new Canvas('home_state_canvas');
-        this.finalcanvas = new Canvas('final_state_canvas');
+        this.homeCanvas = new Canvas('home_state_canvas');
+        this.finalCanvas = new Canvas('final_state_canvas');
         this.clearAll();
         this.canvas.canvas.addEventListener('contextmenu', function (event) {
             event.preventDefault();
         });
         this.submitButton.addEventListener('click', function (event) {
-            var image = new Image();
-            var files = _this.imageInput.files;
-            var c = new Card(_this.x, _this.y);
-            if (files && files[0]) { //todo kontrola if checked text/obrazok
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    image.src = e.target.result;
-                };
-                reader.readAsDataURL(files[0]);
-                c.image = image;
-                _this.canvas.cards.push(c);
+            var input = _this.imageInput;
+            if (input.files && input.files[0]) {
+                var c_1 = new Card(_this.x, _this.y);
+                var filesArray = [];
+                for (var i = 0; i < input.files.length; i++) {
+                    filesArray.push(input.files[i]);
+                }
+                var imageFiles_1 = [];
+                filesArray.forEach(function (file) {
+                    imageFiles_1.push(file);
+                });
+                console.log(imageFiles_1);
+                imageFiles_1.forEach(function (file, index) {
+                    var reader = new FileReader();
+                    reader.onload = function () {
+                        // console.log(`Image ${index + 1}:`, reader.result);
+                        var image = new Image();
+                        image.src = reader.result;
+                        c_1.images.push(image);
+                    };
+                    reader.readAsDataURL(file);
+                });
+                var xsize = document.getElementById('xvalue');
+                var x = '100';
+                if (xsize.value)
+                    x = xsize.value;
+                c_1.half_size = +x / 2;
+                _this.canvas.cards.push(c_1);
+                _this.redraw();
             }
-            var xsize = document.getElementById('xvalue');
-            var x = '100';
-            if (xsize.value)
-                x = xsize.value;
-            c.half_size = +x / 2;
-            _this.canvas.cards.push(c);
-            _this.redraw();
         });
         this.bgSubmitButton.addEventListener('click', function (event) {
             var image = new Image();
@@ -48,12 +59,12 @@ var Main = /** @class */ (function () {
                 };
                 reader.readAsDataURL(files[0]);
                 _this.canvas.setBg(image);
-                _this.homecanvas.setBg(image);
-                _this.finalcanvas.setBg(image);
+                _this.homeCanvas.setBg(image);
+                _this.finalCanvas.setBg(image);
             }
             _this.redraw();
-            _this.homecanvas.redraw();
-            _this.finalcanvas.redraw();
+            _this.homeCanvas.redraw();
+            _this.finalCanvas.redraw();
         });
     }
     Main.prototype.setMode = function (mode) {
@@ -115,8 +126,27 @@ var Main = /** @class */ (function () {
     };
     Main.prototype.clearAll = function () {
         this.canvas.clear();
-        this.homecanvas.clear();
-        this.finalcanvas.clear();
+        this.homeCanvas.clear();
+        this.finalCanvas.clear();
+    };
+    Main.prototype.checkSolution = function () {
+        var ok = true;
+        var cards = this.canvas.cards;
+        var final = this.finalCanvas.cards;
+        for (var i = 0; i < this.canvas.cards.length; i++) {
+            if (Math.abs(cards[i].x - final[i].x) > 20 || Math.abs(cards[i].y - final[i].y) > 20)
+                ok = false;
+            if (cards[i].selected_image != final[i].selected_image)
+                ok = false;
+            // console.log(Math.abs(cards[i].x - final[i].x))
+            // console.log(Math.abs(cards[i].y - final[i].y))
+        }
+        if (ok) {
+            alert("riešenie je správne!");
+        }
+        else {
+            alert("riešenie je nesprávne");
+        }
     };
     return Main;
 }());
