@@ -67,6 +67,10 @@ class Main {
                     reader.readAsDataURL(file);
                 });
 
+
+                let inputValue = (<HTMLInputElement>document.querySelector('input[name="movableCardRadio"]:checked')).id;
+                if (inputValue == 'iCardRadio') c.movable = false; //todo kontanta
+
                 let xsize = document.getElementById('xvalue') as HTMLInputElement;
                 let x = '100'
                 if (xsize.value) x = xsize.value
@@ -112,7 +116,7 @@ class Main {
             this.canvas.addCard(new MovableCard(e.offsetX, e.offsetY));
         }
 
-        if (this.mode == Types.MOVE) {
+        if (this.mode == Types.MOVE || this.mode == Types.SOLVE) {
             for (let card of this.canvas.cards) {
                 if (card.isCLicked(x, y)) {
                     this.selected = card;
@@ -136,6 +140,13 @@ class Main {
                 this.selected.move(x, y);
             }
         }
+
+        if (this.mode == Types.SOLVE) {
+            if (this.selected && this.selected.movable) {
+                this.selected.move(x, y);
+            }
+        }
+
         this.x = e.offsetX;
         this.y = e.offsetY;
         this.redraw();

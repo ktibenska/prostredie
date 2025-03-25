@@ -7,6 +7,8 @@ class Card {
     images = []
     selected_image = 0
 
+    movable: boolean = true;
+
     constructor(x: number, y: number) {
         this.x = x
         this.y = y
@@ -17,6 +19,7 @@ class Card {
         clone.half_size = this.half_size
         clone.images = this.images
         clone.selected_image = this.selected_image
+        clone.movable = this.movable;
         return clone;
     }
 
@@ -45,12 +48,12 @@ class Card {
 
     public isCLicked(x: number, y: number): boolean {
         let clicked = (x >= this.x - this.half_size && x <= this.x + this.half_size) && (y >= this.y - this.half_size && y <= this.y + this.half_size);
+
         if (clicked && this.images.length > 1) {
             this.selected_image++;
             this.selected_image %= (this.images.length)
+
         }
         return clicked;
-
-
     }
 }

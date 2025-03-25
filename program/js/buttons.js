@@ -44,7 +44,7 @@ var Buttons = /** @class */ (function () {
                 _this.sketchpad.canvas.cards.push(card.clone());
             }
             _this.sketchpad.redraw();
-            _this.sketchpad.mode = "move" /* Types.MOVE */;
+            _this.sketchpad.mode = "solve" /* Types.SOLVE */;
             // window.open("excersise.html")
         });
         this.closeButton = document.getElementById('close_button');
@@ -57,6 +57,7 @@ var Buttons = /** @class */ (function () {
                 _this.sketchpad.canvas.cards.push(card.clone());
             }
             _this.sketchpad.redraw();
+            _this.sketchpad.mode = "move" /* Types.MOVE */;
         });
         this.checkButton = document.getElementById('check_answer_button');
         this.checkButton.hidden = true;

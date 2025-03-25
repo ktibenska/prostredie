@@ -1,5 +1,6 @@
 const enum Types {
     ADD = 'add',
-    MOVE = 'move'
+    MOVE = 'move',
+    SOLVE = 'solve'
 
 }

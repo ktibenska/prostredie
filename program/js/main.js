@@ -40,6 +40,9 @@ var Main = /** @class */ (function () {
                     };
                     reader.readAsDataURL(file);
                 });
+                var inputValue = document.querySelector('input[name="movableCardRadio"]:checked').id;
+                if (inputValue == 'iCardRadio')
+                    c_1.movable = false; //todo kontanta
                 var xsize = document.getElementById('xvalue');
                 var x = '100';
                 if (xsize.value)
@@ -76,7 +79,7 @@ var Main = /** @class */ (function () {
         if (this.mode == "add" /* Types.ADD */) {
             this.canvas.addCard(new MovableCard(e.offsetX, e.offsetY));
         }
-        if (this.mode == "move" /* Types.MOVE */) {
+        if (this.mode == "move" /* Types.MOVE */ || this.mode == "solve" /* Types.SOLVE */) {
             for (var _i = 0, _a = this.canvas.cards; _i < _a.length; _i++) {
                 var card = _a[_i];
                 if (card.isCLicked(x, y)) {
@@ -95,6 +98,11 @@ var Main = /** @class */ (function () {
         var y = e.offsetY - this.canvas.getViewY();
         if (this.mode == "move" /* Types.MOVE */) {
             if (this.selected) {
+                this.selected.move(x, y);
+            }
+        }
+        if (this.mode == "solve" /* Types.SOLVE */) {
+            if (this.selected && this.selected.movable) {
                 this.selected.move(x, y);
             }
         }

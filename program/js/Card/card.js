@@ -3,6 +3,7 @@ var Card = /** @class */ (function () {
         this.half_size = 50;
         this.images = [];
         this.selected_image = 0;
+        this.movable = true;
         this.x = x;
         this.y = y;
     }
@@ -11,6 +12,7 @@ var Card = /** @class */ (function () {
         clone.half_size = this.half_size;
         clone.images = this.images;
         clone.selected_image = this.selected_image;
+        clone.movable = this.movable;
         return clone;
     };
     Card.prototype.move = function (x, y) {
