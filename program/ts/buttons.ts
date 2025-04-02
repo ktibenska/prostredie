@@ -62,8 +62,6 @@ class Buttons {
             }
             this.sketchpad.redraw();
             this.sketchpad.mode = Types.SOLVE;
-
-            // window.open("excersise.html")
         });
 
 
@@ -95,7 +93,6 @@ class Buttons {
 
         document.getElementById('left_panel_content').hidden = hidden;
         document.getElementById('right_panel_content').hidden = hidden;
-
     }
 
 }

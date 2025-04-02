@@ -178,7 +178,12 @@ class Main {
 
     public redraw() {
         this.canvas.bg();
-        this.canvas.redraw();
+
+        if (this.mode == Types.SOLVE) {
+            this.canvas.redraw(this.finalCanvas)
+        } else {
+            this.canvas.redraw()
+        }
     }
 
     clearAll() {

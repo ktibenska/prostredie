@@ -130,7 +130,12 @@ var Main = /** @class */ (function () {
     };
     Main.prototype.redraw = function () {
         this.canvas.bg();
-        this.canvas.redraw();
+        if (this.mode == "solve" /* Types.SOLVE */) {
+            this.canvas.redraw(this.finalCanvas);
+        }
+        else {
+            this.canvas.redraw();
+        }
     };
     Main.prototype.clearAll = function () {
         this.canvas.clear();

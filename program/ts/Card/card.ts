@@ -35,15 +35,21 @@ class Card {
             let img = this.images[this.selected_image]
             ctx.drawImage(img, this.x, this.y, img.width, img.height)
 
-            // ctx.drawImage(this.images[this.selected_image], this.x, this.y, this.half_size * 2, this.half_size * 2)
-
         } else {
             ctx.fillStyle = "lightgray";
-            // ctx.strokeStyle = "black";
             ctx.rect(this.x - this.half_size, this.y - this.half_size, this.half_size * 2, this.half_size * 2)
             ctx.fill();
-            // ctx.stroke();
         }
+    }
+
+    public drawOutline(ctx): void {
+        ctx.fillStyle = "lightgray";
+        ctx.strokeStyle = "black";
+        let w = this.images[0].width;
+        let h = this.images[0].height;
+
+        ctx.rect(this.x, this.y, w, h)
+        ctx.stroke();
     }
 
     public isCLicked(x: number, y: number): boolean {

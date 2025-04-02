@@ -72,9 +72,18 @@ var Canvas = /** @class */ (function () {
     Canvas.prototype.getViewY = function () {
         return this.viewY;
     };
-    Canvas.prototype.redraw = function () {
+    Canvas.prototype.redraw = function (finalCanvas) {
         var _this = this;
+        if (finalCanvas === void 0) { finalCanvas = null; }
         this.bg();
+        if (finalCanvas) {
+            for (var _i = 0, _a = finalCanvas.cards; _i < _a.length; _i++) {
+                var card = _a[_i];
+                if (card.movable) {
+                    card.drawOutline(this.ctx);
+                }
+            }
+        }
         this.cards.map(function (o) { return o.draw(_this.ctx); });
     };
     Canvas.prototype.clear = function () {

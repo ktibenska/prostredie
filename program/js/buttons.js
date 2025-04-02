@@ -45,7 +45,6 @@ var Buttons = /** @class */ (function () {
             }
             _this.sketchpad.redraw();
             _this.sketchpad.mode = "solve" /* Types.SOLVE */;
-            // window.open("excersise.html")
         });
         this.closeButton = document.getElementById('close_button');
         this.closeButton.hidden = true;

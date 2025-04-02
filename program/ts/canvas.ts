@@ -1,6 +1,6 @@
 class Canvas {
     public canvas;
-    private ctx;
+    ctx;
     public cards: Card[] = [];
 
     private image = null;
@@ -99,20 +99,28 @@ class Canvas {
         return this.viewY;
     }
 
-    public redraw() {
+    public redraw(finalCanvas = null) {
         this.bg();
+
+        if (finalCanvas) {
+            for (let card of finalCanvas.cards) {
+                if (card.movable) {
+                    card.drawOutline(this.ctx)
+                }
+            }
+        }
         this.cards.map(o => o.draw(this.ctx));
     }
 
     public clear(): void {
-        this.image=null;
+        this.image = null;
         this.bg();
         this.cards = [];
     }
 
 
-    public setBg(image){
-        this.image=image
+    public setBg(image) {
+        this.image = image
     }
 
 }
