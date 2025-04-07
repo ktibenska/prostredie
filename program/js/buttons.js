@@ -38,13 +38,7 @@ var Buttons = /** @class */ (function () {
         this.runButton = document.getElementById('run_button');
         this.runButton.addEventListener('mouseup', function () {
             _this.buttonsHidden(true);
-            _this.sketchpad.canvas.cards = [];
-            for (var _i = 0, _a = _this.sketchpad.homeCanvas.cards; _i < _a.length; _i++) {
-                var card = _a[_i];
-                _this.sketchpad.canvas.cards.push(card.clone());
-            }
-            _this.sketchpad.redraw();
-            _this.sketchpad.mode = "solve" /* Types.SOLVE */;
+            _this.sketchpad.runApplication();
         });
         this.closeButton = document.getElementById('close_button');
         this.closeButton.hidden = true;

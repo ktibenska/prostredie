@@ -56,12 +56,8 @@ class Buttons {
         this.runButton = document.getElementById('run_button');
         this.runButton.addEventListener('mouseup', () => {
             this.buttonsHidden(true);
-            this.sketchpad.canvas.cards = []
-            for (let card of this.sketchpad.homeCanvas.cards) {
-                this.sketchpad.canvas.cards.push(card.clone())
-            }
-            this.sketchpad.redraw();
-            this.sketchpad.mode = Types.SOLVE;
+            this.sketchpad.runApplication();
+
         });
 
 

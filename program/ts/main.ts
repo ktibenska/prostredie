@@ -38,9 +38,12 @@ class Main {
 
         this.submitButton.addEventListener('click', (event: Event) => {
             const input = this.imageInput
+            let c = new Card(this.x, this.y)
 
             if (input.files && input.files[0]) {
-                let c = new Card(this.x, this.y)
+
+                //todo check aj podla toho ci je zakliknuty checkbox text/obrazok!
+                // ked je pridany obrazok a kliknuty text, vykresli sa obrazok aj tak - text naopak
 
                 const filesArray: File[] = [];
                 for (let i = 0; i < input.files.length; i++) {
@@ -66,18 +69,27 @@ class Main {
                     };
                     reader.readAsDataURL(file);
                 });
+            } else {
+                let text = document.getElementById('text_value') as HTMLInputElement
+                c.text = text.value
 
+                let textColorSelector = document.getElementById('color_selector_text') as HTMLInputElement
+                c.text_color = textColorSelector.value;
 
-                let inputValue = (<HTMLInputElement>document.querySelector('input[name="movableCardRadio"]:checked')).id;
-                if (inputValue == 'iCardRadio') c.movable = false; //todo kontanta
-
-                let xsize = document.getElementById('xvalue') as HTMLInputElement;
-                let x = '100'
-                if (xsize.value) x = xsize.value
-                c.half_size = +x / 2
-                this.canvas.cards.push(c)
-                this.redraw();
+                let bgColorSelector = document.getElementById('color_selector_bg') as HTMLInputElement
+                c.bg_color = bgColorSelector.value;
             }
+
+            let inputValue = (<HTMLInputElement>document.querySelector('input[name="movableCardRadio"]:checked')).id;
+            if (inputValue == 'iCardRadio') c.movable = false; //todo kontanta
+
+
+            let xsize = document.getElementById('xvalue') as HTMLInputElement;
+            let x = '100'
+            if (xsize.value) x = xsize.value
+            c.half_size = +x / 2
+            this.canvas.cards.push(c)
+            this.redraw();
         });
 
 
@@ -85,7 +97,7 @@ class Main {
             let image = new Image();
             const files = this.bgImageInput.files;
 
-            if (files && files[0]) { //todo kontrola if checked text/obrazok
+            if (files && files[0]) {
                 const reader = new FileReader();
                 reader.onload = function (e) {
                     image.src = e.target.result as string;
@@ -116,7 +128,7 @@ class Main {
             this.canvas.addCard(new MovableCard(e.offsetX, e.offsetY));
         }
 
-        if (this.mode == Types.MOVE || this.mode == Types.SOLVE) {
+        if (this.mode == Types.MOVE || this.mode == Types.RUN) {
             for (let card of this.canvas.cards) {
                 if (card.isCLicked(x, y)) {
                     this.selected = card;
@@ -129,11 +141,12 @@ class Main {
     }
 
     private onMouseMove(e) {
-        if (this.canvas.cards[0]) {
+        if (this.canvas.cards[0]) { // todo ?
         }
 
         let x = e.offsetX - this.canvas.getViewX();
         let y = e.offsetY - this.canvas.getViewY();
+
 
         if (this.mode == Types.MOVE) {
             if (this.selected) {
@@ -141,7 +154,7 @@ class Main {
             }
         }
 
-        if (this.mode == Types.SOLVE) {
+        if (this.mode == Types.RUN) {
             if (this.selected && this.selected.movable) {
                 this.selected.move(x, y);
             }
@@ -179,7 +192,7 @@ class Main {
     public redraw() {
         this.canvas.bg();
 
-        if (this.mode == Types.SOLVE) {
+        if (this.mode == Types.RUN) {
             this.canvas.redraw(this.finalCanvas)
         } else {
             this.canvas.redraw()
@@ -190,6 +203,38 @@ class Main {
         this.canvas.clear();
         this.homeCanvas.clear();
         this.finalCanvas.clear();
+    }
+
+    // funkcie pri tlacidlach
+
+    public runApplication() {
+        if (!this.correctCardsCheck()) return;
+
+        this.canvas.cards = []
+
+        this.sortCards();
+
+        this.redraw();
+        this.mode = Types.RUN;
+    }
+
+
+    private correctCardsCheck(): boolean {
+        // todo CHECK:
+        //      - ci je rovnaky pocet karticiek v final a home stave
+        //      - ci immovable karticky su na rovnakom mieste v home a final stave
+
+        return true;
+    }
+
+    //sorts all movable cards in home state
+    private sortCards() {
+
+        // todo if random == true - zamiesaj home_canvas karty; final stav zostava rovnaky!
+
+        for (let card of this.homeCanvas.cards) {
+            this.canvas.cards.push(card.clone())
+        }
     }
 
 

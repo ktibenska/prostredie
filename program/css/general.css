@@ -27,7 +27,7 @@ main {
     /*margin: 5px 0*/
 }
 
-#navbar{
+#navbar {
     /*min-height: 6vh;*/
     /*max-height: 6vh;*/
     /*margin: 0;*/
@@ -67,13 +67,25 @@ main {
 }
 
 /*dolezite pre schovanie vkladania obrazkov*/
-#reveal:not(:checked) ~ #email{
+#reveal:not(:checked) ~ #email {
     display: none;
 }
-#reveal:checked ~ #email{
+
+#reveal:checked ~ #email {
     display: block;
 }
-#email{
+
+
+#hideBack:not(:checked) ~ #text_values {
     display: none;
 }
+
+#hideBack:checked ~ #text_values {
+    display: block;
+}
+
+#email, #text_values {
+    display: none;
+}
+
 /**/

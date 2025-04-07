@@ -19,8 +19,10 @@ var Main = /** @class */ (function () {
         });
         this.submitButton.addEventListener('click', function (event) {
             var input = _this.imageInput;
+            var c = new Card(_this.x, _this.y);
             if (input.files && input.files[0]) {
-                var c_1 = new Card(_this.x, _this.y);
+                //todo check aj podla toho ci je zakliknuty checkbox text/obrazok!
+                // ked je pridany obrazok a kliknuty text, vykresli sa obrazok aj tak - text naopak
                 var filesArray = [];
                 for (var i = 0; i < input.files.length; i++) {
                     filesArray.push(input.files[i]);
@@ -36,26 +38,34 @@ var Main = /** @class */ (function () {
                         // console.log(`Image ${index + 1}:`, reader.result);
                         var image = new Image();
                         image.src = reader.result;
-                        c_1.images.push(image);
+                        c.images.push(image);
                     };
                     reader.readAsDataURL(file);
                 });
-                var inputValue = document.querySelector('input[name="movableCardRadio"]:checked').id;
-                if (inputValue == 'iCardRadio')
-                    c_1.movable = false; //todo kontanta
-                var xsize = document.getElementById('xvalue');
-                var x = '100';
-                if (xsize.value)
-                    x = xsize.value;
-                c_1.half_size = +x / 2;
-                _this.canvas.cards.push(c_1);
-                _this.redraw();
             }
+            else {
+                var text = document.getElementById('text_value');
+                c.text = text.value;
+                var textColorSelector = document.getElementById('color_selector_text');
+                c.text_color = textColorSelector.value;
+                var bgColorSelector = document.getElementById('color_selector_bg');
+                c.bg_color = bgColorSelector.value;
+            }
+            var inputValue = document.querySelector('input[name="movableCardRadio"]:checked').id;
+            if (inputValue == 'iCardRadio')
+                c.movable = false; //todo kontanta
+            var xsize = document.getElementById('xvalue');
+            var x = '100';
+            if (xsize.value)
+                x = xsize.value;
+            c.half_size = +x / 2;
+            _this.canvas.cards.push(c);
+            _this.redraw();
         });
         this.bgSubmitButton.addEventListener('click', function (event) {
             var image = new Image();
             var files = _this.bgImageInput.files;
-            if (files && files[0]) { //todo kontrola if checked text/obrazok
+            if (files && files[0]) {
                 var reader = new FileReader();
                 reader.onload = function (e) {
                     image.src = e.target.result;
@@ -79,7 +89,7 @@ var Main = /** @class */ (function () {
         if (this.mode == "add" /* Types.ADD */) {
             this.canvas.addCard(new MovableCard(e.offsetX, e.offsetY));
         }
-        if (this.mode == "move" /* Types.MOVE */ || this.mode == "solve" /* Types.SOLVE */) {
+        if (this.mode == "move" /* Types.MOVE */ || this.mode == "run" /* Types.RUN */) {
             for (var _i = 0, _a = this.canvas.cards; _i < _a.length; _i++) {
                 var card = _a[_i];
                 if (card.isCLicked(x, y)) {
@@ -92,7 +102,7 @@ var Main = /** @class */ (function () {
         }
     };
     Main.prototype.onMouseMove = function (e) {
-        if (this.canvas.cards[0]) {
+        if (this.canvas.cards[0]) { // todo ?
         }
         var x = e.offsetX - this.canvas.getViewX();
         var y = e.offsetY - this.canvas.getViewY();
@@ -101,7 +111,7 @@ var Main = /** @class */ (function () {
                 this.selected.move(x, y);
             }
         }
-        if (this.mode == "solve" /* Types.SOLVE */) {
+        if (this.mode == "run" /* Types.RUN */) {
             if (this.selected && this.selected.movable) {
                 this.selected.move(x, y);
             }
@@ -130,7 +140,7 @@ var Main = /** @class */ (function () {
     };
     Main.prototype.redraw = function () {
         this.canvas.bg();
-        if (this.mode == "solve" /* Types.SOLVE */) {
+        if (this.mode == "run" /* Types.RUN */) {
             this.canvas.redraw(this.finalCanvas);
         }
         else {
@@ -141,6 +151,29 @@ var Main = /** @class */ (function () {
         this.canvas.clear();
         this.homeCanvas.clear();
         this.finalCanvas.clear();
+    };
+    // funkcie pri tlacidlach
+    Main.prototype.runApplication = function () {
+        if (!this.correctCardsCheck())
+            return;
+        this.canvas.cards = [];
+        this.sortCards();
+        this.redraw();
+        this.mode = "run" /* Types.RUN */;
+    };
+    Main.prototype.correctCardsCheck = function () {
+        // todo CHECK:
+        //      - ci je rovnaky pocet karticiek v final a home stave
+        //      - ci immovable karticky su na rovnakom mieste v home a final stave
+        return true;
+    };
+    //sorts all movable cards in home state
+    Main.prototype.sortCards = function () {
+        // todo if random == true - zamiesaj home_canvas karty; final stav zostava rovnaky!
+        for (var _i = 0, _a = this.homeCanvas.cards; _i < _a.length; _i++) {
+            var card = _a[_i];
+            this.canvas.cards.push(card.clone());
+        }
     };
     Main.prototype.checkSolution = function () {
         var ok = true;
