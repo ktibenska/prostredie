@@ -19,10 +19,11 @@ var Main = /** @class */ (function () {
         });
         this.submitButton.addEventListener('click', function (event) {
             var input = _this.imageInput;
-            var c = new Card(_this.x, _this.y);
+            var c;
             if (input.files && input.files[0]) {
                 //todo check aj podla toho ci je zakliknuty checkbox text/obrazok!
                 // ked je pridany obrazok a kliknuty text, vykresli sa obrazok aj tak - text naopak
+                c = new ImageCard(_this.x, _this.y);
                 var filesArray = [];
                 for (var i = 0; i < input.files.length; i++) {
                     filesArray.push(input.files[i]);
@@ -44,6 +45,7 @@ var Main = /** @class */ (function () {
                 });
             }
             else {
+                c = new TextCard(_this.x, _this.y);
                 var text = document.getElementById('text_value');
                 c.text = text.value;
                 var textColorSelector = document.getElementById('color_selector_text');
@@ -87,7 +89,7 @@ var Main = /** @class */ (function () {
         var x = e.offsetX;
         var y = e.offsetY;
         if (this.mode == "add" /* Types.ADD */) {
-            this.canvas.addCard(new MovableCard(e.offsetX, e.offsetY));
+            this.canvas.addCard(new TextCard(e.offsetX, e.offsetY)); //?
         }
         if (this.mode == "move" /* Types.MOVE */ || this.mode == "run" /* Types.RUN */) {
             for (var _i = 0, _a = this.canvas.cards; _i < _a.length; _i++) {
