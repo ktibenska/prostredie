@@ -110,12 +110,12 @@ var Main = /** @class */ (function () {
         var y = e.offsetY - this.canvas.getViewY();
         if (this.mode == "move" /* Types.MOVE */) {
             if (this.selected) {
-                this.selected.move(x, y);
+                this.selected.setCoordinates(x, y);
             }
         }
         if (this.mode == "run" /* Types.RUN */) {
             if (this.selected && this.selected.movable) {
-                this.selected.move(x, y);
+                this.selected.setCoordinates(x, y);
             }
         }
         this.x = e.offsetX;
@@ -169,12 +169,21 @@ var Main = /** @class */ (function () {
         //      - ci immovable karticky su na rovnakom mieste v home a final stave
         return true;
     };
-    //sorts all movable cards in home state
+    //adds cards from homestate to canvas, sorts all movable cards
     Main.prototype.sortCards = function () {
-        // todo if random == true - zamiesaj home_canvas karty; final stav zostava rovnaky!
         for (var _i = 0, _a = this.homeCanvas.cards; _i < _a.length; _i++) {
             var card = _a[_i];
             this.canvas.cards.push(card.clone());
+        }
+        var shuffle = document.getElementById('shuffle_cards');
+        if (shuffle) {
+            for (var _b = 0, _c = this.canvas.cards; _b < _c.length; _b++) {
+                var card = _c[_b];
+                var randomCard = this.canvas.cards[Math.floor(Math.random() * this.canvas.cards.length)];
+                var randomCardCoords = randomCard.getCoordinates();
+                randomCard.setCoordinates.apply(randomCard, card.getCoordinates());
+                card.setCoordinates.apply(card, randomCardCoords);
+            }
         }
     };
     Main.prototype.checkSolution = function () {

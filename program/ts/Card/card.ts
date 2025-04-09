@@ -22,7 +22,11 @@ class Card {
         return new Card(this.x, this.y);
     }
 
-    public move(x: number, y: number): void {
+    public getCoordinates(): [number, number] {
+        return [this.x, this.y];
+    }
+
+    public setCoordinates(x: number, y: number): void {
         this.x = x
         this.y = y
     }

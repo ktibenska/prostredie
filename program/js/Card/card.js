@@ -10,7 +10,10 @@ var Card = /** @class */ (function () {
     Card.prototype.clone = function () {
         return new Card(this.x, this.y);
     };
-    Card.prototype.move = function (x, y) {
+    Card.prototype.getCoordinates = function () {
+        return [this.x, this.y];
+    };
+    Card.prototype.setCoordinates = function (x, y) {
         this.x = x;
         this.y = y;
     };

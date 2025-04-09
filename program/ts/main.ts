@@ -153,13 +153,13 @@ class Main {
 
         if (this.mode == Types.MOVE) {
             if (this.selected) {
-                this.selected.move(x, y);
+                this.selected.setCoordinates(x, y);
             }
         }
 
         if (this.mode == Types.RUN) {
             if (this.selected && this.selected.movable) {
-                this.selected.move(x, y);
+                this.selected.setCoordinates(x, y);
             }
         }
 
@@ -230,14 +230,23 @@ class Main {
         return true;
     }
 
-    //sorts all movable cards in home state
+    //adds cards from homestate to canvas, sorts all movable cards
     private sortCards() {
-
-        // todo if random == true - zamiesaj home_canvas karty; final stav zostava rovnaky!
 
         for (let card of this.homeCanvas.cards) {
             this.canvas.cards.push(card.clone())
         }
+
+        let shuffle = document.getElementById('shuffle_cards') as HTMLInputElement;
+        if (shuffle) {
+            for (let card of this.canvas.cards) {
+                let randomCard = this.canvas.cards[Math.floor(Math.random() * this.canvas.cards.length)];
+                let randomCardCoords = randomCard.getCoordinates();
+                randomCard.setCoordinates(...card.getCoordinates())
+                card.setCoordinates(...randomCardCoords)
+            }
+        }
+
     }
 
 
