@@ -9,7 +9,7 @@ class ImageCard extends Card {
         clone.half_size = this.half_size
         clone.images = this.images
         clone.selected_image = this.selected_image
-        clone.movable = this.movable;
+        clone.setMovable(this.isMovable);
         return clone;
     }
 

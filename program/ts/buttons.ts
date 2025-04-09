@@ -55,8 +55,10 @@ class Buttons {
 
         this.runButton = document.getElementById('run_button');
         this.runButton.addEventListener('mouseup', () => {
-            this.buttonsHidden(true);
             this.sketchpad.runApplication();
+            if (this.sketchpad.mode == Types.RUN) {
+                this.buttonsHidden(true);
+            }
 
         });
 
@@ -77,7 +79,7 @@ class Buttons {
         this.checkButton = document.getElementById('check_answer_button');
         this.checkButton.hidden = true;
         this.checkButton.addEventListener('mouseup', () => {
-            this.sketchpad.checkSolution()
+            this.sketchpad.checkSolution();
         });
 
     }

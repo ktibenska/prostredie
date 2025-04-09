@@ -26,7 +26,7 @@ var TextCard = /** @class */ (function (_super) {
         var clone = new TextCard(this.x, this.y);
         clone.half_size = this.half_size;
         clone.selected_image = this.selected_image;
-        clone.movable = this.movable;
+        clone.setMovable(this.isMovable);
         clone.text = this.text;
         clone.text_color = this.text_color;
         clone.bg_color = this.bg_color;

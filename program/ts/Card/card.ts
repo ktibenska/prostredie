@@ -7,7 +7,7 @@ class Card {
     images = []
     selected_image = 0
 
-    movable: boolean = true;
+    private movable: boolean = true;
 
     text: string;
     text_color: string;
@@ -29,6 +29,14 @@ class Card {
     public setCoordinates(x: number, y: number): void {
         this.x = x
         this.y = y
+    }
+
+    public isMovable(): boolean {
+        return this.movable;
+    }
+
+    setMovable(movable) :void {
+        this.movable = movable;
     }
 
     public draw(ctx): void {

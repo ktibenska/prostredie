@@ -84,7 +84,7 @@ class Main {
             }
 
             let inputValue = (<HTMLInputElement>document.querySelector('input[name="movableCardRadio"]:checked')).id;
-            if (inputValue == 'iCardRadio') c.movable = false; //todo kontanta
+            if (inputValue == 'iCardRadio') c.setMovable(false); //todo kontanta
 
 
             let xsize = document.getElementById('xvalue') as HTMLInputElement;
@@ -158,7 +158,7 @@ class Main {
         }
 
         if (this.mode == Types.RUN) {
-            if (this.selected && this.selected.movable) {
+            if (this.selected && this.selected.isMovable()) {
                 this.selected.setCoordinates(x, y);
             }
         }
@@ -211,10 +211,12 @@ class Main {
     // funkcie pri tlacidlach
 
     public runApplication() {
-        if (!this.correctCardsCheck()) return;
+        if (!this.checkCards()) {
+            window.alert("nesprávne položené kartičky"); //todo change message
+            return;
+        }
 
-        this.canvas.cards = []
-
+        this.canvas.cards = [];
         this.sortCards();
 
         this.redraw();
@@ -222,10 +224,24 @@ class Main {
     }
 
 
-    private correctCardsCheck(): boolean {
-        // todo CHECK:
-        //      - ci je rovnaky pocet karticiek v final a home stave
-        //      - ci immovable karticky su na rovnakom mieste v home a final stave
+    private checkCards(): boolean {
+        if (this.homeCanvas.cards.length != this.finalCanvas.cards.length) {
+            return false;
+        }
+
+        console.log(this.homeCanvas.cards.length)
+        console.log(this.finalCanvas.cards.length)
+
+        for (let i = 0; i < this.homeCanvas.cards.length; i++) {
+            let homeCard = this.homeCanvas.cards[i]
+            if (homeCard.isMovable()) {
+                continue;
+            }
+
+            if (homeCard.getCoordinates() != this.finalCanvas.cards[i].getCoordinates()) {
+                return false;
+            }
+        }
 
         return true;
     }

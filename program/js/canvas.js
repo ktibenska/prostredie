@@ -79,7 +79,7 @@ var Canvas = /** @class */ (function () {
         if (finalCanvas) {
             for (var _i = 0, _a = finalCanvas.cards; _i < _a.length; _i++) {
                 var card = _a[_i];
-                if (card.movable) {
+                if (card.isMovable()) {
                     card.drawOutline(this.ctx);
                 }
             }

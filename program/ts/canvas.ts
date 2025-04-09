@@ -104,7 +104,7 @@ class Canvas {
 
         if (finalCanvas) {
             for (let card of finalCanvas.cards) {
-                if (card.movable) {
+                if (card.isMovable()) {
                     card.drawOutline(this.ctx)
                 }
             }

@@ -55,7 +55,7 @@ var Main = /** @class */ (function () {
             }
             var inputValue = document.querySelector('input[name="movableCardRadio"]:checked').id;
             if (inputValue == 'iCardRadio')
-                c.movable = false; //todo kontanta
+                c.setMovable(false); //todo kontanta
             var xsize = document.getElementById('xvalue');
             var x = '100';
             if (xsize.value)
@@ -114,7 +114,7 @@ var Main = /** @class */ (function () {
             }
         }
         if (this.mode == "run" /* Types.RUN */) {
-            if (this.selected && this.selected.movable) {
+            if (this.selected && this.selected.isMovable()) {
                 this.selected.setCoordinates(x, y);
             }
         }
@@ -156,17 +156,30 @@ var Main = /** @class */ (function () {
     };
     // funkcie pri tlacidlach
     Main.prototype.runApplication = function () {
-        if (!this.correctCardsCheck())
+        if (!this.checkCards()) {
+            window.alert("nesprávne položené kartičky"); //todo change message
             return;
+        }
         this.canvas.cards = [];
         this.sortCards();
         this.redraw();
         this.mode = "run" /* Types.RUN */;
     };
-    Main.prototype.correctCardsCheck = function () {
-        // todo CHECK:
-        //      - ci je rovnaky pocet karticiek v final a home stave
-        //      - ci immovable karticky su na rovnakom mieste v home a final stave
+    Main.prototype.checkCards = function () {
+        if (this.homeCanvas.cards.length != this.finalCanvas.cards.length) {
+            return false;
+        }
+        console.log(this.homeCanvas.cards.length);
+        console.log(this.finalCanvas.cards.length);
+        for (var i = 0; i < this.homeCanvas.cards.length; i++) {
+            var homeCard = this.homeCanvas.cards[i];
+            if (homeCard.isMovable()) {
+                continue;
+            }
+            if (homeCard.getCoordinates() != this.finalCanvas.cards[i].getCoordinates()) {
+                return false;
+            }
+        }
         return true;
     };
     //adds cards from homestate to canvas, sorts all movable cards

@@ -37,8 +37,10 @@ var Buttons = /** @class */ (function () {
         });
         this.runButton = document.getElementById('run_button');
         this.runButton.addEventListener('mouseup', function () {
-            _this.buttonsHidden(true);
             _this.sketchpad.runApplication();
+            if (_this.sketchpad.mode == "run" /* Types.RUN */) {
+                _this.buttonsHidden(true);
+            }
         });
         this.closeButton = document.getElementById('close_button');
         this.closeButton.hidden = true;

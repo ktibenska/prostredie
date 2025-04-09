@@ -26,7 +26,7 @@ var ImageCard = /** @class */ (function (_super) {
         clone.half_size = this.half_size;
         clone.images = this.images;
         clone.selected_image = this.selected_image;
-        clone.movable = this.movable;
+        clone.setMovable(this.isMovable);
         return clone;
     };
     ImageCard.prototype.draw = function (ctx) {

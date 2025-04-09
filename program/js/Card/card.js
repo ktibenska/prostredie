@@ -17,6 +17,12 @@ var Card = /** @class */ (function () {
         this.x = x;
         this.y = y;
     };
+    Card.prototype.isMovable = function () {
+        return this.movable;
+    };
+    Card.prototype.setMovable = function (movable) {
+        this.movable = movable;
+    };
     Card.prototype.draw = function (ctx) {
     };
     Card.prototype.drawOutline = function (ctx) {
