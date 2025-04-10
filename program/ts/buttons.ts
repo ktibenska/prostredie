@@ -11,6 +11,9 @@ class Buttons {
     closeButton: HTMLElement;
     checkButton: HTMLElement
 
+    saveButton: HTMLElement
+    loadButton: HTMLElement
+
     constructor(sketchpad: Main) {
         this.sketchpad = sketchpad;
         this.initButtons();
@@ -42,7 +45,9 @@ class Buttons {
 
             this.sketchpad.finalCanvas.cards = []
             for (let card of this.sketchpad.canvas.cards) {
-                this.sketchpad.finalCanvas.cards.push(card.clone())
+                let c = card.clone()
+                c.home = false
+                this.sketchpad.finalCanvas.cards.push(c)
             }
             this.sketchpad.finalCanvas.redraw();
 
@@ -82,6 +87,35 @@ class Buttons {
             this.sketchpad.checkSolution();
         });
 
+
+        this.saveButton = document.getElementById('save_button');
+        this.saveButton.addEventListener('mouseup', () => {
+            this.sketchpad.toJSON();
+        });
+
+        this.loadButton = document.getElementById('load_button');
+        this.loadButton.addEventListener('mouseup', () => {
+
+            let jsonData;
+
+            let jsonInput = document.getElementById('json_input') as HTMLInputElement;
+
+            const files = jsonInput.files;
+
+            // let xy = [];
+            if (files && files[0]) {
+                // if (file[0].type === 'application/json')
+
+                const reader = new FileReader();
+                reader.onload = () => {
+                    jsonData = JSON.parse(reader.result as string);
+                    console.log(jsonData);
+                    this.sketchpad.fromJSON(jsonData)
+
+                }
+                reader.readAsText(files[0]);
+            }
+        });
     }
 
 

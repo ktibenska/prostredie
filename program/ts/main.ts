@@ -31,6 +31,7 @@ class Main {
         this.finalCanvas = new Canvas('final_state_canvas');
 
         this.clearAll()
+        // this.loadTest();
 
         this.canvas.canvas.addEventListener('contextmenu', (event: MouseEvent) => {
             event.preventDefault();
@@ -116,6 +117,72 @@ class Main {
             this.homeCanvas.redraw();
             this.finalCanvas.redraw();
         });
+    }
+
+
+    // private loadTest() {
+    //     const json = `[
+    //           { "x": 1, "y": 1 },
+    //           { "x": 200, "y": 200 },
+    //           { "x": 300, "y": 300 }
+    //         ]`;
+    //
+    //     const parsedObjects = JSON.parse(json);
+    //     this.canvas.cards = parsedObjects.map((obj: any) => Card.fromJSON(obj));
+    //     this.redraw();
+    // }
+
+    public toJSON() {
+        let string = ""
+
+        //todo najprv ulozit:
+        //      - ci shuffle t/f
+        //      - POZADIE A OBRAZKY
+
+        for (let card of this.homeCanvas.cards) {
+            string += JSON.stringify(card) + ","
+        }
+        for (let card of this.finalCanvas.cards) {
+            string += JSON.stringify(card) + ","
+        }
+
+        console.log(string)
+
+        const downloadFile = () => { //todo
+            const link = document.createElement("a");
+            const content = '[' + string.slice(0, -1) + ']';
+            const file = new Blob([content], {type: 'application/json'});
+            link.href = URL.createObjectURL(file);
+            link.download = "test.json";
+            link.click();
+            URL.revokeObjectURL(link.href);
+        };
+
+        downloadFile()
+    }
+
+    public fromJSON(json) {
+        this.clearAll();
+
+        for (let x of json) {
+            let card: Card;
+            if (x.text) {
+                card = TextCard.fromJSON(x)
+            } else {
+                card = ImageCard.fromJSON(x)
+            }
+
+            if (x.home) {
+                this.homeCanvas.cards.push(card)
+            } else {
+                this.finalCanvas.cards.push(card)
+            }
+        }
+
+        this.sortCards();
+        this.homeCanvas.redraw();
+        this.finalCanvas.redraw();
+        this.redraw();
     }
 
 
@@ -239,6 +306,8 @@ class Main {
             }
 
             if (homeCard.getCoordinates() != this.finalCanvas.cards[i].getCoordinates()) {
+                console.log("?")
+                console.log(homeCard.isMovable())
                 return false;
             }
         }

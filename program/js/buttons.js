@@ -27,7 +27,9 @@ var Buttons = /** @class */ (function () {
             _this.sketchpad.finalCanvas.cards = [];
             for (var _i = 0, _a = _this.sketchpad.canvas.cards; _i < _a.length; _i++) {
                 var card = _a[_i];
-                _this.sketchpad.finalCanvas.cards.push(card.clone());
+                var c = card.clone();
+                c.home = false;
+                _this.sketchpad.finalCanvas.cards.push(c);
             }
             _this.sketchpad.finalCanvas.redraw();
         });
@@ -58,6 +60,27 @@ var Buttons = /** @class */ (function () {
         this.checkButton.hidden = true;
         this.checkButton.addEventListener('mouseup', function () {
             _this.sketchpad.checkSolution();
+        });
+        this.saveButton = document.getElementById('save_button');
+        this.saveButton.addEventListener('mouseup', function () {
+            _this.sketchpad.toJSON();
+        });
+        this.loadButton = document.getElementById('load_button');
+        this.loadButton.addEventListener('mouseup', function () {
+            var jsonData;
+            var jsonInput = document.getElementById('json_input');
+            var files = jsonInput.files;
+            // let xy = [];
+            if (files && files[0]) {
+                // if (file[0].type === 'application/json')
+                var reader_1 = new FileReader();
+                reader_1.onload = function () {
+                    jsonData = JSON.parse(reader_1.result);
+                    console.log(jsonData);
+                    _this.sketchpad.fromJSON(jsonData);
+                };
+                reader_1.readAsText(files[0]);
+            }
         });
     };
     Buttons.prototype.buttonsHidden = function (hidden) {

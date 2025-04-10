@@ -14,6 +14,7 @@ var Main = /** @class */ (function () {
         this.homeCanvas = new Canvas('home_state_canvas');
         this.finalCanvas = new Canvas('final_state_canvas');
         this.clearAll();
+        // this.loadTest();
         this.canvas.canvas.addEventListener('contextmenu', function (event) {
             event.preventDefault();
         });
@@ -82,6 +83,65 @@ var Main = /** @class */ (function () {
             _this.finalCanvas.redraw();
         });
     }
+    // private loadTest() {
+    //     const json = `[
+    //           { "x": 1, "y": 1 },
+    //           { "x": 200, "y": 200 },
+    //           { "x": 300, "y": 300 }
+    //         ]`;
+    //
+    //     const parsedObjects = JSON.parse(json);
+    //     this.canvas.cards = parsedObjects.map((obj: any) => Card.fromJSON(obj));
+    //     this.redraw();
+    // }
+    Main.prototype.toJSON = function () {
+        var string = "";
+        //todo najprv ulozit:
+        //      - ci shuffle t/f
+        //      - POZADIE A OBRAZKY
+        for (var _i = 0, _a = this.homeCanvas.cards; _i < _a.length; _i++) {
+            var card = _a[_i];
+            string += JSON.stringify(card) + ",";
+        }
+        for (var _b = 0, _c = this.finalCanvas.cards; _b < _c.length; _b++) {
+            var card = _c[_b];
+            string += JSON.stringify(card) + ",";
+        }
+        console.log(string);
+        var downloadFile = function () {
+            var link = document.createElement("a");
+            var content = '[' + string.slice(0, -1) + ']';
+            var file = new Blob([content], { type: 'application/json' });
+            link.href = URL.createObjectURL(file);
+            link.download = "test.json";
+            link.click();
+            URL.revokeObjectURL(link.href);
+        };
+        downloadFile();
+    };
+    Main.prototype.fromJSON = function (json) {
+        this.clearAll();
+        for (var _i = 0, json_1 = json; _i < json_1.length; _i++) {
+            var x = json_1[_i];
+            var card = void 0;
+            if (x.text) {
+                card = TextCard.fromJSON(x);
+            }
+            else {
+                card = ImageCard.fromJSON(x);
+            }
+            if (x.home) {
+                this.homeCanvas.cards.push(card);
+            }
+            else {
+                this.finalCanvas.cards.push(card);
+            }
+        }
+        this.sortCards();
+        this.homeCanvas.redraw();
+        this.finalCanvas.redraw();
+        this.redraw();
+    };
     Main.prototype.setMode = function (mode) {
         this.mode = mode;
     };
@@ -177,6 +237,8 @@ var Main = /** @class */ (function () {
                 continue;
             }
             if (homeCard.getCoordinates() != this.finalCanvas.cards[i].getCoordinates()) {
+                console.log("?");
+                console.log(homeCard.isMovable());
                 return false;
             }
         }

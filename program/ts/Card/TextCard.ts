@@ -1,19 +1,47 @@
 class TextCard extends Card {
 
-    text: string = "";
+    text: string = "test";
     text_color: string = "#000000";
-    bg_color: string = "#ffffff";
+    bg_color: string = "#ffff00";
 
     public clone(): TextCard {
         let clone = new TextCard(this.x, this.y);
         clone.half_size = this.half_size
-        clone.selected_image = this.selected_image
-        clone.setMovable(this.isMovable);
-
+        // clone.setMovable(this.isMovable); //robi problem pri json?
+        clone.movable = this.movable
         clone.text = this.text;
         clone.text_color = this.text_color;
         clone.bg_color = this.bg_color;
         return clone;
+    }
+
+
+    public toJSON() {
+        return {
+            x: this.x,
+            y: this.y,
+            movable: this.movable,
+            home: this.home,
+            text: this.text,
+            text_color: this.text_color,
+            bg_color: this.bg_color
+        }
+    }
+
+    public static fromJSON(json: any): TextCard {
+        console.log(json.movable)
+
+        let card = new TextCard(json.x, json.y);
+        console.log(card.movable)
+
+        card.movable = json.movable;
+        card.home = json.home;
+        card.text = json.text;
+
+        card.text_color = json.text_color;
+        card.bg_color = json.bg_color;
+
+        return card;
     }
 
 

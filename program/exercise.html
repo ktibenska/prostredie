@@ -31,7 +31,6 @@
 <script src='js/Card/ImageCard.js'></script>
 
 
-
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-warning" id="navbar">
@@ -103,7 +102,7 @@
                             </div>
                             <div>
                                 <input class="input-block-level btn btn-light outline-light form-control form-control-color"
-                                       title="vyber farbu" type="color" id="color_selector_bg" value="#ffffff">
+                                       title="vyber farbu" type="color" id="color_selector_bg" value="#ffff00">
                                 <label for="color_selector_bg">farba pozadia</label>
                             </div>
                             <div>
@@ -271,15 +270,30 @@
                                 <canvas id="final_state_canvas"></canvas>
                             </div>
 
-                            <div class="col">
-                                <button class="input-block-level btn btn-secondary bi bi-save" title='ulož'>
-                                </button>
-                            </div>
-                            <div class="col">
+
+                            <div>
                                 <button class="input-block-level btn btn-secondary bi bi-play" title='spusti aktivitu'
                                         id="run_button">
                                 </button>
                             </div>
+
+                            <div class="col">
+                                <button class="input-block-level btn btn-secondary bi bi-save" id="save_button"
+                                        title='ulož'>
+                                </button>
+                            </div>
+                            <div class="col">
+                                <button class="input-block-level btn btn-secondary bi-folder2-open" id="load_button"
+                                        title='načítaj súbor'>
+                                </button>
+
+                            </div>
+
+                            <form id="json" class="nice" action="" method="post">
+                                <input type="file" accept="application/json" name="json_input" id="json_input">
+                            </form>
+
+
                         </div>
                     </div>
                 </div>

@@ -17,20 +17,42 @@ var TextCard = /** @class */ (function (_super) {
     __extends(TextCard, _super);
     function TextCard() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.text = "";
+        _this.text = "test";
         _this.text_color = "#000000";
-        _this.bg_color = "#ffffff";
+        _this.bg_color = "#ffff00";
         return _this;
     }
     TextCard.prototype.clone = function () {
         var clone = new TextCard(this.x, this.y);
         clone.half_size = this.half_size;
-        clone.selected_image = this.selected_image;
-        clone.setMovable(this.isMovable);
+        // clone.setMovable(this.isMovable); //robi problem pri json?
+        clone.movable = this.movable;
         clone.text = this.text;
         clone.text_color = this.text_color;
         clone.bg_color = this.bg_color;
         return clone;
+    };
+    TextCard.prototype.toJSON = function () {
+        return {
+            x: this.x,
+            y: this.y,
+            movable: this.movable,
+            home: this.home,
+            text: this.text,
+            text_color: this.text_color,
+            bg_color: this.bg_color
+        };
+    };
+    TextCard.fromJSON = function (json) {
+        console.log(json.movable);
+        var card = new TextCard(json.x, json.y);
+        console.log(card.movable);
+        card.movable = json.movable;
+        card.home = json.home;
+        card.text = json.text;
+        card.text_color = json.text_color;
+        card.bg_color = json.bg_color;
+        return card;
     };
     TextCard.prototype.draw = function (ctx) {
         ctx.fillStyle = this.bg_color;
