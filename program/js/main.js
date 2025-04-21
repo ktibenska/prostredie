@@ -15,9 +15,9 @@ var Main = /** @class */ (function () {
         this.finalCanvas = new Canvas('final_state_canvas');
         this.clearAll();
         // this.loadTest();
-        this.canvas.canvas.addEventListener('contextmenu', function (event) {
-            event.preventDefault();
-        });
+        // this.canvas.canvas.addEventListener('contextmenu', (event: MouseEvent) => {
+        //     // event.preventDefault();
+        // });
         this.submitButton.addEventListener('click', function (event) {
             var input = _this.imageInput;
             var c;
@@ -81,6 +81,25 @@ var Main = /** @class */ (function () {
             _this.redraw();
             _this.homeCanvas.redraw();
             _this.finalCanvas.redraw();
+        });
+        this.canvas.canvas.addEventListener('contextmenu', function (event) {
+            event.preventDefault();
+            var contextMenu = document.getElementById('contextMenu');
+            var x = event.offsetX;
+            var y = event.offsetY;
+            for (var _i = 0, _a = _this.canvas.cards; _i < _a.length; _i++) {
+                var card = _a[_i];
+                if (card.isCLicked(x, y)) {
+                    console.log('kliknuta');
+                    _this.selected = card;
+                    contextMenu.style.display = 'block';
+                    contextMenu.style.left = "".concat(event.pageX, "px");
+                    contextMenu.style.top = "".concat(event.pageY, "px");
+                }
+            }
+            // } else {
+            //     contextMenu.style.display = 'none';
+            // }
         });
     }
     // private loadTest() {
@@ -279,6 +298,15 @@ var Main = /** @class */ (function () {
         else {
             alert("riešenie je nesprávne");
         }
+    };
+    Main.prototype.removeCard = function () {
+        var card = this.selected;
+        // todo zmenit, vymazavat priamo
+        //  vymazat aj z home aj final
+        var newCards = this.canvas.cards.filter(function (item) { return item !== card; });
+        this.canvas.cards = newCards;
+        this.redraw();
+        this.selected = null;
     };
     return Main;
 }());

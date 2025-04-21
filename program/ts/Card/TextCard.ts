@@ -5,7 +5,7 @@ class TextCard extends Card {
     bg_color: string = "#ffff00";
 
     public clone(): TextCard {
-        let clone = new TextCard(this.x, this.y);či
+        let clone = new TextCard(this.x, this.y);
         clone.half_size = this.half_size
         // clone.setMovable(this.isMovable); //robi problem pri json?
         clone.movable = this.movable
@@ -45,7 +45,7 @@ class TextCard extends Card {
     }
 
 
-    public draw(ctx): void {
+    public draw(ctx: any): void {
         ctx.fillStyle = this.bg_color;
         ctx.fillRect(this.x - this.half_size, this.y - this.half_size, this.half_size * 2, this.half_size * 2);
 
@@ -56,11 +56,11 @@ class TextCard extends Card {
     }
 
 
-    public drawOutline(ctx): void {
+    public drawOutline(ctx: any): void {
         ctx.fillStyle = "lightgray";
         ctx.strokeStyle = "black";
-        let w = this.half_size * 2;
-        let h = this.half_size * 2;
+        // let w = this.half_size * 2;
+        // let h = this.half_size * 2;
 
         ctx.strokeRect(this.x - this.half_size, this.y - this.half_size, this.half_size * 2, this.half_size * 2)
     }

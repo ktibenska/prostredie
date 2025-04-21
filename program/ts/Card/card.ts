@@ -49,15 +49,15 @@ class Card {
         return this.movable;
     }
 
-    setMovable(movable): void {
+    setMovable(movable: boolean): void {
         this.movable = movable;
     }
 
-    public draw(ctx): void {
+    public draw(ctx: any): void {
     }
 
 
-    public drawOutline(ctx): void {
+    public drawOutline(ctx: any): void {
     }
 
     public isCLicked(x: number, y: number): boolean {

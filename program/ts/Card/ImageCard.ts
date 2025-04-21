@@ -41,7 +41,6 @@ class ImageCard extends Card {
         }
 
 
-
         // let im = new Image()
         // im.src = json.images
         // card.images.push(im)
@@ -62,13 +61,13 @@ class ImageCard extends Card {
         return clone;
     }
 
-    public draw(ctx): void {
+    public draw(ctx: any): void {
         let img = this.images[this.selected_image]
         ctx.drawImage(img, this.x, this.y, img.width, img.height)
     }
 
 
-    public drawOutline(ctx): void {
+    public drawOutline(ctx: any): void {
         ctx.fillStyle = "lightgray";
         ctx.strokeStyle = "black";
         let w = this.images[0].width;

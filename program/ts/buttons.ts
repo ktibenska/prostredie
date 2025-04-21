@@ -14,9 +14,24 @@ class Buttons {
     saveButton: HTMLElement
     loadButton: HTMLElement
 
+    removeCardCtxBtn:HTMLElement
+
     constructor(sketchpad: Main) {
         this.sketchpad = sketchpad;
         this.initButtons();
+
+
+        const contextMenu = document.getElementById('contextMenu');
+        window.addEventListener('click', () => {
+            contextMenu.style.display = 'none';
+        });
+
+        // hide on escape key
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                contextMenu.style.display = 'none';
+            }
+        });
     }
 
     private initButtons() {
@@ -116,6 +131,13 @@ class Buttons {
                 reader.readAsText(files[0]);
             }
         });
+
+
+        this.removeCardCtxBtn = document.getElementById('remove_card');
+        this.removeCardCtxBtn.addEventListener('mouseup', () => {
+            this.sketchpad.removeCard();
+        });
+
     }
 
 
@@ -126,6 +148,10 @@ class Buttons {
         document.getElementById('left_panel_content').hidden = hidden;
         document.getElementById('right_panel_content').hidden = hidden;
     }
+
+
+
+
 
 }
 

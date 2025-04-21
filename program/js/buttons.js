@@ -2,6 +2,16 @@ var Buttons = /** @class */ (function () {
     function Buttons(sketchpad) {
         this.sketchpad = sketchpad;
         this.initButtons();
+        var contextMenu = document.getElementById('contextMenu');
+        window.addEventListener('click', function () {
+            contextMenu.style.display = 'none';
+        });
+        // hide on escape key
+        window.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                contextMenu.style.display = 'none';
+            }
+        });
     }
     Buttons.prototype.initButtons = function () {
         var _this = this;
@@ -81,6 +91,10 @@ var Buttons = /** @class */ (function () {
                 };
                 reader_1.readAsText(files[0]);
             }
+        });
+        this.removeCardCtxBtn = document.getElementById('remove_card');
+        this.removeCardCtxBtn.addEventListener('mouseup', function () {
+            _this.sketchpad.removeCard();
         });
     };
     Buttons.prototype.buttonsHidden = function (hidden) {

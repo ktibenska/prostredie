@@ -89,3 +89,33 @@ main {
 }
 
 /**/
+
+
+/* context menu */
+#contextMenu {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    width: 130px;
+}
+
+#contextMenu ul {
+    list-style: none;
+    margin: 0;
+    padding: 1px 0;
+    border-radius: 10px;
+}
+
+#contextMenu li {
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+#contextMenu li:hover {
+    background-color: #f0f0f0;
+}

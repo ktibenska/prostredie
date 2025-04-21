@@ -33,9 +33,9 @@ class Main {
         this.clearAll()
         // this.loadTest();
 
-        this.canvas.canvas.addEventListener('contextmenu', (event: MouseEvent) => {
-            event.preventDefault();
-        });
+        // this.canvas.canvas.addEventListener('contextmenu', (event: MouseEvent) => {
+        //     // event.preventDefault();
+        // });
 
         this.submitButton.addEventListener('click', (event: Event) => {
             const input = this.imageInput
@@ -117,6 +117,36 @@ class Main {
             this.homeCanvas.redraw();
             this.finalCanvas.redraw();
         });
+
+
+        this.canvas.canvas.addEventListener('contextmenu', (event: MouseEvent) => {
+            event.preventDefault();
+            const contextMenu = document.getElementById('contextMenu');
+
+            let x = event.offsetX;
+            let y = event.offsetY;
+
+            for (let card of this.canvas.cards) {
+                if (card.isCLicked(x, y)) {
+                    console.log('kliknuta')
+                    this.selected = card;
+
+                    contextMenu.style.display = 'block';
+                    contextMenu.style.left = `${event.pageX}px`;
+                    contextMenu.style.top = `${event.pageY}px`;
+                }
+
+            }
+
+
+            // } else {
+            //     contextMenu.style.display = 'none';
+            // }
+        });
+
+
+
+
     }
 
 
@@ -178,6 +208,7 @@ class Main {
                 this.finalCanvas.cards.push(card)
             }
         }
+
 
         this.sortCards();
         this.homeCanvas.redraw();
@@ -354,6 +385,24 @@ class Main {
             alert("riešenie je nesprávne")
         }
 
+    }
+
+
+
+    public removeCard() {
+        let card = this.selected;
+
+        // todo zmenit, vymazavat priamo
+        //  vymazat aj z home aj final
+
+        const newCards = this.canvas.cards.filter(item => item !== card);
+
+        this.canvas.cards = newCards
+
+
+        this.redraw()
+
+        this.selected = null;
     }
 
 }
