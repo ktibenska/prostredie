@@ -24,6 +24,7 @@ var TextCard = /** @class */ (function (_super) {
     }
     TextCard.prototype.clone = function () {
         var clone = new TextCard(this.x, this.y);
+        či;
         clone.half_size = this.half_size;
         // clone.setMovable(this.isMovable); //robi problem pri json?
         clone.movable = this.movable;
@@ -66,8 +67,7 @@ var TextCard = /** @class */ (function (_super) {
         ctx.strokeStyle = "black";
         var w = this.half_size * 2;
         var h = this.half_size * 2;
-        ctx.rect(this.x - this.half_size, this.y - this.half_size, this.half_size * 2, this.half_size * 2);
-        ctx.stroke();
+        ctx.strokeRect(this.x - this.half_size, this.y - this.half_size, this.half_size * 2, this.half_size * 2);
     };
     return TextCard;
 }(Card));

@@ -286,8 +286,9 @@ class Main {
         this.canvas.cards = [];
         this.sortCards();
 
-        this.redraw();
         this.mode = Types.RUN;
+        this.redraw();
+
     }
 
 

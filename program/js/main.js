@@ -222,8 +222,8 @@ var Main = /** @class */ (function () {
         }
         this.canvas.cards = [];
         this.sortCards();
-        this.redraw();
         this.mode = "run" /* Types.RUN */;
+        this.redraw();
     };
     Main.prototype.checkCards = function () {
         if (this.homeCanvas.cards.length != this.finalCanvas.cards.length) {

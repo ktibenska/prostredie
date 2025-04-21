@@ -5,12 +5,21 @@ class ImageCard extends Card {
 
 
     public toJSON() {
+
+
+        let images = []
+        for (let i of this.images) {
+            images.push(i.src)
+        }
+
         return {
             x: this.x,
             y: this.y,
             movable: this.movable,
             home: this.home,
-            images: this.images,
+            images: images,
+
+            // images: this.images[0].src,
             selected_image: this.selected_image
         }
     }
@@ -21,7 +30,23 @@ class ImageCard extends Card {
         card.movable = json.movable;
         card.home = json.home;
 
-        card.images = [json.images];
+        card.images = []
+        // console.log(json.images)
+
+        for (let i of json.images) {
+            // console.log(i)
+            let im = new Image()
+            im.src = i
+            card.images.push(im)
+        }
+
+
+
+        // let im = new Image()
+        // im.src = json.images
+        // card.images.push(im)
+
+        // card.images = [json.images];
         card.selected_image = json.selected_image;
 
         return card;
@@ -49,7 +74,6 @@ class ImageCard extends Card {
         let w = this.images[0].width;
         let h = this.images[0].height;
 
-        ctx.rect(this.x, this.y, w, h)
-        ctx.stroke();
+        ctx.strokeRect(this.x, this.y, w, h)
     }
 }

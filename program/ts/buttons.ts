@@ -77,8 +77,8 @@ class Buttons {
             for (let card of this.sketchpad.homeCanvas.cards) {
                 this.sketchpad.canvas.cards.push(card.clone())
             }
-            this.sketchpad.redraw();
             this.sketchpad.mode = Types.MOVE;
+            this.sketchpad.redraw();
         });
 
         this.checkButton = document.getElementById('check_answer_button');

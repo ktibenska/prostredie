@@ -22,12 +22,18 @@ var ImageCard = /** @class */ (function (_super) {
         return _this;
     }
     ImageCard.prototype.toJSON = function () {
+        var images = [];
+        for (var _i = 0, _a = this.images; _i < _a.length; _i++) {
+            var i = _a[_i];
+            images.push(i.src);
+        }
         return {
             x: this.x,
             y: this.y,
             movable: this.movable,
             home: this.home,
-            images: this.images,
+            images: images,
+            // images: this.images[0].src,
             selected_image: this.selected_image
         };
     };
@@ -35,7 +41,19 @@ var ImageCard = /** @class */ (function (_super) {
         var card = new ImageCard(json.x, json.y);
         card.movable = json.movable;
         card.home = json.home;
-        card.images = [json.images];
+        card.images = [];
+        // console.log(json.images)
+        for (var _i = 0, _a = json.images; _i < _a.length; _i++) {
+            var i = _a[_i];
+            // console.log(i)
+            var im = new Image();
+            im.src = i;
+            card.images.push(im);
+        }
+        // let im = new Image()
+        // im.src = json.images
+        // card.images.push(im)
+        // card.images = [json.images];
         card.selected_image = json.selected_image;
         return card;
     };
@@ -57,8 +75,7 @@ var ImageCard = /** @class */ (function (_super) {
         ctx.strokeStyle = "black";
         var w = this.images[0].width;
         var h = this.images[0].height;
-        ctx.rect(this.x, this.y, w, h);
-        ctx.stroke();
+        ctx.strokeRect(this.x, this.y, w, h);
     };
     return ImageCard;
 }(Card));

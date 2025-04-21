@@ -53,8 +53,8 @@ var Buttons = /** @class */ (function () {
                 var card = _a[_i];
                 _this.sketchpad.canvas.cards.push(card.clone());
             }
-            _this.sketchpad.redraw();
             _this.sketchpad.mode = "move" /* Types.MOVE */;
+            _this.sketchpad.redraw();
         });
         this.checkButton = document.getElementById('check_answer_button');
         this.checkButton.hidden = true;
