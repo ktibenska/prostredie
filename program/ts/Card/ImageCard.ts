@@ -70,8 +70,8 @@ class ImageCard extends Card {
     public drawOutline(ctx: any): void {
         ctx.fillStyle = "lightgray";
         ctx.strokeStyle = "black";
-        let w = this.images[0].width;
-        let h = this.images[0].height;
+        let w = this.images[this.selected_image].width;
+        let h = this.images[this.selected_image].height;
 
         ctx.strokeRect(this.x, this.y, w, h)
     }

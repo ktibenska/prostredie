@@ -73,8 +73,8 @@ var ImageCard = /** @class */ (function (_super) {
     ImageCard.prototype.drawOutline = function (ctx) {
         ctx.fillStyle = "lightgray";
         ctx.strokeStyle = "black";
-        var w = this.images[0].width;
-        var h = this.images[0].height;
+        var w = this.images[this.selected_image].width;
+        var h = this.images[this.selected_image].height;
         ctx.strokeRect(this.x, this.y, w, h);
     };
     return ImageCard;
