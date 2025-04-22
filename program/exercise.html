@@ -42,7 +42,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-warning" id="navbar">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">PROSTREDIE</a>
+        <a class="navbar-brand" href="exercise.html">PROSTREDIE</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main_nav"
                 aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -50,9 +50,8 @@
         <div class="collapse navbar-collapse" id="">
             <ul class="navbar-nav">
                 <li class="nav-item"><a class="nav-link" href="#">úvod</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">návod</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">príklady</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">šablóny</a></li>
+                <li class="nav-item"><a class="nav-link" href="tutorial.html">návod</a></li>
+                <li class="nav-item"><a class="nav-link" href="exercise.html">prostredie</a></li>
             </ul>
         </div>
     </div>
@@ -168,7 +167,7 @@
                     <div>
                         <div id="bg">
                             <form id="bg-form" class="nice" action="" method="post">
-                                <input type="file" accept="image/*" name="EMAIL" id="id_bg">
+                                <input type="file" accept="image/*" name="bg" id="id_bg">
                             </form>
                         </div>
 
@@ -178,6 +177,41 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal" id="bg_submit">ok
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="loadModal" tabindex="-1" role="dialog" aria-labelledby="loadModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loadModalLabel">Načítaj aktivitu</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-check">
+                    </div>
+
+                    <div>
+
+                        <div id="load">
+                            <form id="json" class="nice" action="" method="post">
+                                <input type="file" accept="application/json" name="json_input" id="json_input">
+                            </form>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="load_submit">ok
                     </button>
                 </div>
             </div>
@@ -298,15 +332,10 @@
                             </div>
                             <div class="col">
                                 <button class="input-block-level btn btn-secondary bi-folder2-open" id="load_button"
-                                        title='načítaj súbor'>
+                                        data-toggle="modal" data-target="#loadModal" title='načítaj súbor'>
                                 </button>
 
                             </div>
-
-                            <form id="json" class="nice" action="" method="post">
-                                <input type="file" accept="application/json" name="json_input" id="json_input">
-                            </form>
-
 
                         </div>
                     </div>

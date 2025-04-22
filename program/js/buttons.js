@@ -92,6 +92,22 @@ var Buttons = /** @class */ (function () {
                 reader_1.readAsText(files[0]);
             }
         });
+        this.loadInput = document.getElementById('id_load');
+        this.loadSubmitButton = document.getElementById('load_submit');
+        this.loadSubmitButton.addEventListener('mouseup', function () {
+            var jsonData;
+            var jsonInput = document.getElementById('json_input');
+            var files = jsonInput.files;
+            if (files && files[0]) {
+                // if (file[0].type === 'application/json')
+                var reader_2 = new FileReader();
+                reader_2.onload = function () {
+                    jsonData = JSON.parse(reader_2.result);
+                    _this.sketchpad.fromJSON(jsonData);
+                };
+                reader_2.readAsText(files[0]);
+            }
+        });
         this.removeCardCtxBtn = document.getElementById('remove_card');
         this.removeCardCtxBtn.addEventListener('mouseup', function () {
             _this.sketchpad.removeCard();

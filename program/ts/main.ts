@@ -145,8 +145,6 @@ class Main {
         });
 
 
-
-
     }
 
 
@@ -386,7 +384,6 @@ class Main {
         }
 
     }
-
 
 
     public removeCard() {

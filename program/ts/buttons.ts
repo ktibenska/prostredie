@@ -11,10 +11,14 @@ class Buttons {
     closeButton: HTMLElement;
     checkButton: HTMLElement
 
-    saveButton: HTMLElement
-    loadButton: HTMLElement
+    saveButton: HTMLElement;
+    loadButton: HTMLElement;
 
-    removeCardCtxBtn:HTMLElement
+    loadInput: HTMLInputElement;
+    loadSubmitButton: HTMLInputElement;
+
+
+    removeCardCtxBtn: HTMLElement
 
     constructor(sketchpad: Main) {
         this.sketchpad = sketchpad;
@@ -133,6 +137,29 @@ class Buttons {
         });
 
 
+        this.loadInput = document.getElementById('id_load') as HTMLInputElement;
+        this.loadSubmitButton = document.getElementById('load_submit') as HTMLInputElement;
+
+
+        this.loadSubmitButton.addEventListener('mouseup', () => {
+
+            let jsonData;
+
+            let jsonInput = document.getElementById('json_input') as HTMLInputElement;
+
+            const files = jsonInput.files;
+            if (files && files[0]) {
+                // if (file[0].type === 'application/json')
+
+                const reader = new FileReader();
+                reader.onload = () => {
+                    jsonData = JSON.parse(reader.result as string);
+                    this.sketchpad.fromJSON(jsonData)
+                }
+                reader.readAsText(files[0]);
+            }
+        });
+
         this.removeCardCtxBtn = document.getElementById('remove_card');
         this.removeCardCtxBtn.addEventListener('mouseup', () => {
             this.sketchpad.removeCard();
@@ -148,9 +175,6 @@ class Buttons {
         document.getElementById('left_panel_content').hidden = hidden;
         document.getElementById('right_panel_content').hidden = hidden;
     }
-
-
-
 
 
 }
