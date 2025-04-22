@@ -3,6 +3,8 @@ class Buttons {
 
     moveButton: HTMLElement;
     addButton: HTMLElement;
+    resizeButton: HTMLElement;
+
 
     finalStateButton: HTMLElement;
     homeStateButton: HTMLElement;
@@ -12,11 +14,9 @@ class Buttons {
     checkButton: HTMLElement
 
     saveButton: HTMLElement;
-    loadButton: HTMLElement;
 
     loadInput: HTMLInputElement;
     loadSubmitButton: HTMLInputElement;
-
 
     removeCardCtxBtn: HTMLElement
 
@@ -72,11 +72,19 @@ class Buttons {
         this.moveButton = document.getElementById('move_button');
         this.moveButton.addEventListener('mouseup', () => {
             this.sketchpad.setMode(Types.MOVE)
+            this.sketchpad.redraw()
         });
 
         this.addButton = document.getElementById('add_button');
         this.addButton.addEventListener('mouseup', () => {
             this.sketchpad.setMode(Types.ADD)
+            this.sketchpad.redraw()
+        });
+
+        this.resizeButton = document.getElementById('resize_button');
+        this.resizeButton.addEventListener('mouseup', () => {
+            this.sketchpad.setMode(Types.RESIZE)
+            this.sketchpad.redraw()
         });
 
         this.homeStateButton = document.getElementById('home_state_button');
@@ -141,34 +149,8 @@ class Buttons {
             this.sketchpad.toJSON();
         });
 
-        this.loadButton = document.getElementById('load_button');
-        this.loadButton.addEventListener('mouseup', () => {
-
-            let jsonData;
-
-            let jsonInput = document.getElementById('json_input') as HTMLInputElement;
-
-            const files = jsonInput.files;
-
-            // let xy = [];
-            if (files && files[0]) {
-                // if (file[0].type === 'application/json')
-
-                const reader = new FileReader();
-                reader.onload = () => {
-                    jsonData = JSON.parse(reader.result as string);
-                    console.log(jsonData);
-                    this.sketchpad.fromJSON(jsonData)
-
-                }
-                reader.readAsText(files[0]);
-            }
-        });
-
-
         this.loadInput = document.getElementById('id_load') as HTMLInputElement;
         this.loadSubmitButton = document.getElementById('load_submit') as HTMLInputElement;
-
 
         this.loadSubmitButton.addEventListener('mouseup', () => {
 

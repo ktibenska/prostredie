@@ -53,7 +53,34 @@ class TextCard extends Card {
         ctx.fillStyle = this.text_color;
         ctx.font = "20px Arial";
 
-        ctx.fillText(this.text, this.x, this.y + this.ysize/2);
+        ctx.fillText(this.text, this.x, this.y + this.ysize / 2);
+    }
+
+    public drawResize(ctx: any): void {
+        this.drawHandle(ctx, this.x, this.y); // TL
+        this.drawHandle(ctx, this.x + this.xsize, this.y); // TR
+        this.drawHandle(ctx, this.x, this.y + this.ysize); // BL
+        this.drawHandle(ctx, this.x + this.xsize, this.y + this.ysize); //BR
+    }
+
+    private drawHandle(ctx: any, x: number, y: number): void {
+        ctx.fillRect(x - this.handleSize / 2, y - this.handleSize / 2, this.handleSize, this.handleSize);
+    }
+
+    public getClickedHandle(x: number, y: number): Sides {
+        if (this.isHandleClicked(x, y, this.x, this.y)) return Sides.TL;
+        if (this.isHandleClicked(x, y, this.x + this.xsize, this.y)) return Sides.TR;
+        if (this.isHandleClicked(x, y, this.x, this.y + this.ysize)) return Sides.BL;
+        if (this.isHandleClicked(x, y, this.x + this.xsize, this.y + this.ysize)) return Sides.BR;
+        return null;
+    }
+
+    private isHandleClicked(mx: number, my: number, x: number, y: number): boolean {
+        let handleBorder = 5;
+        return (
+            (mx >= x - handleBorder - this.handleSize / 2) && (mx <= x + handleBorder + this.handleSize / 2) &&
+            (my >= y - handleBorder - this.handleSize / 2) && (my <= y + handleBorder + this.handleSize / 2)
+        );
     }
 
 

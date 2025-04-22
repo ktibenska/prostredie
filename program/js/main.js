@@ -177,6 +177,15 @@ var Main = /** @class */ (function () {
             this.y = e.offsetY;
             this.redraw();
         }
+        if (this.mode == "resize" /* Types.RESIZE */) {
+            for (var _b = 0, _c = this.canvas.cards; _b < _c.length; _b++) {
+                var card = _c[_b];
+                if (card.getClickedHandle(x, y)) {
+                    this.selected = card;
+                    break;
+                }
+            }
+        }
     };
     Main.prototype.onMouseMove = function (e) {
         if (this.canvas.cards[0]) { // todo ?
@@ -188,6 +197,30 @@ var Main = /** @class */ (function () {
                 var mx = this.selected.x + (x - this.x);
                 var my = this.selected.y + (y - this.y);
                 this.selected.setCoordinates(mx, my);
+            }
+        }
+        if (this.mode == "resize" /* Types.RESIZE */ && this.selected) {
+            switch (this.selected.getClickedHandle(x, y)) {
+                case "top-left" /* Sides.TL */:
+                    this.selected.xsize += this.selected.x - x;
+                    this.selected.ysize += this.selected.y - y;
+                    this.selected.x = x;
+                    this.selected.y = y;
+                    break;
+                case "top-right" /* Sides.TR */:
+                    this.selected.xsize = x - this.selected.x;
+                    this.selected.ysize += this.selected.y - y;
+                    this.selected.y = y;
+                    break;
+                case "bottom-left" /* Sides.BL */:
+                    this.selected.xsize += this.selected.x - x;
+                    this.selected.x = x;
+                    this.selected.ysize = y - this.selected.y;
+                    break;
+                case "bottom-right" /* Sides.BR */:
+                    this.selected.xsize = x - this.selected.x;
+                    this.selected.ysize = y - this.selected.y;
+                    break;
             }
         }
         if (this.mode == "run" /* Types.RUN */) {
@@ -226,6 +259,9 @@ var Main = /** @class */ (function () {
         }
         else {
             this.canvas.redraw();
+        }
+        if (this.mode == "resize" /* Types.RESIZE */) {
+            this.canvas.redrawResize();
         }
     };
     Main.prototype.clearAll = function () {

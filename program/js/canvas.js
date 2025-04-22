@@ -86,6 +86,10 @@ var Canvas = /** @class */ (function () {
         }
         this.cards.map(function (o) { return o.draw(_this.ctx); });
     };
+    Canvas.prototype.redrawResize = function () {
+        var _this = this;
+        this.cards.map(function (o) { return o.drawResize(_this.ctx); });
+    };
     Canvas.prototype.clear = function () {
         this.image = null;
         this.bg();

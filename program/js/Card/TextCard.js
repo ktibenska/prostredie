@@ -62,6 +62,31 @@ var TextCard = /** @class */ (function (_super) {
         ctx.font = "20px Arial";
         ctx.fillText(this.text, this.x, this.y + this.ysize / 2);
     };
+    TextCard.prototype.drawResize = function (ctx) {
+        this.drawHandle(ctx, this.x, this.y); // TL
+        this.drawHandle(ctx, this.x + this.xsize, this.y); // TR
+        this.drawHandle(ctx, this.x, this.y + this.ysize); // BL
+        this.drawHandle(ctx, this.x + this.xsize, this.y + this.ysize); //BR
+    };
+    TextCard.prototype.drawHandle = function (ctx, x, y) {
+        ctx.fillRect(x - this.handleSize / 2, y - this.handleSize / 2, this.handleSize, this.handleSize);
+    };
+    TextCard.prototype.getClickedHandle = function (x, y) {
+        if (this.isHandleClicked(x, y, this.x, this.y))
+            return "top-left" /* Sides.TL */;
+        if (this.isHandleClicked(x, y, this.x + this.xsize, this.y))
+            return "top-right" /* Sides.TR */;
+        if (this.isHandleClicked(x, y, this.x, this.y + this.ysize))
+            return "bottom-left" /* Sides.BL */;
+        if (this.isHandleClicked(x, y, this.x + this.xsize, this.y + this.ysize))
+            return "bottom-right" /* Sides.BR */;
+        return null;
+    };
+    TextCard.prototype.isHandleClicked = function (mx, my, x, y) {
+        var handleBorder = 5;
+        return ((mx >= x - handleBorder - this.handleSize / 2) && (mx <= x + handleBorder + this.handleSize / 2) &&
+            (my >= y - handleBorder - this.handleSize / 2) && (my <= y + handleBorder + this.handleSize / 2));
+    };
     TextCard.prototype.drawOutline = function (ctx) {
         ctx.fillStyle = "lightgray";
         ctx.strokeStyle = "black";

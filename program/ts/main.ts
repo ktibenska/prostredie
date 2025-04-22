@@ -233,6 +233,17 @@ class Main {
             this.y = e.offsetY;
             this.redraw();
         }
+
+
+        if (this.mode == Types.RESIZE) {
+            for (let card of this.canvas.cards) {
+                if (card.getClickedHandle(x, y)) {
+                    this.selected = card;
+                    break;
+                }
+            }
+        }
+
     }
 
     private onMouseMove(e) {
@@ -252,6 +263,33 @@ class Main {
                 this.selected.setCoordinates(mx, my);
             }
         }
+
+
+        if (this.mode == Types.RESIZE && this.selected) {
+            switch (this.selected.getClickedHandle(x, y)) {
+                case Sides.TL:
+                    this.selected.xsize += this.selected.x - x;
+                    this.selected.ysize += this.selected.y - y;
+                    this.selected.x = x;
+                    this.selected.y = y;
+                    break;
+                case Sides.TR:
+                    this.selected.xsize = x - this.selected.x;
+                    this.selected.ysize += this.selected.y - y;
+                    this.selected.y = y;
+                    break;
+                case Sides.BL:
+                    this.selected.xsize += this.selected.x - x;
+                    this.selected.x = x;
+                    this.selected.ysize = y - this.selected.y;
+                    break;
+                case Sides.BR:
+                    this.selected.xsize = x - this.selected.x;
+                    this.selected.ysize = y - this.selected.y;
+                    break;
+            }
+        }
+
 
         if (this.mode == Types.RUN) {
             if (this.selected && this.selected.isMovable()) {
@@ -298,6 +336,11 @@ class Main {
         } else {
             this.canvas.redraw()
         }
+
+        if (this.mode == Types.RESIZE) {
+            this.canvas.redrawResize()
+        }
+
     }
 
     clearAll() {

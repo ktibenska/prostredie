@@ -5,6 +5,8 @@ class Card {
     xsize: number = 100;
     ysize: number = 100;
 
+    handleSize: number = 10;
+
     movable: boolean = true;
 
     home = true;
@@ -60,12 +62,17 @@ class Card {
     public draw(ctx: any): void {
     }
 
-
     public drawOutline(ctx: any): void {
     }
 
     public isCLicked(x: number, y: number): boolean {
-
         return true;
+    }
+
+    public drawResize(ctx: any) {
+    }
+
+    public getClickedHandle(x: number, y: number): Sides {
+        return null;
     }
 }

@@ -112,6 +112,11 @@ class Canvas {
         this.cards.map(o => o.draw(this.ctx));
     }
 
+    public redrawResize() {
+        this.cards.map(o => o.drawResize(this.ctx));
+    }
+
+
     public clear(): void {
         this.image = null;
         this.bg();

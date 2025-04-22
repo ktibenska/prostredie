@@ -35,10 +35,17 @@ var Buttons = /** @class */ (function () {
         this.moveButton = document.getElementById('move_button');
         this.moveButton.addEventListener('mouseup', function () {
             _this.sketchpad.setMode("move" /* Types.MOVE */);
+            _this.sketchpad.redraw();
         });
         this.addButton = document.getElementById('add_button');
         this.addButton.addEventListener('mouseup', function () {
             _this.sketchpad.setMode("add" /* Types.ADD */);
+            _this.sketchpad.redraw();
+        });
+        this.resizeButton = document.getElementById('resize_button');
+        this.resizeButton.addEventListener('mouseup', function () {
+            _this.sketchpad.setMode("resize" /* Types.RESIZE */);
+            _this.sketchpad.redraw();
         });
         this.homeStateButton = document.getElementById('home_state_button');
         this.homeStateButton.addEventListener('mouseup', function () {
@@ -92,23 +99,6 @@ var Buttons = /** @class */ (function () {
         this.saveButton.addEventListener('mouseup', function () {
             _this.sketchpad.toJSON();
         });
-        this.loadButton = document.getElementById('load_button');
-        this.loadButton.addEventListener('mouseup', function () {
-            var jsonData;
-            var jsonInput = document.getElementById('json_input');
-            var files = jsonInput.files;
-            // let xy = [];
-            if (files && files[0]) {
-                // if (file[0].type === 'application/json')
-                var reader_1 = new FileReader();
-                reader_1.onload = function () {
-                    jsonData = JSON.parse(reader_1.result);
-                    console.log(jsonData);
-                    _this.sketchpad.fromJSON(jsonData);
-                };
-                reader_1.readAsText(files[0]);
-            }
-        });
         this.loadInput = document.getElementById('id_load');
         this.loadSubmitButton = document.getElementById('load_submit');
         this.loadSubmitButton.addEventListener('mouseup', function () {
@@ -117,12 +107,12 @@ var Buttons = /** @class */ (function () {
             var files = jsonInput.files;
             if (files && files[0]) {
                 // if (file[0].type === 'application/json')
-                var reader_2 = new FileReader();
-                reader_2.onload = function () {
-                    jsonData = JSON.parse(reader_2.result);
+                var reader_1 = new FileReader();
+                reader_1.onload = function () {
+                    jsonData = JSON.parse(reader_1.result);
                     _this.sketchpad.fromJSON(jsonData);
                 };
-                reader_2.readAsText(files[0]);
+                reader_1.readAsText(files[0]);
             }
         });
         this.removeCardCtxBtn = document.getElementById('remove_card');
