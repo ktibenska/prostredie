@@ -41,7 +41,7 @@ class Main {
                 //todo check aj podla toho ci je zakliknuty checkbox text/obrazok!
                 // ked je pridany obrazok a kliknuty text, vykresli sa obrazok aj tak - text naopak
 
-                c = new ImageCard(this.x, this.y)
+                c = new ImageCard(this.x, this.y, this.generateID())
                 const filesArray: File[] = [];
                 for (let i = 0; i < input.files.length; i++) {
                     filesArray.push(input.files[i]);
@@ -68,7 +68,7 @@ class Main {
                 });
 
             } else {
-                c = new TextCard(this.x, this.y)
+                c = new TextCard(this.x, this.y, this.generateID())
                 let text = document.getElementById('text_value') as HTMLInputElement
                 c.text = text.value
 
@@ -220,7 +220,7 @@ class Main {
         let y = e.offsetY;
 
         if (this.mode == Types.ADD) {
-            this.canvas.addCard(new TextCard(e.offsetX - 50, e.offsetY - 50)); //?
+            this.canvas.addCard(new TextCard(e.offsetX - 50, e.offsetY - 50, this.generateID())); //?
         }
 
         if (this.mode == Types.MOVE || this.mode == Types.RUN) {
@@ -432,17 +432,15 @@ class Main {
 
 
     public removeCard() {
-        let card = this.selected;
+        let id = this.selected.id;
 
-        // todo zmenit, vymazavat priamo
-        //  vymazat aj z home aj final
-
-        const newCards = this.canvas.cards.filter(item => item !== card);
-
-        this.canvas.cards = newCards
-
+        this.canvas.cards = this.canvas.cards.filter(item => item.id !== id)
+        this.homeCanvas.cards = this.homeCanvas.cards.filter(item => item.id !== id)
+        this.finalCanvas.cards = this.finalCanvas.cards.filter(item => item.id !== id)
 
         this.redraw()
+        this.finalCanvas.redraw()
+        this.homeCanvas.redraw()
 
         this.selected = null;
     }
@@ -451,6 +449,14 @@ class Main {
     public updateCardCategory(color: string) {
         this.selected.category = color
         this.selected = null
+    }
+
+
+    private generateID(): number {
+        if (this.canvas.cards.length > 0) {
+            return this.canvas.cards.slice(-1)[0].id + 1;
+        }
+        return 1;
     }
 
 }

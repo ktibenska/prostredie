@@ -1,5 +1,5 @@
 var Card = /** @class */ (function () {
-    function Card(x, y) {
+    function Card(x, y, id) {
         this.xsize = 100;
         this.ysize = 100;
         this.handleSize = 10;
@@ -11,9 +11,10 @@ var Card = /** @class */ (function () {
         this.category = 'white';
         this.x = x;
         this.y = y;
+        this.id = id;
     }
     Card.prototype.clone = function () {
-        return new Card(this.x, this.y);
+        return new Card(this.x, this.y, this.id);
     };
     Card.prototype.toJSON = function () {
         return {
@@ -22,7 +23,7 @@ var Card = /** @class */ (function () {
         };
     };
     Card.fromJSON = function (json) {
-        return new TextCard(json.x, json.y);
+        return new TextCard(json.x, json.y, json.id);
     };
     Card.prototype.getCoordinates = function () {
         return [this.x, this.y];

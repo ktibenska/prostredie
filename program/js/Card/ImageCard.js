@@ -22,7 +22,7 @@ var ImageCard = /** @class */ (function (_super) {
         return _this;
     }
     ImageCard.prototype.clone = function () {
-        var clone = new ImageCard(this.x, this.y);
+        var clone = new ImageCard(this.x, this.y, this.id);
         clone.xsize = this.xsize;
         clone.ysize = this.ysize;
         clone.movable = this.movable;
@@ -38,6 +38,7 @@ var ImageCard = /** @class */ (function (_super) {
             images.push(i.src);
         }
         return {
+            id: this.id,
             x: this.x,
             y: this.y,
             movable: this.movable,
@@ -48,7 +49,7 @@ var ImageCard = /** @class */ (function (_super) {
         };
     };
     ImageCard.fromJSON = function (json) {
-        var card = new ImageCard(json.x, json.y);
+        var card = new ImageCard(json.x, json.y, json.id);
         card.movable = json.movable;
         card.home = json.home;
         card.category = json.category;

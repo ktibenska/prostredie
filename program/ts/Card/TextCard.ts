@@ -5,7 +5,8 @@ class TextCard extends Card {
     bg_color: string = "#ffff00";
 
     public clone(): TextCard {
-        let clone = new TextCard(this.x, this.y);
+        let clone = new TextCard(this.x, this.y, this.id);
+
         clone.xsize = this.xsize
         clone.ysize = this.ysize
         clone.movable = this.movable
@@ -19,6 +20,7 @@ class TextCard extends Card {
 
     public toJSON() {
         return {
+            id: this.id,
             x: this.x,
             y: this.y,
             movable: this.movable,
@@ -32,7 +34,7 @@ class TextCard extends Card {
     }
 
     public static fromJSON(json: any): TextCard {
-        let card = new TextCard(json.x, json.y);
+        let card = new TextCard(json.x, json.y, json.id);
 
         card.movable = json.movable;
         card.home = json.home;

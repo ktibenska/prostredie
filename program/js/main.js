@@ -20,7 +20,7 @@ var Main = /** @class */ (function () {
             if (input.files && input.files[0]) {
                 //todo check aj podla toho ci je zakliknuty checkbox text/obrazok!
                 // ked je pridany obrazok a kliknuty text, vykresli sa obrazok aj tak - text naopak
-                c = new ImageCard(_this.x, _this.y);
+                c = new ImageCard(_this.x, _this.y, _this.generateID());
                 var filesArray = [];
                 for (var i = 0; i < input.files.length; i++) {
                     filesArray.push(input.files[i]);
@@ -42,7 +42,7 @@ var Main = /** @class */ (function () {
                 });
             }
             else {
-                c = new TextCard(_this.x, _this.y);
+                c = new TextCard(_this.x, _this.y, _this.generateID());
                 var text = document.getElementById('text_value');
                 c.text = text.value;
                 var textColorSelector = document.getElementById('color_selector_text');
@@ -164,7 +164,7 @@ var Main = /** @class */ (function () {
         var x = e.offsetX;
         var y = e.offsetY;
         if (this.mode == "add" /* Types.ADD */) {
-            this.canvas.addCard(new TextCard(e.offsetX - 50, e.offsetY - 50)); //?
+            this.canvas.addCard(new TextCard(e.offsetX - 50, e.offsetY - 50, this.generateID())); //?
         }
         if (this.mode == "move" /* Types.MOVE */ || this.mode == "run" /* Types.RUN */) {
             for (var _i = 0, _a = this.canvas.cards; _i < _a.length; _i++) {
@@ -336,17 +336,24 @@ var Main = /** @class */ (function () {
         }
     };
     Main.prototype.removeCard = function () {
-        var card = this.selected;
-        // todo zmenit, vymazavat priamo
-        //  vymazat aj z home aj final
-        var newCards = this.canvas.cards.filter(function (item) { return item !== card; });
-        this.canvas.cards = newCards;
+        var id = this.selected.id;
+        this.canvas.cards = this.canvas.cards.filter(function (item) { return item.id !== id; });
+        this.homeCanvas.cards = this.homeCanvas.cards.filter(function (item) { return item.id !== id; });
+        this.finalCanvas.cards = this.finalCanvas.cards.filter(function (item) { return item.id !== id; });
         this.redraw();
+        this.finalCanvas.redraw();
+        this.homeCanvas.redraw();
         this.selected = null;
     };
     Main.prototype.updateCardCategory = function (color) {
         this.selected.category = color;
         this.selected = null;
+    };
+    Main.prototype.generateID = function () {
+        if (this.canvas.cards.length > 0) {
+            return this.canvas.cards.slice(-1)[0].id + 1;
+        }
+        return 1;
     };
     return Main;
 }());

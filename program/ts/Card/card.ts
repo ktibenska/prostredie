@@ -2,6 +2,8 @@ class Card {
     x: number
     y: number
 
+    id: number;
+
     xsize: number = 100;
     ysize: number = 100;
 
@@ -20,13 +22,14 @@ class Card {
 
     category: string = 'white'
 
-    constructor(x: number, y: number) {
+    constructor(x: number, y: number, id: number) {
         this.x = x
         this.y = y
+        this.id = id
     }
 
     public clone(): Card {
-        return new Card(this.x, this.y);
+        return new Card(this.x, this.y, this.id);
     }
 
 
@@ -38,7 +41,7 @@ class Card {
     }
 
     public static fromJSON(json: any): Card {
-        return new TextCard(json.x, json.y);
+        return new TextCard(json.x, json.y, json.id);
     }
 
 

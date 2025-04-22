@@ -4,7 +4,8 @@ class ImageCard extends Card {
     selected_image: number = 0
 
     public clone(): ImageCard {
-        let clone = new ImageCard(this.x, this.y);
+        let clone = new ImageCard(this.x, this.y, this.id);
+
         clone.xsize = this.xsize
         clone.ysize = this.ysize
         clone.movable = this.movable
@@ -23,6 +24,7 @@ class ImageCard extends Card {
         }
 
         return {
+            id: this.id,
             x: this.x,
             y: this.y,
             movable: this.movable,
@@ -36,7 +38,7 @@ class ImageCard extends Card {
 
 
     public static fromJSON(json: any): ImageCard {
-        let card = new ImageCard(json.x, json.y);
+        let card = new ImageCard(json.x, json.y, json.id);
 
         card.movable = json.movable;
         card.home = json.home;
@@ -76,7 +78,7 @@ class ImageCard extends Card {
         let w = this.images[this.selected_image].width;
         let h = this.images[this.selected_image].height;
 
-        let clicked = (x >= this.x && x <= this.x + w) && (y >= this.y&& y <= this.y + h);
+        let clicked = (x >= this.x && x <= this.x + w) && (y >= this.y && y <= this.y + h);
 
         if (clicked) {
             this.selected_image++;
