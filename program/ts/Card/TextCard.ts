@@ -6,7 +6,8 @@ class TextCard extends Card {
 
     public clone(): TextCard {
         let clone = new TextCard(this.x, this.y);
-        clone.half_size = this.half_size
+        clone.xsize = this.xsize
+        clone.ysize = this.ysize
         clone.movable = this.movable
         clone.category = this.category;
 
@@ -47,30 +48,26 @@ class TextCard extends Card {
 
     public draw(ctx: any): void {
         ctx.fillStyle = this.bg_color;
-        ctx.fillRect(this.x, this.y, this.half_size * 2, this.half_size * 2);
+        ctx.fillRect(this.x, this.y, this.xsize, this.ysize);
 
         ctx.fillStyle = this.text_color;
         ctx.font = "20px Arial";
 
-        ctx.fillText(this.text, this.x, this.y+this.half_size);
+        ctx.fillText(this.text, this.x, this.y + this.ysize/2);
     }
 
 
     public drawOutline(ctx: any): void {
         ctx.fillStyle = "lightgray";
         ctx.strokeStyle = "black";
-        // let w = this.half_size * 2;
-        // let h = this.half_size * 2;
 
-        ctx.strokeRect(this.x , this.y, this.half_size * 2, this.half_size * 2)
+        ctx.strokeRect(this.x, this.y, this.xsize, this.ysize)
     }
 
 
     public isCLicked(x: number, y: number): boolean {
-
-        return (x >= this.x && x <= this.x + this.half_size * 2) && (y >= this.y && y <= this.y + this.half_size * 2)
+        return (x >= this.x && x <= this.x + this.xsize) && (y >= this.y && y <= this.y + this.ysize)
     }
-
 
 
 }

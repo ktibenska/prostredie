@@ -84,9 +84,10 @@ class Main {
 
 
             let xsize = document.getElementById('xvalue') as HTMLInputElement;
-            let x = '100'
-            if (xsize.value) x = xsize.value
-            c.half_size = +x / 2
+            let ysize = document.getElementById('yvalue') as HTMLInputElement;
+
+            if (xsize.value) c.xsize = +xsize.value;
+            if (ysize.value) c.ysize = +ysize.value;
             this.canvas.cards.push(c)
             this.redraw();
         });
@@ -126,7 +127,7 @@ class Main {
                     this.selected = card;
 
                     // button color
-                    if (this.selected.category){
+                    if (this.selected.category) {
                         document.querySelectorAll('.color-btn').forEach((btn) => {
                             const button = btn as HTMLButtonElement;
                             const matches = button.style.backgroundColor === this.selected.category
@@ -135,8 +136,8 @@ class Main {
                     }
 
                     contextMenu.style.display = 'block';
-                    contextMenu.style.left = `${event.pageX-15}px`;
-                    contextMenu.style.top = `${event.pageY-15}px`;
+                    contextMenu.style.left = `${event.pageX - 15}px`;
+                    contextMenu.style.top = `${event.pageY - 15}px`;
                 }
             }
 
@@ -147,8 +148,6 @@ class Main {
             });
 
         });
-
-
 
 
     }
@@ -221,7 +220,7 @@ class Main {
         let y = e.offsetY;
 
         if (this.mode == Types.ADD) {
-            this.canvas.addCard(new TextCard(e.offsetX-50, e.offsetY-50)); //?
+            this.canvas.addCard(new TextCard(e.offsetX - 50, e.offsetY - 50)); //?
         }
 
         if (this.mode == Types.MOVE || this.mode == Types.RUN) {
@@ -250,7 +249,7 @@ class Main {
                 let mx = this.selected.x + (x - this.x);
                 let my = this.selected.y + (y - this.y);
 
-                this.selected.setCoordinates(mx,my);
+                this.selected.setCoordinates(mx, my);
             }
         }
 

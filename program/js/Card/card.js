@@ -1,6 +1,7 @@
 var Card = /** @class */ (function () {
     function Card(x, y) {
-        this.half_size = 50;
+        this.xsize = 100;
+        this.ysize = 100;
         this.movable = true;
         this.home = true;
         //todo home t/f nech sa meni podla umiestnenia, pripadne zmenit ze si pamata obe polohy - lahsie ukladanie?

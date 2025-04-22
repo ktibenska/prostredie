@@ -54,10 +54,11 @@ var Main = /** @class */ (function () {
             if (inputValue == 'iCardRadio')
                 c.setMovable(false); //todo kontanta
             var xsize = document.getElementById('xvalue');
-            var x = '100';
+            var ysize = document.getElementById('yvalue');
             if (xsize.value)
-                x = xsize.value;
-            c.half_size = +x / 2;
+                c.xsize = +xsize.value;
+            if (ysize.value)
+                c.ysize = +ysize.value;
             _this.canvas.cards.push(c);
             _this.redraw();
         });

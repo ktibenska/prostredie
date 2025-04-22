@@ -2,7 +2,8 @@ class Card {
     x: number
     y: number
 
-    half_size: number = 50
+    xsize: number = 100;
+    ysize: number = 100;
 
     movable: boolean = true;
 
