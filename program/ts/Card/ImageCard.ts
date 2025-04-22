@@ -1,12 +1,21 @@
 class ImageCard extends Card {
 
     images = []
-    selected_image = 0
+    selected_image: number = 0
+
+    public clone(): ImageCard {
+        let clone = new ImageCard(this.x, this.y);
+        clone.half_size = this.half_size
+        clone.movable = this.movable
+        clone.category = this.category;
+
+        clone.images = this.images
+        clone.selected_image = this.selected_image
+        return clone;
+    }
 
 
     public toJSON() {
-
-
         let images = []
         for (let i of this.images) {
             images.push(i.src)
@@ -17,9 +26,9 @@ class ImageCard extends Card {
             y: this.y,
             movable: this.movable,
             home: this.home,
-            images: images,
+            category: this.category,
 
-            // images: this.images[0].src,
+            images: images,
             selected_image: this.selected_image
         }
     }
@@ -27,39 +36,24 @@ class ImageCard extends Card {
 
     public static fromJSON(json: any): ImageCard {
         let card = new ImageCard(json.x, json.y);
+
         card.movable = json.movable;
         card.home = json.home;
+        card.category = json.category;
 
         card.images = []
-        // console.log(json.images)
 
         for (let i of json.images) {
-            // console.log(i)
             let im = new Image()
             im.src = i
             card.images.push(im)
         }
 
-
-        // let im = new Image()
-        // im.src = json.images
-        // card.images.push(im)
-
-        // card.images = [json.images];
         card.selected_image = json.selected_image;
 
         return card;
     }
 
-    public clone(): ImageCard {
-        let clone = new ImageCard(this.x, this.y);
-        clone.half_size = this.half_size
-        clone.images = this.images
-        clone.selected_image = this.selected_image
-        // clone.setMovable(this.isMovable);
-        clone.movable = this.movable
-        return clone;
-    }
 
     public draw(ctx: any): void {
         let img = this.images[this.selected_image]

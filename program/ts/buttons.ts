@@ -20,22 +20,51 @@ class Buttons {
 
     removeCardCtxBtn: HTMLElement
 
+
+    contextMenu: HTMLElement;
+
     constructor(sketchpad: Main) {
         this.sketchpad = sketchpad;
+        this.initContextMenu()
         this.initButtons();
+    }
 
 
-        const contextMenu = document.getElementById('contextMenu');
+    private initContextMenu() {
+        this.contextMenu = document.getElementById('contextMenu');
+
         window.addEventListener('click', () => {
-            contextMenu.style.display = 'none';
+            this.contextMenu.style.display = 'none';
         });
 
         // hide on escape key
         window.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
-                contextMenu.style.display = 'none';
+                this.contextMenu.style.display = 'none';
+                this.sketchpad.selected = null
             }
         });
+
+        document.querySelectorAll(".color-btn").forEach(button => {
+
+            button.addEventListener("click", (e) => {
+                const color = (e.target as HTMLButtonElement).style.backgroundColor;
+
+                this.sketchpad.updateCardCategory(color)
+
+                document.querySelectorAll(".color-btn").forEach(btn => {
+                    btn.classList.remove("selected-color");
+                });
+
+
+                const target = e.target as HTMLElement;
+                target.classList.add('selected-color');
+                this.contextMenu.style.display = "none";
+
+            });
+
+        });
+
     }
 
     private initButtons() {

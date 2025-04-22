@@ -14,10 +14,6 @@ var Main = /** @class */ (function () {
         this.homeCanvas = new Canvas('home_state_canvas');
         this.finalCanvas = new Canvas('final_state_canvas');
         this.clearAll();
-        // this.loadTest();
-        // this.canvas.canvas.addEventListener('contextmenu', (event: MouseEvent) => {
-        //     // event.preventDefault();
-        // });
         this.submitButton.addEventListener('click', function (event) {
             var input = _this.imageInput;
             var c;
@@ -90,29 +86,26 @@ var Main = /** @class */ (function () {
             for (var _i = 0, _a = _this.canvas.cards; _i < _a.length; _i++) {
                 var card = _a[_i];
                 if (card.isCLicked(x, y)) {
-                    console.log('kliknuta');
                     _this.selected = card;
+                    // button color
+                    if (_this.selected.category) {
+                        document.querySelectorAll('.color-btn').forEach(function (btn) {
+                            var button = btn;
+                            var matches = button.style.backgroundColor === _this.selected.category;
+                            button.classList.toggle('selected-color', matches);
+                        });
+                    }
                     contextMenu.style.display = 'block';
-                    contextMenu.style.left = "".concat(event.pageX, "px");
-                    contextMenu.style.top = "".concat(event.pageY, "px");
+                    contextMenu.style.left = "".concat(event.pageX - 15, "px");
+                    contextMenu.style.top = "".concat(event.pageY - 15, "px");
                 }
             }
-            // } else {
-            //     contextMenu.style.display = 'none';
-            // }
+            contextMenu.addEventListener("mouseleave", function () {
+                contextMenu.style.display = "none";
+                _this.selected = null;
+            });
         });
     }
-    // private loadTest() {
-    //     const json = `[
-    //           { "x": 1, "y": 1 },
-    //           { "x": 200, "y": 200 },
-    //           { "x": 300, "y": 300 }
-    //         ]`;
-    //
-    //     const parsedObjects = JSON.parse(json);
-    //     this.canvas.cards = parsedObjects.map((obj: any) => Card.fromJSON(obj));
-    //     this.redraw();
-    // }
     Main.prototype.toJSON = function () {
         var string = "";
         //todo najprv ulozit:
@@ -165,6 +158,8 @@ var Main = /** @class */ (function () {
         this.mode = mode;
     };
     Main.prototype.onMouseDown = function (e) {
+        if (e.button !== 0)
+            return;
         var x = e.offsetX;
         var y = e.offsetY;
         if (this.mode == "add" /* Types.ADD */) {
@@ -202,6 +197,8 @@ var Main = /** @class */ (function () {
         this.redraw();
     };
     Main.prototype.onMouseUp = function (e) {
+        if (e.button !== 0)
+            return;
         if (this.selected != null) {
             this.selected.x -= (this.selected.x %= 10);
             this.selected.y -= (this.selected.y %= 10);
@@ -306,6 +303,10 @@ var Main = /** @class */ (function () {
         var newCards = this.canvas.cards.filter(function (item) { return item !== card; });
         this.canvas.cards = newCards;
         this.redraw();
+        this.selected = null;
+    };
+    Main.prototype.updateCardCategory = function (color) {
+        this.selected.category = color;
         this.selected = null;
     };
     return Main;

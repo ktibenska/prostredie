@@ -21,6 +21,15 @@ var ImageCard = /** @class */ (function (_super) {
         _this.selected_image = 0;
         return _this;
     }
+    ImageCard.prototype.clone = function () {
+        var clone = new ImageCard(this.x, this.y);
+        clone.half_size = this.half_size;
+        clone.movable = this.movable;
+        clone.category = this.category;
+        clone.images = this.images;
+        clone.selected_image = this.selected_image;
+        return clone;
+    };
     ImageCard.prototype.toJSON = function () {
         var images = [];
         for (var _i = 0, _a = this.images; _i < _a.length; _i++) {
@@ -32,8 +41,8 @@ var ImageCard = /** @class */ (function (_super) {
             y: this.y,
             movable: this.movable,
             home: this.home,
+            category: this.category,
             images: images,
-            // images: this.images[0].src,
             selected_image: this.selected_image
         };
     };
@@ -41,30 +50,16 @@ var ImageCard = /** @class */ (function (_super) {
         var card = new ImageCard(json.x, json.y);
         card.movable = json.movable;
         card.home = json.home;
+        card.category = json.category;
         card.images = [];
-        // console.log(json.images)
         for (var _i = 0, _a = json.images; _i < _a.length; _i++) {
             var i = _a[_i];
-            // console.log(i)
             var im = new Image();
             im.src = i;
             card.images.push(im);
         }
-        // let im = new Image()
-        // im.src = json.images
-        // card.images.push(im)
-        // card.images = [json.images];
         card.selected_image = json.selected_image;
         return card;
-    };
-    ImageCard.prototype.clone = function () {
-        var clone = new ImageCard(this.x, this.y);
-        clone.half_size = this.half_size;
-        clone.images = this.images;
-        clone.selected_image = this.selected_image;
-        // clone.setMovable(this.isMovable);
-        clone.movable = this.movable;
-        return clone;
     };
     ImageCard.prototype.draw = function (ctx) {
         var img = this.images[this.selected_image];

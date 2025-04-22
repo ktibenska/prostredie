@@ -7,14 +7,14 @@ class TextCard extends Card {
     public clone(): TextCard {
         let clone = new TextCard(this.x, this.y);
         clone.half_size = this.half_size
-        // clone.setMovable(this.isMovable); //robi problem pri json?
         clone.movable = this.movable
+        clone.category = this.category;
+
         clone.text = this.text;
         clone.text_color = this.text_color;
         clone.bg_color = this.bg_color;
         return clone;
     }
-
 
     public toJSON() {
         return {
@@ -22,6 +22,8 @@ class TextCard extends Card {
             y: this.y,
             movable: this.movable,
             home: this.home,
+            category: this.category,
+
             text: this.text,
             text_color: this.text_color,
             bg_color: this.bg_color
@@ -29,15 +31,13 @@ class TextCard extends Card {
     }
 
     public static fromJSON(json: any): TextCard {
-        console.log(json.movable)
-
         let card = new TextCard(json.x, json.y);
-        console.log(card.movable)
 
         card.movable = json.movable;
         card.home = json.home;
-        card.text = json.text;
+        card.category = json.category;
 
+        card.text = json.text;
         card.text_color = json.text_color;
         card.bg_color = json.bg_color;
 

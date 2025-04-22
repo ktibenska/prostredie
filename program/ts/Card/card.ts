@@ -15,10 +15,17 @@ class Card {
     text_color: string;
     bg_color: string;
 
+    category: string = 'white'
+
     constructor(x: number, y: number) {
         this.x = x
         this.y = y
     }
+
+    public clone(): Card {
+        return new Card(this.x, this.y);
+    }
+
 
     public toJSON() {
         return {
@@ -31,10 +38,6 @@ class Card {
         return new TextCard(json.x, json.y);
     }
 
-
-    public clone(): Card {
-        return new Card(this.x, this.y);
-    }
 
     public getCoordinates(): [number, number] {
         return [this.x, this.y];

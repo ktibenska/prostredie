@@ -1,18 +1,35 @@
 var Buttons = /** @class */ (function () {
     function Buttons(sketchpad) {
         this.sketchpad = sketchpad;
+        this.initContextMenu();
         this.initButtons();
-        var contextMenu = document.getElementById('contextMenu');
+    }
+    Buttons.prototype.initContextMenu = function () {
+        var _this = this;
+        this.contextMenu = document.getElementById('contextMenu');
         window.addEventListener('click', function () {
-            contextMenu.style.display = 'none';
+            _this.contextMenu.style.display = 'none';
         });
         // hide on escape key
         window.addEventListener('keydown', function (e) {
             if (e.key === 'Escape') {
-                contextMenu.style.display = 'none';
+                _this.contextMenu.style.display = 'none';
+                _this.sketchpad.selected = null;
             }
         });
-    }
+        document.querySelectorAll(".color-btn").forEach(function (button) {
+            button.addEventListener("click", function (e) {
+                var color = e.target.style.backgroundColor;
+                _this.sketchpad.updateCardCategory(color);
+                document.querySelectorAll(".color-btn").forEach(function (btn) {
+                    btn.classList.remove("selected-color");
+                });
+                var target = e.target;
+                target.classList.add('selected-color');
+                _this.contextMenu.style.display = "none";
+            });
+        });
+    };
     Buttons.prototype.initButtons = function () {
         var _this = this;
         this.moveButton = document.getElementById('move_button');

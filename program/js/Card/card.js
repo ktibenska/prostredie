@@ -6,9 +6,13 @@ var Card = /** @class */ (function () {
         //todo home t/f nech sa meni podla umiestnenia, pripadne zmenit ze si pamata obe polohy - lahsie ukladanie?
         this.images = [];
         this.selected_image = 0;
+        this.category = 'white';
         this.x = x;
         this.y = y;
     }
+    Card.prototype.clone = function () {
+        return new Card(this.x, this.y);
+    };
     Card.prototype.toJSON = function () {
         return {
             x: this.x,
@@ -17,9 +21,6 @@ var Card = /** @class */ (function () {
     };
     Card.fromJSON = function (json) {
         return new TextCard(json.x, json.y);
-    };
-    Card.prototype.clone = function () {
-        return new Card(this.x, this.y);
     };
     Card.prototype.getCoordinates = function () {
         return [this.x, this.y];

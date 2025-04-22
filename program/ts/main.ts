@@ -31,11 +31,6 @@ class Main {
         this.finalCanvas = new Canvas('final_state_canvas');
 
         this.clearAll()
-        // this.loadTest();
-
-        // this.canvas.canvas.addEventListener('contextmenu', (event: MouseEvent) => {
-        //     // event.preventDefault();
-        // });
 
         this.submitButton.addEventListener('click', (event: Event) => {
             const input = this.imageInput
@@ -128,37 +123,36 @@ class Main {
 
             for (let card of this.canvas.cards) {
                 if (card.isCLicked(x, y)) {
-                    console.log('kliknuta')
                     this.selected = card;
 
-                    contextMenu.style.display = 'block';
-                    contextMenu.style.left = `${event.pageX}px`;
-                    contextMenu.style.top = `${event.pageY}px`;
-                }
+                    // button color
+                    if (this.selected.category){
+                        document.querySelectorAll('.color-btn').forEach((btn) => {
+                            const button = btn as HTMLButtonElement;
+                            const matches = button.style.backgroundColor === this.selected.category
+                            button.classList.toggle('selected-color', matches);
+                        });
+                    }
 
+                    contextMenu.style.display = 'block';
+                    contextMenu.style.left = `${event.pageX-15}px`;
+                    contextMenu.style.top = `${event.pageY-15}px`;
+                }
             }
 
 
-            // } else {
-            //     contextMenu.style.display = 'none';
-            // }
+            contextMenu.addEventListener("mouseleave", () => {
+                contextMenu.style.display = "none";
+                this.selected = null;
+            });
+
         });
+
+
 
 
     }
 
-
-    // private loadTest() {
-    //     const json = `[
-    //           { "x": 1, "y": 1 },
-    //           { "x": 200, "y": 200 },
-    //           { "x": 300, "y": 300 }
-    //         ]`;
-    //
-    //     const parsedObjects = JSON.parse(json);
-    //     this.canvas.cards = parsedObjects.map((obj: any) => Card.fromJSON(obj));
-    //     this.redraw();
-    // }
 
     public toJSON() {
         let string = ""
@@ -220,6 +214,9 @@ class Main {
     }
 
     private onMouseDown(e) {
+        if (e.button !== 0) return;
+
+
         let x = e.offsetX;
         let y = e.offsetY;
 
@@ -266,6 +263,8 @@ class Main {
 
 
     private onMouseUp(e) {
+        if (e.button !== 0) return;
+
         if (this.selected != null) {
             this.selected.x -= (this.selected.x %= 10)
             this.selected.y -= (this.selected.y %= 10)
@@ -400,6 +399,12 @@ class Main {
         this.redraw()
 
         this.selected = null;
+    }
+
+
+    public updateCardCategory(color: string) {
+        this.selected.category = color
+        this.selected = null
     }
 
 }
