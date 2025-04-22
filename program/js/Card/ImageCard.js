@@ -72,5 +72,15 @@ var ImageCard = /** @class */ (function (_super) {
         var h = this.images[this.selected_image].height;
         ctx.strokeRect(this.x, this.y, w, h);
     };
+    ImageCard.prototype.isCLicked = function (x, y) {
+        var w = this.images[this.selected_image].width;
+        var h = this.images[this.selected_image].height;
+        var clicked = (x >= this.x && x <= this.x + w) && (y >= this.y && y <= this.y + h);
+        if (clicked) {
+            this.selected_image++;
+            this.selected_image %= (this.images.length);
+        }
+        return clicked;
+    };
     return ImageCard;
 }(Card));

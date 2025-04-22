@@ -221,7 +221,7 @@ class Main {
         let y = e.offsetY;
 
         if (this.mode == Types.ADD) {
-            this.canvas.addCard(new TextCard(e.offsetX, e.offsetY)); //?
+            this.canvas.addCard(new TextCard(e.offsetX-50, e.offsetY-50)); //?
         }
 
         if (this.mode == Types.MOVE || this.mode == Types.RUN) {
@@ -246,7 +246,11 @@ class Main {
 
         if (this.mode == Types.MOVE) {
             if (this.selected) {
-                this.selected.setCoordinates(x, y);
+
+                let mx = this.selected.x + (x - this.x);
+                let my = this.selected.y + (y - this.y);
+
+                this.selected.setCoordinates(mx,my);
             }
         }
 

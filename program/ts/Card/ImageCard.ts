@@ -69,4 +69,18 @@ class ImageCard extends Card {
 
         ctx.strokeRect(this.x, this.y, w, h)
     }
+
+
+    public isCLicked(x: number, y: number): boolean {
+        let w = this.images[this.selected_image].width;
+        let h = this.images[this.selected_image].height;
+
+        let clicked = (x >= this.x && x <= this.x + w) && (y >= this.y&& y <= this.y + h);
+
+        if (clicked) {
+            this.selected_image++;
+            this.selected_image %= (this.images.length)
+        }
+        return clicked;
+    }
 }

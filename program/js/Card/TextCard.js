@@ -56,17 +56,20 @@ var TextCard = /** @class */ (function (_super) {
     };
     TextCard.prototype.draw = function (ctx) {
         ctx.fillStyle = this.bg_color;
-        ctx.fillRect(this.x - this.half_size, this.y - this.half_size, this.half_size * 2, this.half_size * 2);
+        ctx.fillRect(this.x, this.y, this.half_size * 2, this.half_size * 2);
         ctx.fillStyle = this.text_color;
         ctx.font = "20px Arial";
-        ctx.fillText(this.text, this.x - this.half_size, this.y);
+        ctx.fillText(this.text, this.x, this.y + this.half_size);
     };
     TextCard.prototype.drawOutline = function (ctx) {
         ctx.fillStyle = "lightgray";
         ctx.strokeStyle = "black";
         // let w = this.half_size * 2;
         // let h = this.half_size * 2;
-        ctx.strokeRect(this.x - this.half_size, this.y - this.half_size, this.half_size * 2, this.half_size * 2);
+        ctx.strokeRect(this.x, this.y, this.half_size * 2, this.half_size * 2);
+    };
+    TextCard.prototype.isCLicked = function (x, y) {
+        return (x >= this.x && x <= this.x + this.half_size * 2) && (y >= this.y && y <= this.y + this.half_size * 2);
     };
     return TextCard;
 }(Card));

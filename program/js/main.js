@@ -163,7 +163,7 @@ var Main = /** @class */ (function () {
         var x = e.offsetX;
         var y = e.offsetY;
         if (this.mode == "add" /* Types.ADD */) {
-            this.canvas.addCard(new TextCard(e.offsetX, e.offsetY)); //?
+            this.canvas.addCard(new TextCard(e.offsetX - 50, e.offsetY - 50)); //?
         }
         if (this.mode == "move" /* Types.MOVE */ || this.mode == "run" /* Types.RUN */) {
             for (var _i = 0, _a = this.canvas.cards; _i < _a.length; _i++) {
@@ -184,7 +184,9 @@ var Main = /** @class */ (function () {
         var y = e.offsetY - this.canvas.getViewY();
         if (this.mode == "move" /* Types.MOVE */) {
             if (this.selected) {
-                this.selected.setCoordinates(x, y);
+                var mx = this.selected.x + (x - this.x);
+                var my = this.selected.y + (y - this.y);
+                this.selected.setCoordinates(mx, my);
             }
         }
         if (this.mode == "run" /* Types.RUN */) {

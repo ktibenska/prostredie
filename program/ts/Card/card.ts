@@ -64,13 +64,7 @@ class Card {
     }
 
     public isCLicked(x: number, y: number): boolean {
-        let clicked = (x >= this.x - this.half_size && x <= this.x + this.half_size) && (y >= this.y - this.half_size && y <= this.y + this.half_size);
 
-        if (clicked && this.images.length > 1) { //todo zmenit pre imagecard
-            this.selected_image++;
-            this.selected_image %= (this.images.length)
-
-        }
-        return clicked;
+        return true;
     }
 }
