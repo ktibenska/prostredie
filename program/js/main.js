@@ -8,6 +8,7 @@ var Main = /** @class */ (function () {
         this.bgImageInput = document.getElementById('id_bg');
         this.bgSubmitButton = document.getElementById('bg_submit');
         this.shuffleButton = document.getElementById('shuffle_cards');
+        this.outlineButton = document.getElementById('outline_cards');
         this.canvas = new Canvas('sketchpad_main');
         this.mode = "move" /* Types.MOVE */;
         this.canvas.addEventListeners(function (e) { return _this.onMouseDown(e); }, function (e) { return _this.onMouseMove(e); }, function (e) { return _this.onMouseUp(e); }, function (e) { return _this.onMouseEnter(e); }, function (e) { return _this.onMouseLeave(e); });
@@ -116,6 +117,7 @@ var Main = /** @class */ (function () {
             data += '\"bg\":' + JSON.stringify(this.canvas.image.src) + ',';
         }
         data += '\"shuffle\":' + JSON.stringify(this.shuffleButton.checked) + ',';
+        data += '\"outline\":' + JSON.stringify(this.outlineButton.checked) + ',';
         var cardDataString = "";
         for (var _i = 0, _a = this.homeCanvas.cards; _i < _a.length; _i++) {
             var card = _a[_i];
@@ -146,6 +148,7 @@ var Main = /** @class */ (function () {
             this.finalCanvas.setBg(bgimage);
         }
         this.shuffleButton.checked = json.shuffle;
+        this.outlineButton.checked = json.outline;
         for (var _i = 0, _a = json.cards; _i < _a.length; _i++) {
             var x = _a[_i];
             var card = void 0;
@@ -266,7 +269,7 @@ var Main = /** @class */ (function () {
     };
     Main.prototype.redraw = function () {
         this.canvas.bg();
-        if (this.mode == "run" /* Types.RUN */) {
+        if (this.mode == "run" /* Types.RUN */ && this.outlineButton.checked) {
             this.canvas.redraw(this.finalCanvas);
         }
         else {

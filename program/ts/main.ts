@@ -12,6 +12,7 @@ class Main {
     bgSubmitButton = document.getElementById('bg_submit') as HTMLInputElement;
 
     shuffleButton = document.getElementById('shuffle_cards') as HTMLInputElement;
+    outlineButton = document.getElementById('outline_cards') as HTMLInputElement;
 
     finalCanvas: Canvas;
     homeCanvas: Canvas;
@@ -163,6 +164,7 @@ class Main {
             data += '\"bg\":' + JSON.stringify(this.canvas.image.src) + ','
         }
         data += '\"shuffle\":' + JSON.stringify(this.shuffleButton.checked) + ','
+        data += '\"outline\":' + JSON.stringify(this.outlineButton.checked) + ','
 
         let cardDataString = ""
         for (let card of this.homeCanvas.cards) {
@@ -198,6 +200,8 @@ class Main {
         }
 
         this.shuffleButton.checked = json.shuffle
+        this.outlineButton.checked = json.outline
+
 
         for (let x of json.cards) {
             let card: Card;
@@ -345,7 +349,7 @@ class Main {
     public redraw() {
         this.canvas.bg();
 
-        if (this.mode == Types.RUN) {
+        if (this.mode == Types.RUN && this.outlineButton.checked) {
             this.canvas.redraw(this.finalCanvas)
         } else {
             this.canvas.redraw()
