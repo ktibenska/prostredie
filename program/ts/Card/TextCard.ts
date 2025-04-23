@@ -7,8 +7,8 @@ class TextCard extends Card {
     public clone(): TextCard {
         let clone = new TextCard(this.x, this.y, this.id);
 
-        clone.xsize = this.xsize
-        clone.ysize = this.ysize
+        clone.width = this.width
+        clone.height = this.height
         clone.movable = this.movable
         clone.category = this.category;
 
@@ -29,7 +29,10 @@ class TextCard extends Card {
 
             text: this.text,
             text_color: this.text_color,
-            bg_color: this.bg_color
+            bg_color: this.bg_color,
+
+            width: this.width,
+            height: this.height
         }
     }
 
@@ -43,6 +46,8 @@ class TextCard extends Card {
         card.text = json.text;
         card.text_color = json.text_color;
         card.bg_color = json.bg_color;
+        card.width = json.width;
+        card.height = json.height;
 
         return card;
     }
@@ -50,19 +55,19 @@ class TextCard extends Card {
 
     public draw(ctx: any): void {
         ctx.fillStyle = this.bg_color;
-        ctx.fillRect(this.x, this.y, this.xsize, this.ysize);
+        ctx.fillRect(this.x, this.y, this.width, this.height);
 
         ctx.fillStyle = this.text_color;
         ctx.font = "20px Arial";
 
-        ctx.fillText(this.text, this.x, this.y + this.ysize / 2);
+        ctx.fillText(this.text, this.x, this.y + this.height / 2);
     }
 
     public drawResize(ctx: any): void {
         this.drawHandle(ctx, this.x, this.y); // TL
-        this.drawHandle(ctx, this.x + this.xsize, this.y); // TR
-        this.drawHandle(ctx, this.x, this.y + this.ysize); // BL
-        this.drawHandle(ctx, this.x + this.xsize, this.y + this.ysize); //BR
+        this.drawHandle(ctx, this.x + this.width, this.y); // TR
+        this.drawHandle(ctx, this.x, this.y + this.height); // BL
+        this.drawHandle(ctx, this.x + this.width, this.y + this.height); //BR
     }
 
     private drawHandle(ctx: any, x: number, y: number): void {
@@ -72,9 +77,9 @@ class TextCard extends Card {
 
     public getClickedHandle(x: number, y: number): Sides {
         if (this.isHandleClicked(x, y, this.x, this.y)) return Sides.TL;
-        if (this.isHandleClicked(x, y, this.x + this.xsize, this.y)) return Sides.TR;
-        if (this.isHandleClicked(x, y, this.x, this.y + this.ysize)) return Sides.BL;
-        if (this.isHandleClicked(x, y, this.x + this.xsize, this.y + this.ysize)) return Sides.BR;
+        if (this.isHandleClicked(x, y, this.x + this.width, this.y)) return Sides.TR;
+        if (this.isHandleClicked(x, y, this.x, this.y + this.height)) return Sides.BL;
+        if (this.isHandleClicked(x, y, this.x + this.width, this.y + this.height)) return Sides.BR;
         return null;
     }
 
@@ -91,12 +96,12 @@ class TextCard extends Card {
         ctx.fillStyle = "lightgray";
         ctx.strokeStyle = "black";
 
-        ctx.strokeRect(this.x, this.y, this.xsize, this.ysize)
+        ctx.strokeRect(this.x, this.y, this.width, this.height)
     }
 
 
     public isCLicked(x: number, y: number): boolean {
-        return (x >= this.x && x <= this.x + this.xsize) && (y >= this.y && y <= this.y + this.ysize)
+        return (x >= this.x && x <= this.x + this.width) && (y >= this.y && y <= this.y + this.height)
     }
 
 

@@ -87,11 +87,11 @@ class Main {
             if (inputValue == 'iCardRadio') c.setMovable(false); //todo kontanta
 
 
-            let xsize = document.getElementById('xvalue') as HTMLInputElement;
-            let ysize = document.getElementById('yvalue') as HTMLInputElement;
+            let width = document.getElementById('width') as HTMLInputElement;
+            let height = document.getElementById('height') as HTMLInputElement;
 
-            if (xsize.value) c.xsize = +xsize.value;
-            if (ysize.value) c.ysize = +ysize.value;
+            if (width.value) c.width = +width.value;
+            if (height.value) c.height = +height.value;
             this.canvas.cards.push(c)
             this.redraw();
         });
@@ -286,24 +286,24 @@ class Main {
         if (this.mode == Types.RESIZE && this.selected) {
             switch (this.selected.getClickedHandle(x, y)) {
                 case Sides.TL:
-                    this.selected.xsize += this.selected.x - x;
-                    this.selected.ysize += this.selected.y - y;
+                    this.selected.width += this.selected.x - x;
+                    this.selected.height += this.selected.y - y;
                     this.selected.x = x;
                     this.selected.y = y;
                     break;
                 case Sides.TR:
-                    this.selected.xsize = x - this.selected.x;
-                    this.selected.ysize += this.selected.y - y;
+                    this.selected.width = x - this.selected.x;
+                    this.selected.height += this.selected.y - y;
                     this.selected.y = y;
                     break;
                 case Sides.BL:
-                    this.selected.xsize += this.selected.x - x;
+                    this.selected.width += this.selected.x - x;
                     this.selected.x = x;
-                    this.selected.ysize = y - this.selected.y;
+                    this.selected.height = y - this.selected.y;
                     break;
                 case Sides.BR:
-                    this.selected.xsize = x - this.selected.x;
-                    this.selected.ysize = y - this.selected.y;
+                    this.selected.width = x - this.selected.x;
+                    this.selected.height = y - this.selected.y;
                     break;
             }
         }

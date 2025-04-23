@@ -6,8 +6,8 @@ class ImageCard extends Card {
     public clone(): ImageCard {
         let clone = new ImageCard(this.x, this.y, this.id);
 
-        clone.xsize = this.xsize
-        clone.ysize = this.ysize
+        clone.width = this.width
+        clone.height = this.height
         clone.movable = this.movable
         clone.category = this.category;
 

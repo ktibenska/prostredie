@@ -23,8 +23,8 @@ var ImageCard = /** @class */ (function (_super) {
     }
     ImageCard.prototype.clone = function () {
         var clone = new ImageCard(this.x, this.y, this.id);
-        clone.xsize = this.xsize;
-        clone.ysize = this.ysize;
+        clone.width = this.width;
+        clone.height = this.height;
         clone.movable = this.movable;
         clone.category = this.category;
         clone.images = this.images;

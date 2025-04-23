@@ -24,8 +24,8 @@ var TextCard = /** @class */ (function (_super) {
     }
     TextCard.prototype.clone = function () {
         var clone = new TextCard(this.x, this.y, this.id);
-        clone.xsize = this.xsize;
-        clone.ysize = this.ysize;
+        clone.width = this.width;
+        clone.height = this.height;
         clone.movable = this.movable;
         clone.category = this.category;
         clone.text = this.text;
@@ -43,7 +43,9 @@ var TextCard = /** @class */ (function (_super) {
             category: this.category,
             text: this.text,
             text_color: this.text_color,
-            bg_color: this.bg_color
+            bg_color: this.bg_color,
+            width: this.width,
+            height: this.height
         };
     };
     TextCard.fromJSON = function (json) {
@@ -54,20 +56,22 @@ var TextCard = /** @class */ (function (_super) {
         card.text = json.text;
         card.text_color = json.text_color;
         card.bg_color = json.bg_color;
+        card.width = json.width;
+        card.height = json.height;
         return card;
     };
     TextCard.prototype.draw = function (ctx) {
         ctx.fillStyle = this.bg_color;
-        ctx.fillRect(this.x, this.y, this.xsize, this.ysize);
+        ctx.fillRect(this.x, this.y, this.width, this.height);
         ctx.fillStyle = this.text_color;
         ctx.font = "20px Arial";
-        ctx.fillText(this.text, this.x, this.y + this.ysize / 2);
+        ctx.fillText(this.text, this.x, this.y + this.height / 2);
     };
     TextCard.prototype.drawResize = function (ctx) {
         this.drawHandle(ctx, this.x, this.y); // TL
-        this.drawHandle(ctx, this.x + this.xsize, this.y); // TR
-        this.drawHandle(ctx, this.x, this.y + this.ysize); // BL
-        this.drawHandle(ctx, this.x + this.xsize, this.y + this.ysize); //BR
+        this.drawHandle(ctx, this.x + this.width, this.y); // TR
+        this.drawHandle(ctx, this.x, this.y + this.height); // BL
+        this.drawHandle(ctx, this.x + this.width, this.y + this.height); //BR
     };
     TextCard.prototype.drawHandle = function (ctx, x, y) {
         ctx.fillStyle = "#000";
@@ -76,11 +80,11 @@ var TextCard = /** @class */ (function (_super) {
     TextCard.prototype.getClickedHandle = function (x, y) {
         if (this.isHandleClicked(x, y, this.x, this.y))
             return "top-left" /* Sides.TL */;
-        if (this.isHandleClicked(x, y, this.x + this.xsize, this.y))
+        if (this.isHandleClicked(x, y, this.x + this.width, this.y))
             return "top-right" /* Sides.TR */;
-        if (this.isHandleClicked(x, y, this.x, this.y + this.ysize))
+        if (this.isHandleClicked(x, y, this.x, this.y + this.height))
             return "bottom-left" /* Sides.BL */;
-        if (this.isHandleClicked(x, y, this.x + this.xsize, this.y + this.ysize))
+        if (this.isHandleClicked(x, y, this.x + this.width, this.y + this.height))
             return "bottom-right" /* Sides.BR */;
         return null;
     };
@@ -92,10 +96,10 @@ var TextCard = /** @class */ (function (_super) {
     TextCard.prototype.drawOutline = function (ctx) {
         ctx.fillStyle = "lightgray";
         ctx.strokeStyle = "black";
-        ctx.strokeRect(this.x, this.y, this.xsize, this.ysize);
+        ctx.strokeRect(this.x, this.y, this.width, this.height);
     };
     TextCard.prototype.isCLicked = function (x, y) {
-        return (x >= this.x && x <= this.x + this.xsize) && (y >= this.y && y <= this.y + this.ysize);
+        return (x >= this.x && x <= this.x + this.width) && (y >= this.y && y <= this.y + this.height);
     };
     return TextCard;
 }(Card));

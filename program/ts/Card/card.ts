@@ -4,8 +4,8 @@ class Card {
 
     id: number;
 
-    xsize: number = 100;
-    ysize: number = 100;
+    width: number = 100;
+    height: number = 100;
 
     handleSize: number = 10;
 

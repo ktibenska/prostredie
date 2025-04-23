@@ -57,12 +57,12 @@ var Main = /** @class */ (function () {
             var inputValue = document.querySelector('input[name="movableCardRadio"]:checked').id;
             if (inputValue == 'iCardRadio')
                 c.setMovable(false); //todo kontanta
-            var xsize = document.getElementById('xvalue');
-            var ysize = document.getElementById('yvalue');
-            if (xsize.value)
-                c.xsize = +xsize.value;
-            if (ysize.value)
-                c.ysize = +ysize.value;
+            var width = document.getElementById('width');
+            var height = document.getElementById('height');
+            if (width.value)
+                c.width = +width.value;
+            if (height.value)
+                c.height = +height.value;
             _this.canvas.cards.push(c);
             _this.redraw();
         });
@@ -217,24 +217,24 @@ var Main = /** @class */ (function () {
         if (this.mode == "resize" /* Types.RESIZE */ && this.selected) {
             switch (this.selected.getClickedHandle(x, y)) {
                 case "top-left" /* Sides.TL */:
-                    this.selected.xsize += this.selected.x - x;
-                    this.selected.ysize += this.selected.y - y;
+                    this.selected.width += this.selected.x - x;
+                    this.selected.height += this.selected.y - y;
                     this.selected.x = x;
                     this.selected.y = y;
                     break;
                 case "top-right" /* Sides.TR */:
-                    this.selected.xsize = x - this.selected.x;
-                    this.selected.ysize += this.selected.y - y;
+                    this.selected.width = x - this.selected.x;
+                    this.selected.height += this.selected.y - y;
                     this.selected.y = y;
                     break;
                 case "bottom-left" /* Sides.BL */:
-                    this.selected.xsize += this.selected.x - x;
+                    this.selected.width += this.selected.x - x;
                     this.selected.x = x;
-                    this.selected.ysize = y - this.selected.y;
+                    this.selected.height = y - this.selected.y;
                     break;
                 case "bottom-right" /* Sides.BR */:
-                    this.selected.xsize = x - this.selected.x;
-                    this.selected.ysize = y - this.selected.y;
+                    this.selected.width = x - this.selected.x;
+                    this.selected.height = y - this.selected.y;
                     break;
             }
         }

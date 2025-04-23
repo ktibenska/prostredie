@@ -1,7 +1,7 @@
 var Card = /** @class */ (function () {
     function Card(x, y, id) {
-        this.xsize = 100;
-        this.ysize = 100;
+        this.width = 100;
+        this.height = 100;
         this.handleSize = 10;
         this.movable = true;
         this.home = true;
