@@ -70,6 +70,7 @@ var TextCard = /** @class */ (function (_super) {
         this.drawHandle(ctx, this.x + this.xsize, this.y + this.ysize); //BR
     };
     TextCard.prototype.drawHandle = function (ctx, x, y) {
+        ctx.fillStyle = "#000";
         ctx.fillRect(x - this.handleSize / 2, y - this.handleSize / 2, this.handleSize, this.handleSize);
     };
     TextCard.prototype.getClickedHandle = function (x, y) {

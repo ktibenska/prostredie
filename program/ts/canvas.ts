@@ -3,7 +3,7 @@ class Canvas {
     ctx;
     public cards: Card[] = [];
 
-    private image = null;
+    public image = null;
 
     private viewX: number = 0;
     private viewY: number = 0;

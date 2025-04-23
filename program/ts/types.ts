@@ -11,3 +11,8 @@ const enum Sides {
     BL = 'bottom-left',
     BR = 'bottom-right'
 }
+
+// ?
+// const enum Categories {
+//     NOCATEGORY = 'white'
+// }

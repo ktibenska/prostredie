@@ -11,6 +11,8 @@ class Main {
     bgImageInput = document.getElementById('id_bg') as HTMLInputElement;
     bgSubmitButton = document.getElementById('bg_submit') as HTMLInputElement;
 
+    shuffleButton = document.getElementById('shuffle_cards') as HTMLInputElement;
+
     finalCanvas: Canvas;
     homeCanvas: Canvas;
 
@@ -70,7 +72,8 @@ class Main {
             } else {
                 c = new TextCard(this.x, this.y, this.generateID())
                 let text = document.getElementById('text_value') as HTMLInputElement
-                c.text = text.value
+                c.text = ' '
+                if (text.value) c.text = text.value
 
                 let textColorSelector = document.getElementById('color_selector_text') as HTMLInputElement
                 c.text_color = textColorSelector.value;
@@ -154,24 +157,24 @@ class Main {
 
 
     public toJSON() {
-        let string = ""
+        let data = "{"
 
-        //todo najprv ulozit:
-        //      - ci shuffle t/f
-        //      - POZADIE A OBRAZKY
+        if (this.canvas.image != null) {
+            data += '\"bg\":' + JSON.stringify(this.canvas.image.src) + ','
+        }
+        data += '\"shuffle\":' + JSON.stringify(this.shuffleButton.checked) + ','
 
+        let cardDataString = ""
         for (let card of this.homeCanvas.cards) {
-            string += JSON.stringify(card) + ","
+            cardDataString += JSON.stringify(card) + ","
         }
         for (let card of this.finalCanvas.cards) {
-            string += JSON.stringify(card) + ","
+            cardDataString += JSON.stringify(card) + ","
         }
-
-        console.log(string)
 
         const downloadFile = () => { //todo
             const link = document.createElement("a");
-            const content = '[' + string.slice(0, -1) + ']';
+            const content = data + '\"cards\":[' + cardDataString.slice(0, -1) + ']}';
             const file = new Blob([content], {type: 'application/json'});
             link.href = URL.createObjectURL(file);
             link.download = "test.json";
@@ -180,12 +183,23 @@ class Main {
         };
 
         downloadFile()
+
     }
 
     public fromJSON(json) {
         this.clearAll();
 
-        for (let x of json) {
+        if (json.bg) {
+            let bgimage = new Image()
+            bgimage.src = json.bg
+            this.canvas.setBg(bgimage)
+            this.homeCanvas.setBg(bgimage)
+            this.finalCanvas.setBg(bgimage)
+        }
+
+        this.shuffleButton.checked = json.shuffle
+
+        for (let x of json.cards) {
             let card: Card;
             if (x.text) {
                 card = TextCard.fromJSON(x)
@@ -397,8 +411,7 @@ class Main {
             this.canvas.cards.push(card.clone())
         }
 
-        let shuffle = document.getElementById('shuffle_cards') as HTMLInputElement;
-        if (shuffle) {
+        if (this.shuffleButton.checked) {
             for (let card of this.canvas.cards) {
                 let randomCard = this.canvas.cards[Math.floor(Math.random() * this.canvas.cards.length)];
                 let randomCardCoords = randomCard.getCoordinates();
@@ -409,17 +422,43 @@ class Main {
 
     }
 
+    private isSamePosition(card1: Card, card2: Card): boolean {
+        return !(Math.abs(card1.x - card2.x) > 20 || Math.abs(card1.y - card2.y) > 20);
+    }
 
     public checkSolution() {
         let ok = true;
         let cards = this.canvas.cards;
         let final = this.finalCanvas.cards;
-        for (let i = 0; i < this.canvas.cards.length; i++) {
-            if (Math.abs(cards[i].x - final[i].x) > 20 || Math.abs(cards[i].y - final[i].y) > 20) ok = false;
-            if (cards[i].selected_image != final[i].selected_image) ok = false;
 
-            // console.log(Math.abs(cards[i].x - final[i].x))
-            // console.log(Math.abs(cards[i].y - final[i].y))
+        for (let card of final) {
+
+            // podla id
+            if (card.category == 'white') {
+
+                let idcard = cards.filter(c => c.id === card.id)
+                if (!this.isSamePosition(card, idcard[0])) {
+                    ok = false;
+                    break;
+                }
+
+            } else //ma nastavenu kategoriu
+            {
+                let categorycards = cards.filter(c => c.category === card.category)
+                let okCategorycards = false
+                for (let c of categorycards) {
+
+                    if (this.isSamePosition(card, c)) {
+                        okCategorycards = true;
+                        break;
+                    }
+                }
+
+                if (!okCategorycards) {
+                    ok = false;
+                    break;
+                }
+            }
         }
 
         if (ok) {
@@ -448,6 +487,10 @@ class Main {
 
     public updateCardCategory(color: string) {
         this.selected.category = color
+
+        this.finalCanvas.cards.filter(item => item.id === this.selected.id)[0].category = color
+        this.homeCanvas.cards.filter(item => item.id === this.selected.id)[0].category = color
+
         this.selected = null
     }
 

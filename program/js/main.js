@@ -7,6 +7,7 @@ var Main = /** @class */ (function () {
         this.submitButton = document.getElementById('submit');
         this.bgImageInput = document.getElementById('id_bg');
         this.bgSubmitButton = document.getElementById('bg_submit');
+        this.shuffleButton = document.getElementById('shuffle_cards');
         this.canvas = new Canvas('sketchpad_main');
         this.mode = "move" /* Types.MOVE */;
         this.canvas.addEventListeners(function (e) { return _this.onMouseDown(e); }, function (e) { return _this.onMouseMove(e); }, function (e) { return _this.onMouseUp(e); }, function (e) { return _this.onMouseEnter(e); }, function (e) { return _this.onMouseLeave(e); });
@@ -44,7 +45,9 @@ var Main = /** @class */ (function () {
             else {
                 c = new TextCard(_this.x, _this.y, _this.generateID());
                 var text = document.getElementById('text_value');
-                c.text = text.value;
+                c.text = ' ';
+                if (text.value)
+                    c.text = text.value;
                 var textColorSelector = document.getElementById('color_selector_text');
                 c.text_color = textColorSelector.value;
                 var bgColorSelector = document.getElementById('color_selector_bg');
@@ -108,22 +111,23 @@ var Main = /** @class */ (function () {
         });
     }
     Main.prototype.toJSON = function () {
-        var string = "";
-        //todo najprv ulozit:
-        //      - ci shuffle t/f
-        //      - POZADIE A OBRAZKY
+        var data = "{";
+        if (this.canvas.image != null) {
+            data += '\"bg\":' + JSON.stringify(this.canvas.image.src) + ',';
+        }
+        data += '\"shuffle\":' + JSON.stringify(this.shuffleButton.checked) + ',';
+        var cardDataString = "";
         for (var _i = 0, _a = this.homeCanvas.cards; _i < _a.length; _i++) {
             var card = _a[_i];
-            string += JSON.stringify(card) + ",";
+            cardDataString += JSON.stringify(card) + ",";
         }
         for (var _b = 0, _c = this.finalCanvas.cards; _b < _c.length; _b++) {
             var card = _c[_b];
-            string += JSON.stringify(card) + ",";
+            cardDataString += JSON.stringify(card) + ",";
         }
-        console.log(string);
         var downloadFile = function () {
             var link = document.createElement("a");
-            var content = '[' + string.slice(0, -1) + ']';
+            var content = data + '\"cards\":[' + cardDataString.slice(0, -1) + ']}';
             var file = new Blob([content], { type: 'application/json' });
             link.href = URL.createObjectURL(file);
             link.download = "test.json";
@@ -134,8 +138,16 @@ var Main = /** @class */ (function () {
     };
     Main.prototype.fromJSON = function (json) {
         this.clearAll();
-        for (var _i = 0, json_1 = json; _i < json_1.length; _i++) {
-            var x = json_1[_i];
+        if (json.bg) {
+            var bgimage = new Image();
+            bgimage.src = json.bg;
+            this.canvas.setBg(bgimage);
+            this.homeCanvas.setBg(bgimage);
+            this.finalCanvas.setBg(bgimage);
+        }
+        this.shuffleButton.checked = json.shuffle;
+        for (var _i = 0, _a = json.cards; _i < _a.length; _i++) {
+            var x = _a[_i];
             var card = void 0;
             if (x.text) {
                 card = TextCard.fromJSON(x);
@@ -305,8 +317,7 @@ var Main = /** @class */ (function () {
             var card = _a[_i];
             this.canvas.cards.push(card.clone());
         }
-        var shuffle = document.getElementById('shuffle_cards');
-        if (shuffle) {
+        if (this.shuffleButton.checked) {
             for (var _b = 0, _c = this.canvas.cards; _b < _c.length; _b++) {
                 var card = _c[_b];
                 var randomCard = this.canvas.cards[Math.floor(Math.random() * this.canvas.cards.length)];
@@ -316,17 +327,45 @@ var Main = /** @class */ (function () {
             }
         }
     };
+    Main.prototype.isSamePosition = function (card1, card2) {
+        return !(Math.abs(card1.x - card2.x) > 20 || Math.abs(card1.y - card2.y) > 20);
+    };
     Main.prototype.checkSolution = function () {
         var ok = true;
         var cards = this.canvas.cards;
         var final = this.finalCanvas.cards;
-        for (var i = 0; i < this.canvas.cards.length; i++) {
-            if (Math.abs(cards[i].x - final[i].x) > 20 || Math.abs(cards[i].y - final[i].y) > 20)
-                ok = false;
-            if (cards[i].selected_image != final[i].selected_image)
-                ok = false;
-            // console.log(Math.abs(cards[i].x - final[i].x))
-            // console.log(Math.abs(cards[i].y - final[i].y))
+        var _loop_1 = function (card) {
+            // podla id
+            if (card.category == 'white') {
+                var idcard = cards.filter(function (c) { return c.id === card.id; });
+                if (!this_1.isSamePosition(card, idcard[0])) {
+                    ok = false;
+                    return "break";
+                }
+            }
+            else //ma nastavenu kategoriu
+             {
+                var categorycards = cards.filter(function (c) { return c.category === card.category; });
+                var okCategorycards = false;
+                for (var _a = 0, categorycards_1 = categorycards; _a < categorycards_1.length; _a++) {
+                    var c = categorycards_1[_a];
+                    if (this_1.isSamePosition(card, c)) {
+                        okCategorycards = true;
+                        break;
+                    }
+                }
+                if (!okCategorycards) {
+                    ok = false;
+                    return "break";
+                }
+            }
+        };
+        var this_1 = this;
+        for (var _i = 0, final_1 = final; _i < final_1.length; _i++) {
+            var card = final_1[_i];
+            var state_1 = _loop_1(card);
+            if (state_1 === "break")
+                break;
         }
         if (ok) {
             alert("riešenie je správne!");
@@ -346,7 +385,10 @@ var Main = /** @class */ (function () {
         this.selected = null;
     };
     Main.prototype.updateCardCategory = function (color) {
+        var _this = this;
         this.selected.category = color;
+        this.finalCanvas.cards.filter(function (item) { return item.id === _this.selected.id; })[0].category = color;
+        this.homeCanvas.cards.filter(function (item) { return item.id === _this.selected.id; })[0].category = color;
         this.selected = null;
     };
     Main.prototype.generateID = function () {

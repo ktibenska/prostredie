@@ -66,6 +66,7 @@ class TextCard extends Card {
     }
 
     private drawHandle(ctx: any, x: number, y: number): void {
+        ctx.fillStyle = "#000"
         ctx.fillRect(x - this.handleSize / 2, y - this.handleSize / 2, this.handleSize, this.handleSize);
     }
 
