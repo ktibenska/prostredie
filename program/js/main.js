@@ -92,6 +92,8 @@ var Main = /** @class */ (function () {
         this.canvas.canvas.addEventListener('contextmenu', function (event) {
             event.preventDefault();
             var contextMenu = document.getElementById('contextMenu');
+            if (_this.mode == "run" /* Types.RUN */)
+                return;
             var x = event.offsetX;
             var y = event.offsetY;
             for (var _i = 0, _a = _this.canvas.cards; _i < _a.length; _i++) {
@@ -400,6 +402,17 @@ var Main = /** @class */ (function () {
         else {
             alert("riešenie je nesprávne");
         }
+    };
+    Main.prototype.duplicateCard = function () {
+        var duplicate = this.selected.clone();
+        duplicate.id = this.generateID();
+        this.canvas.cards.push(duplicate);
+        if (!duplicate.movable) {
+            this.homeCanvas.cards.push(duplicate.clone());
+            this.finalCanvas.cards.push(duplicate.clone());
+        }
+        this.redrawAll();
+        this.selected = null;
     };
     Main.prototype.removeCard = function () {
         var id = this.selected.id;

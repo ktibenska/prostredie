@@ -18,7 +18,8 @@ class Buttons {
     loadInput: HTMLInputElement;
     loadSubmitButton: HTMLInputElement;
 
-    removeCardCtxBtn: HTMLElement
+    duplicateCardCtxBtn: HTMLElement;
+    removeCardCtxBtn: HTMLElement;
 
     showGridBtn: HTMLInputElement;
 
@@ -170,6 +171,12 @@ class Buttons {
                 }
                 reader.readAsText(files[0]);
             }
+        });
+
+
+        this.duplicateCardCtxBtn = document.getElementById('duplicate_card');
+        this.duplicateCardCtxBtn.addEventListener('mouseup', () => {
+            this.sketchpad.duplicateCard();
         });
 
         this.removeCardCtxBtn = document.getElementById('remove_card');

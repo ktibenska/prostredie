@@ -93,7 +93,7 @@ class Main {
             if (height.value) c.height = +height.value;
 
             this.canvas.cards.push(c)
-            if (!c.movable){
+            if (!c.movable) {
                 this.homeCanvas.cards.push(c.clone())
                 this.finalCanvas.cards.push(c.clone())
             }
@@ -134,6 +134,9 @@ class Main {
             event.preventDefault();
             const contextMenu = document.getElementById('contextMenu');
 
+
+            if (this.mode == Types.RUN) return;
+
             let x = event.offsetX;
             let y = event.offsetY;
 
@@ -155,7 +158,6 @@ class Main {
                     contextMenu.style.top = `${event.pageY - 15}px`;
                 }
             }
-
 
             contextMenu.addEventListener("mouseleave", () => {
                 contextMenu.style.display = "none";
@@ -318,7 +320,7 @@ class Main {
 
                 this.selected.setCoordinates(mx, my);
 
-                if(!this.selected.movable){
+                if (!this.selected.movable) {
                     this.homeCanvas.cardByID(this.selected.id).setCoordinates(mx, my)
                     this.finalCanvas.cardByID(this.selected.id).setCoordinates(mx, my)
 
@@ -498,6 +500,21 @@ class Main {
             alert("riešenie je nesprávne")
         }
 
+    }
+
+
+    public duplicateCard() {
+        let duplicate = this.selected.clone()
+        duplicate.id = this.generateID()
+
+        this.canvas.cards.push(duplicate)
+        if (!duplicate.movable) {
+            this.homeCanvas.cards.push(duplicate.clone())
+            this.finalCanvas.cards.push(duplicate.clone())
+        }
+
+        this.redrawAll();
+        this.selected = null;
     }
 
 

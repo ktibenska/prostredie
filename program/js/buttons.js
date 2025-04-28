@@ -115,6 +115,10 @@ var Buttons = /** @class */ (function () {
                 reader_1.readAsText(files[0]);
             }
         });
+        this.duplicateCardCtxBtn = document.getElementById('duplicate_card');
+        this.duplicateCardCtxBtn.addEventListener('mouseup', function () {
+            _this.sketchpad.duplicateCard();
+        });
         this.removeCardCtxBtn = document.getElementById('remove_card');
         this.removeCardCtxBtn.addEventListener('mouseup', function () {
             _this.sketchpad.removeCard();
