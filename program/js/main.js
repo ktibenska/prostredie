@@ -54,9 +54,9 @@ var Main = /** @class */ (function () {
                 var bgColorSelector = document.getElementById('color_selector_bg');
                 c.bg_color = bgColorSelector.value;
             }
-            var inputValue = document.querySelector('input[name="movableCardRadio"]:checked').id;
-            if (inputValue == 'iCardRadio')
-                c.setMovable(false); //todo kontanta
+            var immovable = document.querySelector('input[name="movableCardRadio"]:checked').id;
+            if (immovable == 'iCardRadio')
+                c.setMovable(false); //todo kontrola
             var width = document.getElementById('width');
             var height = document.getElementById('height');
             if (width.value)
@@ -64,7 +64,11 @@ var Main = /** @class */ (function () {
             if (height.value)
                 c.height = +height.value;
             _this.canvas.cards.push(c);
-            _this.redraw();
+            if (!c.movable) {
+                _this.homeCanvas.cards.push(c.clone());
+                _this.finalCanvas.cards.push(c.clone());
+            }
+            _this.redrawAll();
         });
         this.bgSubmitButton.addEventListener('click', function (event) {
             var image = new Image();
@@ -240,6 +244,11 @@ var Main = /** @class */ (function () {
                 var mx = this.selected.x + (x - this.x);
                 var my = this.selected.y + (y - this.y);
                 this.selected.setCoordinates(mx, my);
+                if (!this.selected.movable) {
+                    this.homeCanvas.cardByID(this.selected.id).setCoordinates(mx, my);
+                    this.finalCanvas.cardByID(this.selected.id).setCoordinates(mx, my);
+                    this.redrawAll();
+                }
             }
         }
         this.x = e.offsetX;

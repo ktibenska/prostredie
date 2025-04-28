@@ -82,8 +82,8 @@ class Main {
                 c.bg_color = bgColorSelector.value;
             }
 
-            let inputValue = (<HTMLInputElement>document.querySelector('input[name="movableCardRadio"]:checked')).id;
-            if (inputValue == 'iCardRadio') c.setMovable(false); //todo kontanta
+            let immovable = (<HTMLInputElement>document.querySelector('input[name="movableCardRadio"]:checked')).id;
+            if (immovable == 'iCardRadio') c.setMovable(false); //todo kontrola
 
 
             let width = document.getElementById('width') as HTMLInputElement;
@@ -91,8 +91,14 @@ class Main {
 
             if (width.value) c.width = +width.value;
             if (height.value) c.height = +height.value;
+
             this.canvas.cards.push(c)
-            this.redraw();
+            if (!c.movable){
+                this.homeCanvas.cards.push(c.clone())
+                this.finalCanvas.cards.push(c.clone())
+            }
+
+            this.redrawAll();
         });
 
 
@@ -311,6 +317,13 @@ class Main {
                 let my = this.selected.y + (y - this.y);
 
                 this.selected.setCoordinates(mx, my);
+
+                if(!this.selected.movable){
+                    this.homeCanvas.cardByID(this.selected.id).setCoordinates(mx, my)
+                    this.finalCanvas.cardByID(this.selected.id).setCoordinates(mx, my)
+
+                    this.redrawAll();
+                }
             }
         }
 

@@ -135,5 +135,12 @@ class Canvas {
         this.image = image
     }
 
+    public cardByID(id: number): Card {
+        let cards = this.cards.filter(c => c.id === id)
+        if (cards.length > 0) return cards[0]
+
+        return null
+    }
+
 }
 
