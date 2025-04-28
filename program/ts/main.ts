@@ -27,7 +27,6 @@ class Main {
             e => this.onMouseEnter(e),
             e => this.onMouseLeave(e)
         );
-        this.redraw();
 
         this.homeCanvas = new Canvas('home_state_canvas');
         this.finalCanvas = new Canvas('final_state_canvas');
@@ -321,8 +320,8 @@ class Main {
                 this.selected.setCoordinates(mx, my);
 
                 if (!this.selected.movable) {
-                    this.homeCanvas.cardByID(this.selected.id).setCoordinates(mx, my)
-                    this.finalCanvas.cardByID(this.selected.id).setCoordinates(mx, my)
+                    this.homeCanvas.getCardByID(this.selected.id).setCoordinates(mx, my)
+                    this.finalCanvas.getCardByID(this.selected.id).setCoordinates(mx, my)
 
                     this.redrawAll();
                 }
@@ -394,8 +393,31 @@ class Main {
 
         this.mode = Types.RUN;
         this.redraw();
-
     }
+
+
+    public gridOn(grid: boolean) {
+        this.canvas.grid = grid
+        this.homeCanvas.grid = grid
+        this.finalCanvas.grid = grid
+
+        this.redrawAll()
+    }
+
+
+    public updateCardCategory(color: string): void {
+        this.selected.category = color
+        let homeCard = this.homeCanvas.getCardByID(this.selected.id)
+        if (homeCard) homeCard.category = color
+
+        let finalCard = this.finalCanvas.getCardByID(this.selected.id)
+        if (finalCard) finalCard.category = color
+
+        this.selected = null
+    }
+
+
+    //
 
 
     private checkCards(): boolean {
@@ -412,12 +434,9 @@ class Main {
                 continue;
             }
 
-            let finalcard = this.finalCanvas.cards.filter(c => c.id === homeCard.id)[0]
-
+            let finalcard = this.finalCanvas.getCardByID(homeCard.id)
 
             if (!this.isSamePosition(homeCard, finalcard)) {
-                // console.log("?")
-                // console.log(homeCard.isMovable())
                 return false;
             }
         }
@@ -453,34 +472,30 @@ class Main {
 
     public checkSolution() {
         let ok = true;
-        let cards = this.canvas.cards;
-        let final = this.finalCanvas.cards;
 
-        for (let card of final) {
+        for (let card of this.finalCanvas.cards) {
 
             // podla id
             if (card.category == 'white') {
 
-                let idcard = cards.filter(c => c.id === card.id)
-                if (!this.isSamePosition(card, idcard[0])) {
+                let idcard = this.canvas.getCardByID(card.id)
+                if (!this.isSamePosition(card, idcard)) {
                     ok = false;
                     break;
                 }
 
                 if (card.images.length > 1) {
-                    if (card.selected_image != idcard[0].selected_image) {
+                    if (card.selected_image != idcard.selected_image) {
                         ok = false;
                         break;
                     }
                 }
 
-
             } else //ma nastavenu kategoriu
             {
-                let categorycards = cards.filter(c => c.category === card.category)
+                let categorycards = this.canvas.cards.filter(c => c.category === card.category)
                 let okCategorycards = false
                 for (let c of categorycards) {
-
                     if (this.isSamePosition(card, c)) {
                         okCategorycards = true;
                         break;
@@ -531,14 +546,6 @@ class Main {
     }
 
 
-    public updateCardCategory(color: string) {
-        this.selected.category = color
-
-        this.finalCanvas.cards.filter(item => item.id === this.selected.id)[0].category = color
-        this.homeCanvas.cards.filter(item => item.id === this.selected.id)[0].category = color
-
-        this.selected = null
-    }
 
 
     private generateID(): number {
@@ -548,17 +555,7 @@ class Main {
         return 1;
     }
 
-
-    public gridOn(grid: boolean) {
-        this.canvas.grid = grid
-        this.homeCanvas.grid = grid
-        this.finalCanvas.grid = grid
-
-        this.redrawAll()
-    }
-
-
-    public redrawAll() {
+    private redrawAll() {
         this.redraw();
         this.homeCanvas.redraw();
         this.finalCanvas.redraw();

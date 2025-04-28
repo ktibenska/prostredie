@@ -103,7 +103,7 @@ var Canvas = /** @class */ (function () {
     Canvas.prototype.setBg = function (image) {
         this.image = image;
     };
-    Canvas.prototype.cardByID = function (id) {
+    Canvas.prototype.getCardByID = function (id) {
         var cards = this.cards.filter(function (c) { return c.id === id; });
         if (cards.length > 0)
             return cards[0];

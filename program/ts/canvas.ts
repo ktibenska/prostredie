@@ -1,11 +1,11 @@
 class Canvas {
     public canvas;
-    ctx;
+    public ctx;
     public cards: Card[] = [];
 
     public image = null;
-    public bgColor = '#ffffff';
-    public grid = true;
+    public bgColor: string = '#ffffff';
+    public grid: boolean = true;
 
     private viewX: number = 0;
     private viewY: number = 0;
@@ -22,11 +22,11 @@ class Canvas {
         this.ctx.lineCap = 'round';
     }
 
-    public addCard(card: Card) {
+    public addCard(card: Card): void {
         this.cards.push(card)
     }
 
-    public bg() {
+    public bg(): void {
 
         this.canvas.width = document.getElementById('canvas-row').offsetWidth;
         this.canvas.height = document.getElementById('canvas-row').offsetHeight;
@@ -97,11 +97,11 @@ class Canvas {
         this.canvas.addEventListener('mouseleave', onMouseLeave);
     }
 
-    public getViewX() {
+    public getViewX(): number {
         return this.viewX;
     }
 
-    public getViewY() {
+    public getViewY(): number {
         return this.viewY;
     }
 
@@ -118,7 +118,7 @@ class Canvas {
         this.cards.map(o => o.draw(this.ctx));
     }
 
-    public redrawResize() {
+    public redrawResize(): void {
         this.cards.map(o => o.drawResize(this.ctx));
     }
 
@@ -131,11 +131,11 @@ class Canvas {
     }
 
 
-    public setBg(image) {
+    public setBg(image): void {
         this.image = image
     }
 
-    public cardByID(id: number): Card {
+    public getCardByID(id: number): Card {
         let cards = this.cards.filter(c => c.id === id)
         if (cards.length > 0) return cards[0]
 

@@ -67,8 +67,8 @@ var Buttons = /** @class */ (function () {
             }
             _this.sketchpad.finalCanvas.redraw();
         });
-        this.moveButton = document.getElementById('new_activity_button');
-        this.moveButton.addEventListener('mouseup', function () {
+        this.clearButton = document.getElementById('clear_button');
+        this.clearButton.addEventListener('mouseup', function () {
             _this.sketchpad.clearAll();
         });
         this.runButton = document.getElementById('run_button');

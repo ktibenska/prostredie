@@ -12,7 +12,6 @@ var Main = /** @class */ (function () {
         this.canvas = new Canvas('sketchpad_main');
         this.mode = "move" /* Types.MOVE */;
         this.canvas.addEventListeners(function (e) { return _this.onMouseDown(e); }, function (e) { return _this.onMouseMove(e); }, function (e) { return _this.onMouseUp(e); }, function (e) { return _this.onMouseEnter(e); }, function (e) { return _this.onMouseLeave(e); });
-        this.redraw();
         this.homeCanvas = new Canvas('home_state_canvas');
         this.finalCanvas = new Canvas('final_state_canvas');
         this.clearAll();
@@ -247,8 +246,8 @@ var Main = /** @class */ (function () {
                 var my = this.selected.y + (y - this.y);
                 this.selected.setCoordinates(mx, my);
                 if (!this.selected.movable) {
-                    this.homeCanvas.cardByID(this.selected.id).setCoordinates(mx, my);
-                    this.finalCanvas.cardByID(this.selected.id).setCoordinates(mx, my);
+                    this.homeCanvas.getCardByID(this.selected.id).setCoordinates(mx, my);
+                    this.finalCanvas.getCardByID(this.selected.id).setCoordinates(mx, my);
                     this.redrawAll();
                 }
             }
@@ -305,27 +304,38 @@ var Main = /** @class */ (function () {
         this.mode = "run" /* Types.RUN */;
         this.redraw();
     };
+    Main.prototype.gridOn = function (grid) {
+        this.canvas.grid = grid;
+        this.homeCanvas.grid = grid;
+        this.finalCanvas.grid = grid;
+        this.redrawAll();
+    };
+    Main.prototype.updateCardCategory = function (color) {
+        this.selected.category = color;
+        var homeCard = this.homeCanvas.getCardByID(this.selected.id);
+        if (homeCard)
+            homeCard.category = color;
+        var finalCard = this.finalCanvas.getCardByID(this.selected.id);
+        if (finalCard)
+            finalCard.category = color;
+        this.selected = null;
+    };
+    //
     Main.prototype.checkCards = function () {
         if (this.homeCanvas.cards.length != this.finalCanvas.cards.length) {
             return false;
         }
-        var _loop_1 = function (i) {
-            var homeCard = this_1.homeCanvas.cards[i];
-            if (homeCard.isMovable()) {
-                return "continue";
-            }
-            var finalcard = this_1.finalCanvas.cards.filter(function (c) { return c.id === homeCard.id; })[0];
-            if (!this_1.isSamePosition(homeCard, finalcard)) {
-                return { value: false };
-            }
-        };
-        var this_1 = this;
         // console.log(this.homeCanvas.cards.length)
         // console.log(this.finalCanvas.cards.length)
         for (var i = 0; i < this.homeCanvas.cards.length; i++) {
-            var state_1 = _loop_1(i);
-            if (typeof state_1 === "object")
-                return state_1.value;
+            var homeCard = this.homeCanvas.cards[i];
+            if (homeCard.isMovable()) {
+                continue;
+            }
+            var finalcard = this.finalCanvas.getCardByID(homeCard.id);
+            if (!this.isSamePosition(homeCard, finalcard)) {
+                return false;
+            }
         }
         return true;
     };
@@ -355,18 +365,16 @@ var Main = /** @class */ (function () {
     };
     Main.prototype.checkSolution = function () {
         var ok = true;
-        var cards = this.canvas.cards;
-        var final = this.finalCanvas.cards;
-        var _loop_2 = function (card) {
+        var _loop_1 = function (card) {
             // podla id
             if (card.category == 'white') {
-                var idcard = cards.filter(function (c) { return c.id === card.id; });
-                if (!this_2.isSamePosition(card, idcard[0])) {
+                var idcard = this_1.canvas.getCardByID(card.id);
+                if (!this_1.isSamePosition(card, idcard)) {
                     ok = false;
                     return "break";
                 }
                 if (card.images.length > 1) {
-                    if (card.selected_image != idcard[0].selected_image) {
+                    if (card.selected_image != idcard.selected_image) {
                         ok = false;
                         return "break";
                     }
@@ -374,11 +382,11 @@ var Main = /** @class */ (function () {
             }
             else //ma nastavenu kategoriu
              {
-                var categorycards = cards.filter(function (c) { return c.category === card.category; });
+                var categorycards = this_1.canvas.cards.filter(function (c) { return c.category === card.category; });
                 var okCategorycards = false;
-                for (var _a = 0, categorycards_1 = categorycards; _a < categorycards_1.length; _a++) {
-                    var c = categorycards_1[_a];
-                    if (this_2.isSamePosition(card, c)) {
+                for (var _b = 0, categorycards_1 = categorycards; _b < categorycards_1.length; _b++) {
+                    var c = categorycards_1[_b];
+                    if (this_1.isSamePosition(card, c)) {
                         okCategorycards = true;
                         break;
                     }
@@ -389,11 +397,11 @@ var Main = /** @class */ (function () {
                 }
             }
         };
-        var this_2 = this;
-        for (var _i = 0, final_1 = final; _i < final_1.length; _i++) {
-            var card = final_1[_i];
-            var state_2 = _loop_2(card);
-            if (state_2 === "break")
+        var this_1 = this;
+        for (var _i = 0, _a = this.finalCanvas.cards; _i < _a.length; _i++) {
+            var card = _a[_i];
+            var state_1 = _loop_1(card);
+            if (state_1 === "break")
                 break;
         }
         if (ok) {
@@ -422,24 +430,11 @@ var Main = /** @class */ (function () {
         this.redrawAll();
         this.selected = null;
     };
-    Main.prototype.updateCardCategory = function (color) {
-        var _this = this;
-        this.selected.category = color;
-        this.finalCanvas.cards.filter(function (item) { return item.id === _this.selected.id; })[0].category = color;
-        this.homeCanvas.cards.filter(function (item) { return item.id === _this.selected.id; })[0].category = color;
-        this.selected = null;
-    };
     Main.prototype.generateID = function () {
         if (this.canvas.cards.length > 0) {
             return this.canvas.cards.slice(-1)[0].id + 1;
         }
         return 1;
-    };
-    Main.prototype.gridOn = function (grid) {
-        this.canvas.grid = grid;
-        this.homeCanvas.grid = grid;
-        this.finalCanvas.grid = grid;
-        this.redrawAll();
     };
     Main.prototype.redrawAll = function () {
         this.redraw();

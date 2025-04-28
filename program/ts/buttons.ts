@@ -8,6 +8,7 @@ class Buttons {
 
     finalStateButton: HTMLElement;
     homeStateButton: HTMLElement;
+    clearButton: HTMLElement;
 
     runButton: HTMLElement;
     closeButton: HTMLElement;
@@ -111,8 +112,8 @@ class Buttons {
 
         });
 
-        this.moveButton = document.getElementById('new_activity_button');
-        this.moveButton.addEventListener('mouseup', () => {
+        this.clearButton = document.getElementById('clear_button');
+        this.clearButton.addEventListener('mouseup', () => {
             this.sketchpad.clearAll();
         });
 
