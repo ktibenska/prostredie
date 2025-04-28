@@ -119,6 +119,10 @@ var Buttons = /** @class */ (function () {
         this.removeCardCtxBtn.addEventListener('mouseup', function () {
             _this.sketchpad.removeCard();
         });
+        this.showGridBtn = document.getElementById('show_grid');
+        this.showGridBtn.addEventListener('mouseup', function () {
+            _this.sketchpad.gridOn(!_this.showGridBtn.checked);
+        });
     };
     Buttons.prototype.buttonsHidden = function (hidden) {
         this.closeButton.hidden = !hidden;

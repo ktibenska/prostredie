@@ -10,7 +10,6 @@ class Main {
 
     bgImageInput = document.getElementById('id_bg') as HTMLInputElement;
     bgSubmitButton = document.getElementById('bg_submit') as HTMLInputElement;
-
     shuffleButton = document.getElementById('shuffle_cards') as HTMLInputElement;
     outlineButton = document.getElementById('outline_cards') as HTMLInputElement;
 
@@ -113,9 +112,15 @@ class Main {
                 this.finalCanvas.setBg(image)
             }
 
-            this.redraw();
-            this.homeCanvas.redraw();
-            this.finalCanvas.redraw();
+
+            let bgColorSelector = document.getElementById('bg_color') as HTMLInputElement
+            this.canvas.bgColor = bgColorSelector.value;
+            this.homeCanvas.bgColor = bgColorSelector.value;
+            this.finalCanvas.bgColor = bgColorSelector.value;
+
+
+            this.redrawAll();
+
         });
 
 
@@ -160,6 +165,7 @@ class Main {
     public toJSON() {
         let data = "{"
 
+        data += '\"bgcolor\":' + JSON.stringify(this.canvas.bgColor) + ','
         if (this.canvas.image != null) {
             data += '\"bg\":' + JSON.stringify(this.canvas.image.src) + ','
         }
@@ -191,6 +197,10 @@ class Main {
     public fromJSON(json) {
         this.clearAll();
 
+        this.canvas.bgColor = json.bgcolor
+        this.homeCanvas.bgColor = json.bgcolor
+        this.finalCanvas.bgColor = json.bgcolor
+
         if (json.bg) {
             let bgimage = new Image()
             bgimage.src = json.bg
@@ -220,9 +230,7 @@ class Main {
 
 
         this.sortCards();
-        this.homeCanvas.redraw();
-        this.finalCanvas.redraw();
-        this.redraw();
+        this.redrawAll()
     }
 
 
@@ -272,17 +280,6 @@ class Main {
         let y = e.offsetY - this.canvas.getViewY();
 
 
-        if (this.mode == Types.MOVE) {
-            if (this.selected) {
-
-                let mx = this.selected.x + (x - this.x);
-                let my = this.selected.y + (y - this.y);
-
-                this.selected.setCoordinates(mx, my);
-            }
-        }
-
-
         if (this.mode == Types.RESIZE && this.selected) {
             switch (this.selected.getClickedHandle(x, y)) {
                 case Sides.TL:
@@ -308,10 +305,12 @@ class Main {
             }
         }
 
+        if (this.selected) {
+            if (this.mode == Types.MOVE || (this.mode == Types.RUN && this.selected.isMovable())) {
+                let mx = this.selected.x + (x - this.x);
+                let my = this.selected.y + (y - this.y);
 
-        if (this.mode == Types.RUN) {
-            if (this.selected && this.selected.isMovable()) {
-                this.selected.setCoordinates(x, y);
+                this.selected.setCoordinates(mx, my);
             }
         }
 
@@ -389,8 +388,8 @@ class Main {
             return false;
         }
 
-        console.log(this.homeCanvas.cards.length)
-        console.log(this.finalCanvas.cards.length)
+        // console.log(this.homeCanvas.cards.length)
+        // console.log(this.finalCanvas.cards.length)
 
         for (let i = 0; i < this.homeCanvas.cards.length; i++) {
             let homeCard = this.homeCanvas.cards[i]
@@ -398,9 +397,12 @@ class Main {
                 continue;
             }
 
-            if (homeCard.getCoordinates() != this.finalCanvas.cards[i].getCoordinates()) {
-                console.log("?")
-                console.log(homeCard.isMovable())
+            let finalcard = this.finalCanvas.cards.filter(c => c.id === homeCard.id)[0]
+
+
+            if (!this.isSamePosition(homeCard, finalcard)) {
+                // console.log("?")
+                // console.log(homeCard.isMovable())
                 return false;
             }
         }
@@ -417,7 +419,11 @@ class Main {
 
         if (this.shuffleButton.checked) {
             for (let card of this.canvas.cards) {
+                if (!card.movable) {
+                    continue;
+                }
                 let randomCard = this.canvas.cards[Math.floor(Math.random() * this.canvas.cards.length)];
+                if (!randomCard.movable) continue
                 let randomCardCoords = randomCard.getCoordinates();
                 randomCard.setCoordinates(...card.getCoordinates())
                 card.setCoordinates(...randomCardCoords)
@@ -445,6 +451,14 @@ class Main {
                     ok = false;
                     break;
                 }
+
+                if (card.images.length > 1) {
+                    if (card.selected_image != idcard[0].selected_image) {
+                        ok = false;
+                        break;
+                    }
+                }
+
 
             } else //ma nastavenu kategoriu
             {
@@ -481,9 +495,7 @@ class Main {
         this.homeCanvas.cards = this.homeCanvas.cards.filter(item => item.id !== id)
         this.finalCanvas.cards = this.finalCanvas.cards.filter(item => item.id !== id)
 
-        this.redraw()
-        this.finalCanvas.redraw()
-        this.homeCanvas.redraw()
+        this.redrawAll();
 
         this.selected = null;
     }
@@ -505,6 +517,23 @@ class Main {
         }
         return 1;
     }
+
+
+    public gridOn(grid: boolean) {
+        this.canvas.grid = grid
+        this.homeCanvas.grid = grid
+        this.finalCanvas.grid = grid
+
+        this.redrawAll()
+    }
+
+
+    public redrawAll() {
+        this.redraw();
+        this.homeCanvas.redraw();
+        this.finalCanvas.redraw();
+    }
+
 
 }
 

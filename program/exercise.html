@@ -49,7 +49,7 @@
         </button>
         <div class="collapse navbar-collapse" id="">
             <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" href="#">úvod</a></li>
+                <li class="nav-item"><a class="nav-link" href="index.html">úvod</a></li>
                 <li class="nav-item"><a class="nav-link" href="tutorial.html">návod</a></li>
                 <li class="nav-item"><a class="nav-link" href="exercise.html">prostredie</a></li>
             </ul>
@@ -174,12 +174,20 @@
                     </div>
 
                     <div>
+
                         <div id="bg">
+
+                            <label for="id_bg"> Obrázok pozadia:</label>
                             <form id="bg-form" class="nice" action="" method="post">
                                 <input type="file" accept="image/*" name="bg" id="id_bg">
                             </form>
-                        </div>
 
+
+                            <label for="bg_color"> alebo farba pozadia:</label>
+
+                            <input class="input-block-level btn btn-outline-dark btn-light form-control form-control-color"
+                                   title="vyber farbu pozadia" type="color" id="bg_color" value="#ffffff">
+                        </div>
                     </div>
 
 
@@ -277,7 +285,7 @@
                         <div class="form-check form-switch">
                             <label class="form-check-label bi-shuffle" for="shuffle_cards"></label>
                             <input title='zamiešaj kartičky' class="form-check-input" type="checkbox"
-                                   id="shuffle_cards">
+                                   id="shuffle_cards" checked>
                         </div>
                     </div>
 
@@ -285,23 +293,29 @@
                         <div class="form-check form-switch">
                             <label class="form-check-label bi-square" for="outline_cards"></label>
                             <input title='zobraz koncové pozície' class="form-check-input" type="checkbox"
-                                   id="outline_cards">
+                                   id="outline_cards" checked>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="form-check form-switch">
-                            <label class="form-check-label bi-arrow-repeat" for="switch_cards"></label>
-                            <input title='zamieňanie kartičiek' class="form-check-input" type="checkbox"
-                                   disabled id="switch_cards">
+                            <label class="form-check-label bi-grid-3x3" for="show_grid"></label>
+                            <input title='zobraz mriežku' class="form-check-input" type="checkbox"
+                                   id="show_grid" checked>
                         </div>
                     </div>
+
+                    <!--                    <div class="row">-->
+                    <!--                        <div class="form-check form-switch">-->
+                    <!--                            <label class="form-check-label bi-arrow-repeat" for="switch_cards"></label>-->
+                    <!--                            <input title='zamieňanie kartičiek' class="form-check-input" type="checkbox"-->
+                    <!--                                   disabled id="switch_cards">-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
 
                 </div>
 
             </div>
-
-
 
 
             <div class="col-9">

@@ -79,9 +79,11 @@ var Main = /** @class */ (function () {
                 _this.homeCanvas.setBg(image);
                 _this.finalCanvas.setBg(image);
             }
-            _this.redraw();
-            _this.homeCanvas.redraw();
-            _this.finalCanvas.redraw();
+            var bgColorSelector = document.getElementById('bg_color');
+            _this.canvas.bgColor = bgColorSelector.value;
+            _this.homeCanvas.bgColor = bgColorSelector.value;
+            _this.finalCanvas.bgColor = bgColorSelector.value;
+            _this.redrawAll();
         });
         this.canvas.canvas.addEventListener('contextmenu', function (event) {
             event.preventDefault();
@@ -113,6 +115,7 @@ var Main = /** @class */ (function () {
     }
     Main.prototype.toJSON = function () {
         var data = "{";
+        data += '\"bgcolor\":' + JSON.stringify(this.canvas.bgColor) + ',';
         if (this.canvas.image != null) {
             data += '\"bg\":' + JSON.stringify(this.canvas.image.src) + ',';
         }
@@ -140,6 +143,9 @@ var Main = /** @class */ (function () {
     };
     Main.prototype.fromJSON = function (json) {
         this.clearAll();
+        this.canvas.bgColor = json.bgcolor;
+        this.homeCanvas.bgColor = json.bgcolor;
+        this.finalCanvas.bgColor = json.bgcolor;
         if (json.bg) {
             var bgimage = new Image();
             bgimage.src = json.bg;
@@ -166,9 +172,7 @@ var Main = /** @class */ (function () {
             }
         }
         this.sortCards();
-        this.homeCanvas.redraw();
-        this.finalCanvas.redraw();
-        this.redraw();
+        this.redrawAll();
     };
     Main.prototype.setMode = function (mode) {
         this.mode = mode;
@@ -207,13 +211,6 @@ var Main = /** @class */ (function () {
         }
         var x = e.offsetX - this.canvas.getViewX();
         var y = e.offsetY - this.canvas.getViewY();
-        if (this.mode == "move" /* Types.MOVE */) {
-            if (this.selected) {
-                var mx = this.selected.x + (x - this.x);
-                var my = this.selected.y + (y - this.y);
-                this.selected.setCoordinates(mx, my);
-            }
-        }
         if (this.mode == "resize" /* Types.RESIZE */ && this.selected) {
             switch (this.selected.getClickedHandle(x, y)) {
                 case "top-left" /* Sides.TL */:
@@ -238,9 +235,11 @@ var Main = /** @class */ (function () {
                     break;
             }
         }
-        if (this.mode == "run" /* Types.RUN */) {
-            if (this.selected && this.selected.isMovable()) {
-                this.selected.setCoordinates(x, y);
+        if (this.selected) {
+            if (this.mode == "move" /* Types.MOVE */ || (this.mode == "run" /* Types.RUN */ && this.selected.isMovable())) {
+                var mx = this.selected.x + (x - this.x);
+                var my = this.selected.y + (y - this.y);
+                this.selected.setCoordinates(mx, my);
             }
         }
         this.x = e.offsetX;
@@ -299,18 +298,23 @@ var Main = /** @class */ (function () {
         if (this.homeCanvas.cards.length != this.finalCanvas.cards.length) {
             return false;
         }
-        console.log(this.homeCanvas.cards.length);
-        console.log(this.finalCanvas.cards.length);
-        for (var i = 0; i < this.homeCanvas.cards.length; i++) {
-            var homeCard = this.homeCanvas.cards[i];
+        var _loop_1 = function (i) {
+            var homeCard = this_1.homeCanvas.cards[i];
             if (homeCard.isMovable()) {
-                continue;
+                return "continue";
             }
-            if (homeCard.getCoordinates() != this.finalCanvas.cards[i].getCoordinates()) {
-                console.log("?");
-                console.log(homeCard.isMovable());
-                return false;
+            var finalcard = this_1.finalCanvas.cards.filter(function (c) { return c.id === homeCard.id; })[0];
+            if (!this_1.isSamePosition(homeCard, finalcard)) {
+                return { value: false };
             }
+        };
+        var this_1 = this;
+        // console.log(this.homeCanvas.cards.length)
+        // console.log(this.finalCanvas.cards.length)
+        for (var i = 0; i < this.homeCanvas.cards.length; i++) {
+            var state_1 = _loop_1(i);
+            if (typeof state_1 === "object")
+                return state_1.value;
         }
         return true;
     };
@@ -323,7 +327,12 @@ var Main = /** @class */ (function () {
         if (this.shuffleButton.checked) {
             for (var _b = 0, _c = this.canvas.cards; _b < _c.length; _b++) {
                 var card = _c[_b];
+                if (!card.movable) {
+                    continue;
+                }
                 var randomCard = this.canvas.cards[Math.floor(Math.random() * this.canvas.cards.length)];
+                if (!randomCard.movable)
+                    continue;
                 var randomCardCoords = randomCard.getCoordinates();
                 randomCard.setCoordinates.apply(randomCard, card.getCoordinates());
                 card.setCoordinates.apply(card, randomCardCoords);
@@ -337,13 +346,19 @@ var Main = /** @class */ (function () {
         var ok = true;
         var cards = this.canvas.cards;
         var final = this.finalCanvas.cards;
-        var _loop_1 = function (card) {
+        var _loop_2 = function (card) {
             // podla id
             if (card.category == 'white') {
                 var idcard = cards.filter(function (c) { return c.id === card.id; });
-                if (!this_1.isSamePosition(card, idcard[0])) {
+                if (!this_2.isSamePosition(card, idcard[0])) {
                     ok = false;
                     return "break";
+                }
+                if (card.images.length > 1) {
+                    if (card.selected_image != idcard[0].selected_image) {
+                        ok = false;
+                        return "break";
+                    }
                 }
             }
             else //ma nastavenu kategoriu
@@ -352,7 +367,7 @@ var Main = /** @class */ (function () {
                 var okCategorycards = false;
                 for (var _a = 0, categorycards_1 = categorycards; _a < categorycards_1.length; _a++) {
                     var c = categorycards_1[_a];
-                    if (this_1.isSamePosition(card, c)) {
+                    if (this_2.isSamePosition(card, c)) {
                         okCategorycards = true;
                         break;
                     }
@@ -363,11 +378,11 @@ var Main = /** @class */ (function () {
                 }
             }
         };
-        var this_1 = this;
+        var this_2 = this;
         for (var _i = 0, final_1 = final; _i < final_1.length; _i++) {
             var card = final_1[_i];
-            var state_1 = _loop_1(card);
-            if (state_1 === "break")
+            var state_2 = _loop_2(card);
+            if (state_2 === "break")
                 break;
         }
         if (ok) {
@@ -382,9 +397,7 @@ var Main = /** @class */ (function () {
         this.canvas.cards = this.canvas.cards.filter(function (item) { return item.id !== id; });
         this.homeCanvas.cards = this.homeCanvas.cards.filter(function (item) { return item.id !== id; });
         this.finalCanvas.cards = this.finalCanvas.cards.filter(function (item) { return item.id !== id; });
-        this.redraw();
-        this.finalCanvas.redraw();
-        this.homeCanvas.redraw();
+        this.redrawAll();
         this.selected = null;
     };
     Main.prototype.updateCardCategory = function (color) {
@@ -399,6 +412,17 @@ var Main = /** @class */ (function () {
             return this.canvas.cards.slice(-1)[0].id + 1;
         }
         return 1;
+    };
+    Main.prototype.gridOn = function (grid) {
+        this.canvas.grid = grid;
+        this.homeCanvas.grid = grid;
+        this.finalCanvas.grid = grid;
+        this.redrawAll();
+    };
+    Main.prototype.redrawAll = function () {
+        this.redraw();
+        this.homeCanvas.redraw();
+        this.finalCanvas.redraw();
     };
     return Main;
 }());

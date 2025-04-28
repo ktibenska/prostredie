@@ -4,9 +4,12 @@ class Canvas {
     public cards: Card[] = [];
 
     public image = null;
+    public bgColor = '#ffffff';
+    public grid = true;
 
     private viewX: number = 0;
     private viewY: number = 0;
+
 
     constructor(id: string) {
         this.canvas = document.getElementById(id);
@@ -44,8 +47,11 @@ class Canvas {
         }
 
 
-        this.ctx.fillStyle = 'white';
+        this.ctx.fillStyle = this.bgColor;
         this.ctx.fillRect(0, 0, w, h);
+
+        if (!this.grid) return;
+
         this.ctx.lineWidth = 0.3;
         this.ctx.strokeStyle = 'gray';
         this.ctx.fillStyle = 'black';
@@ -118,6 +124,7 @@ class Canvas {
 
 
     public clear(): void {
+        this.bgColor = '#ffffff'
         this.image = null;
         this.bg();
         this.cards = [];

@@ -16,6 +16,22 @@ main {
     padding: 5px;
 }
 
+.tutorial{
+    align-content: center;
+    text-align: left;
+    font-size: 18px;
+}
+
+img {
+    display: block;
+    margin: auto;
+    width: 50%;
+}
+
+h2, h3{
+    text-align: center;
+}
+
 #settings_col .btn {
     margin-bottom: 1px
 }

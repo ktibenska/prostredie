@@ -26,7 +26,7 @@
         </button>
         <div class="collapse navbar-collapse" id="">
             <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" href="#">úvod</a></li>
+                <li class="nav-item"><a class="nav-link" href="index.html">úvod</a></li>
                 <li class="nav-item"><a class="nav-link" href="tutorial.html">návod</a></li>
                 <li class="nav-item"><a class="nav-link" href="exercise.html">prostredie</a></li>
             </ul>
@@ -41,7 +41,7 @@
         <div class="col-2 sidenav">
             <nav class="navbar" id="side_nav">
                 <ul class="navbar-nav">
-<!--                    <li class="nav-item"><a class="nav-link" href="#">Kartičkové prostredie</a></li>-->
+                    <!--                    <li class="nav-item"><a class="nav-link" href="#">Kartičkové prostredie</a></li>-->
                     <li class="nav-item"><a class="nav-link" href="#pozadie">Zmena pozadia</a></li>
 
                     <li class="nav-item"><a class="nav-link" href="#vytvaranie">Vytváranie aktivít</a></li>
@@ -60,187 +60,317 @@
 
         </div>
 
-        <div class="col-8 main-text">
+        <div class="col-8 main-text tutorial">
             <div class="row"><h2>Návod</h2>
                 <div>
-
-                    Program Kartičkové prostredie slúži
-
                     Učiteľ má možnosť vytvárať vlastné aktivity a úlohy, ktoré žiaci môžu riešiť.
 
                     <br>
-                    Pri všetkých aktivitách je dobré začať nastavením pozadia, aby sa aktivity ľahšie vytvárali.
+                    Pri vytváraní aktivít je dobré začať nastavením pozadia, aby mal používateľ lepšiu predstavu, kam
+                    ukladať kartičky.
                 </div>
             </div>
             <hr>
             <div class="row"><h3 id="pozadie">Zmena pozadia</h3></div>
 
-
-            Pozadie vieme nastaviť na obrázok z galérie.
-
-            Klikneme na tlačidlo TODO pre nastavenie pozadia.
-
-            Zobrazí sa modálne okno, klikneme na tlačidlo Vybrať súbor a zvolíme vhodný obrázok.
-
-            Po kliknutí na tlačidlo OK sa pozadie zmení.
-
-            Ak pozadie však nechceme meniť, zostane nastavené na pôvodnú mriežku.
-
+            Pozadie vieme nastaviť na obrázok z galérie alebo ho nastaviť na jednu farbu.
+            <br>
+            Pre nastavenie pozadia klikneme na tlačidlo
+            <button class="btn btn-secondary bi bi-tree"></button>
+            <br>
+            Zobrazí sa modálne okno.
+            Ak chceme nastaviť obrázok, klikneme na tlačidlo Vybrať súbor a zvolíme vhodný obrázok.
+            Ak chceme zvoliť farbu, klikneme na farebný štvorec a vyberieme farbu.
+            <br>
+            Kliknutím na tlačidlo
+            <button type="button" class="btn btn-primary">ok</button>
+            sa pozadie zmení.
+            <br>
+            Ak pozadie nechceme meniť, zostane nastavené na pôvodnú mriežku.
+            Vieme ju vypnúť/zapnúť tlačidlom označeným <label class="form-check-label bi-grid-3x3"></label>.
             <hr>
+
             <div class="row"><h3 id="vytvaranie">Vytváranie aktivít</h3></div>
 
-            V programe vieme vytvárať rôzne typy úloh a táto príručka priblíži, ako sa dajú takéto úlohy
-            vytvárať.
-            Ukážeme si to na konkrétnom príklade pre každý typ úlohy.
-
+            V aplikácii vieme vytvárať rôzne typy úloh a táto príručka priblíži, ako sa dajú takéto úlohy
+            vytvárať. Ukážeme si konkrétny príklad pre každý typ úlohy.
 
             <hr>
             <div class="row"><h4 id="zoradovacie">Zoraďovacie aktivity</h4></div>
 
             Pri zoraďovacích aktivitách bude cieľom žiaka zoradiť niekoľko kartičiek do správnej postupnosti.
 
+            <br>
             Ukážeme si to na príklade pečenia koláča.
 
             Postup bude mať 5 krokov:
             Príprava surovín,
-            Miešanie cesta,
-            Vylievanie cesta na plech,
-            Vloženie plechu do rúry,
-            Vybratie upečeného koláča.
-
+            miešanie cesta,
+            vylievanie cesta na plech,
+            vloženie plechu do rúry,
+            vybratie upečeného koláča.
+            <br>
             Každý z týchto krokov bude znázornený obrázkom a žiak bude mať za úlohu určiť,
             v akom poradí je potrebné tieto kroky vykonať.
-
+            <br>
             Pripravíme si obrázky – jeden pre každý krok postupu. Obrázky si môžme nakresliť alebo nájsť na internete.
 
             Spustíme si prostredie a začneme vytvárať kartičky.
-
-
+            <br>
             1.
-            Budeme vytvárať pohyblivé kartičky.
             Klikneme na tlačidlo
             <button class="btn btn-warning bi bi-plus"></button>
 
             Zobrazi sa modálne okno v ktorom vyberieme parametre novej kartičky.
 
             Zvolíme pohyblivá - keďže budeme chcieť kartičky presúvať.
-            Zaklikneme tlačidlo obrázok, klikneme na tlačidlo Vybrať súbory a zvolíme obrázok prvej kartičky.
+            Zaklikneme voľbu obrázok, klikneme na tlačidlo Vybrať súbory a zvolíme obrázok prvej kartičky.
 
             Ak chceme nechať obrázok v pôvodnej veľkosti, nič ďalšie nevypĺňame a klikneme na tlačidlo OK.
 
-
             Postup zopakujeme 5 krát, vždy zvolíme ďalší obrázok.
+            <br>
+            <img src="img/zorad1.png" alt="vytváranie kartičky">
+            <br>
 
-
-            2.
-            Klikneme na tlačidlo
+            2. Klikneme na tlačidlo
             <button class="btn btn-warning bi bi-arrows-move"></button>
             čím sa zmení mód na presúvanie.
 
-            Teraz vieme presunúť obrázky na pozíciu, kde chceme, aby v aktivite boli na začiatku.
-            Posúvame obrázky ťahaním po ploche na miesto, kde chceme aby sa nachádzali.
+            Posúvame obrázky ťahaním po ploche na miesto, kde chceme aby sa nachádzali vo finálnej pozícii.
+            Všetky postupne presunieme.
 
-            Všetky postupne presunieme a potom kliknutím na tlačidlo
+
+            <br>
+            <img src="img/zorad2.png" alt="zoradené obrázky">
+            <br>
+
+            3. Kliknutím na tlačidlo
+            <button class="btn btn-warning bi bi-check"></button>
+            sa uloží ich finálna pozícia.
+
+            Na pravo vidíme na hornej zmenšenej ploche, kde sa obrázok bude nachádzať na konci aktivity.
+            <br>
+
+
+            4.
+            Finálny stav je nastavený, potrebujeme nastaviť už len domáci stav.
+            Kartičky môžeme nechať na mieste, klikneme na tlačidlo
             <button class="btn btn-warning bi bi-house"></button>
-            sa uloží ich domáca pozícia.
+            čím sa uloží ich domáca pozícia.
+            <br>
+            Musíme si dať pozor, aby bolo nastavené náhodné miešanie kartičiek na ľavom paneli s ikonkou
+            <label class="form-check-label bi-shuffle"></label>.
 
-            Na pravo vidíme na hornej zmenšenej ploche, kde sa obrázok bude nachádzať na začiatku aktivity.
+            <br>
+            5. Aby žiaci vedeli, čo majú robiť a poradie bolo očíslované, môžeme si vytvoriť vlastné pozadie s textom a
+            číslami a len ho vložiť do pozadia ako obrázok.
+            Môžeme však do pozadia nastaviť iba farbu a vložiť textové pevné kartičky. Klikneme na tlačidlo novej
+            kartičky a zvolíme pevnú a textovú.
+            Môžeme pridať kartičku so zadaním a 5 ďalších kartičiek, očíslovaných 1-5 a umiestniť ich nad obrázky. Vieme
+            zadať veľkosť podľa potreby.
 
+            <br>
+            <img src="img/zorad3.png" alt="vytváranie pevnej kartičky">
+            <br>
 
-            3.
-            Domáci stav je nastavený, potrebujeme nastaviť už len finálny stav.
+            6. Aktivita je hotová a môžeme ju uložiť a spúšťať.
 
-            Presunieme obrázky na ploche na miesta, kam chceme, aby ich žiaci ukladali.
-
-            Zoradíme ich do presného poradia, potom klikneme na tlačidlo TODO a uloží sa aj ich finálny stav.
-
-            Na pravo vidíme na dolnej zmenšenej ploche, kde sa obrázok nachádza po presunutí
-
-            4. Aktivita je hotová a môžeme ju spustiť.
-
+            <br>
+            <img src="img/zorad4.png" alt="hotová zoraďovacia aktivita">
+            <br>
 
             <hr>
-            <div class="row" id="priradovacie"><h4>Priraďovacie aktivity</h4></div>
-
+            <div class="row" id="priradovacie"><h4>Priraďovacie/klikacie aktivity</h4></div>
+            <!--todo rozdelit kategorie ?-->
             Vytvoríme aktivitu, v ktorej sa budú párovať obrázky ktoré sú rovnaké, alebo k sebe patria.
             Ukážeme si úlohu s párovaním robotov, ktorí sa líšia v niektorom zo štyroch znakov.
 
             V úlohe budeme vedieť klikať na jednu kartičku, čím sa bude meniť jej obrázok.
             Budeme chcieť zvoliť taký, ktorý je na ukážkovej nepohyblivej kartičke.
 
-            TODO? Pri návrhu aktivity najprv zvážte, ktoré kartičky budú
-            pevné, ktoré pohyblivé. Neskôr sa to už nedá meniť.
+            Pripravíme si 4 obrázky robotov.
+            <br>
+            1. Kliknutím na tlačidlo
+            <button class="btn btn-warning bi-plus"></button>
+            pridáme novú kartičku. Zvolíme nepohyblivú, pretože na ňu budeme iba klikať, ale premiestňovať ju nebude
+            treba.
+            Zvolíme obrázok a pri vyberaní obrázkov označíme a vložíme všetky 4 obrázky naraz.
+            Toto zopakujeme 4x.
+            <br>
+            <img src="img/robot1.png" alt="pridávanie pohyblivej kartičky s viacerými obrázkami">
+            <br>
 
+            2. V móde presúvania ich presunieme vedľa seba na spodok plochy.
+            <br>
+            <img src="img/robot2.png" alt="kartičky robotov">
+            <br>
 
-           Zvolíme si obrázky robotov, s ktorými budeme pracovať.
+            3. Znova pridáme kartičku, teraz už len jednu pre každého robota. Vytvoríme takto 4 rôzne nepohyblivé
+            kartičky s jedným obrázkom.
+            Presunieme každú nad jednu kartičku, čo už bola uložená.
 
+            <br>
 
+            4. Tlačidlom
+            <button class="btn btn-warning bi-house"></button>
+            uložíme domovský stav.
+
+            <br>
+
+            5. Pri kliknutí na kartičky, do ktorých sme vložili viac obrázkov vidíme, že sa obrázok zmení. Kliknutím
+            viac krát ho zmeníme na obrázok robota, čo je nad ním.
+
+            <br>
+
+            6. Aktivita je hotová, môžeme si ju uložiť alebo zahrať.
+
+            <br>
+            <img src="img/robot3.png" alt="hotová aktivita s robotomi">
+
+            <hr>
+            <div class="row" id="doplnovacie"><h4>Doplňovacie aktivity</h4></div>
+            Vyrobíme aktivitu, v ktorej budeme doplňovať vzor. Úlohou bude doplniť korálky do náhrdelníka tak, aby sa
+            vzor pravidelne opakoval.
+            <br>
+            Ako pozadie si pripravíme obrázok s postupnosťou korálok na náhrdelníku, 4 budú vynechané.
+            Okrem toho si pripravíme obrázky jednotlivých korálok - žltá, modrá, červená.
+
+            <br>
+            1. Vytvoríme pohyblivú kartičku. Ako obrázok vyberieme jednu z korálok. Postupne takto pridáme všetky 4
+            korálky - červenú, modrú, 2x žltú.
+
+            <br>
+            <img src="img/dopln1.png" alt="pridávanie pohyblivej kartičky">
+            <br>
+
+            2. Posunieme kartičky na bok, aby bolo vidno celý náhrdelník na pozadí.
+
+            <br>
+            3. Pre obe žlté korálky zaznačíme rovnakú kategóriu. Klikneme pravým tlačidlom myši na kartičku, klikneme na
+            tlačidlo niektorej farby, rovnakú pre obe kartičky.
+
+            <br>
+            <img src="img/dopln2.png" alt="kategória kartičky">
+            <br>
+
+            4. Uložíme domácu pozíciu hry kliknutím na tlačidlo
+            <button class="btn btn-warning bi-house"></button>
+
+            <br>
+            <img src="img/dopln3.png" alt="domáci stav aktivity">
+            <br>
+
+            5. Presunieme obrázky korálok na miesta, kam patria. Kliknutím na
+            <button class="btn btn-warning bi-check"></button>
+            uložíme finálny stav.
+            <br>
+            6. Aktivita je hotová, môžeme ju spustiť alebo uložiť.
+
+            <hr>
+
+            <div class="row" id="kategorizacne"><h4>Kategorizačné aktivity</h4></div>
+
+            Vytvoríme aktivitu na rozdeľovanie slov do kategórií - budeme zaraďovať podstatné mená do vzorov pre stredný
+            rod.
+
+            1. Vytvoríme pevné textové kartičky. Výšku môžeme nastaviť na 25, šírku na 150, aby boli všetky rovnaké.
+            Každej nastavíme inú farbu a text - mesto, srdce, vysvedčenie, dievča.
+            <br>
+            <img src="img/categ1.png" alt="vytvorenie pevnej kartičky">
+            <br>
+            2. Umiestnime ich na vrch plochy, kliknutím na tlačidlo posúvania a ťahaním myšou.
+            <br>
+            <img src="img/categ2.png" alt="pevné kartičky">
+            <br>
+            3. Vytvoríme pohyblivú kartičku rovnakej šírky a výšky ako predtým, nastavíme jej ďalšiu farbu a napíšeme na
+            ňu slovo stredného rodu.
+            Vytvoríme ich viac, usporiadame ich na dolnej časti obrazovky.
+            <br>
+            <img src="img/categ3.png" alt="vytvorenie pohyblivej kartičky">
+            <br>
+            4. Všetkým kartičkám, ktoré sú vzoru mesto, pravým kliknutím zvolíme jednu farbu kategórie. Pre každý vzor
+            si vyberieme jednu farbu a nastavíme túto kategóriu všetkým slovám daného vzoru.
+            <br>
+            <img src="img/categ5.png" alt="zakliknutie kategórie">
+            <br>
+            5. Kliknutím na tlačidlo
+            <button class="btn btn-warning bi-house"></button>
+            nastavíme domáci stav.
+            <br>
+            <img src="img/categ4.png" alt="domáci stav">
+            <br>
+            6. Zaklikneme presúvanie. Kartičky presunieme ťahaním do stĺpcov pod ich vzor.
+            <br>
+            7. Klikneme na
+            <button class="btn btn-warning bi-check"></button>
+            a uložíme tak aj finálny stav.
+            <br>
+            8. Aby boli slová zamiešané, dáme si pozor, aby bolo zakliknuté náhodné miešanie kartičiek <label
+                class="form-check-label bi-shuffle"></label>, a taktiež obrysy
+            kartičiek vo finálnom stave <label class="form-check-label bi-square"></label>.
+            <br>
+            <img src="img/categ6.png" alt="hotová aktivita">
+            <br>
+
+            Aktivita je hotová.
 
 
             <hr>
-            <div class="row" id="doplnovacie"><h3>Doplňovacie aktivity</h3></div>
-            ...
-            <hr>
+            <!--            <div class="row" id="klikacie"><h4>Klikacie aktivity</h4></div>-->
 
-            <div class="row" id="kategorizacne"><h3>Kategorizačné aktivity</h3></div>
-            ?
+            <!--            1.-->
+            <!--            Budeme vytvárať nepohyblivé kartičky.-->
+            <!--            Klikneme na tlačidlo-->
+            <!--            <button class="btn btn-warning bi bi-plus"></button>-->
 
-            <hr>
-            <div class="row" id="klikacie"><h3>Klikacie aktivity</h3></div>
+            <!--            V modálnom okne vyberieme parametre novej kartičky.-->
 
-            todo popis ulohy
+            <!--            Zvolíme nepohyblivá - kartičky nebudeme presúvať, zostávajú na mieste.-->
+            <!--            Zaklikneme tlačidlo obrázok, klikneme na tlačidlo Vybrať súbory a zvolíme dva obrázky, ktoré sa na prvej-->
+            <!--            kartičke budú klikaním striedať.-->
 
-            1.
-            Budeme vytvárať nepohyblivé kartičky.
-            Klikneme na tlačidlo
-            <button class="btn btn-warning bi bi-plus"></button>
-
-            V modálnom okne vyberieme parametre novej kartičky.
-
-            Zvolíme nepohyblivá - kartičky nebudeme presúvať, zostávajú na mieste.
-            Zaklikneme tlačidlo obrázok, klikneme na tlačidlo Vybrať súbory a zvolíme dva obrázky, ktoré sa na prvej kartičke budú klikaním striedať.
-
-            Klikneme na tlačidlo OK.
+            <!--            Klikneme na tlačidlo OK.-->
 
 
-            2. Kartičku ťahaním presunieme, prvú dáme do ľavého horného rohu.
+            <!--            2. Kartičku ťahaním presunieme, prvú dáme do ľavého horného rohu.-->
 
-            3. Postup zopakujeme 25 krát, zvolíme vždy rovnaké dva obrázky.
-            Kartičky presúvame aby boli čo najkrašie, môžme sa držať mriežky.
+            <!--            3. Postup zopakujeme 25 krát, zvolíme vždy rovnaké dva obrázky.-->
+            <!--            Kartičky presúvame aby boli čo najkrašie, môžme sa držať mriežky.-->
 
-            4.
-            Kliknutím na kartičku sa zmení jej obrázok.
+            <!--            4.-->
+            <!--            Kliknutím na kartičku sa zmení jej obrázok.-->
 
-            Postupne preklikáme kartičky na správne výsledné riešenie.
-
-
-            TODO pevna karticka so zadanim ulohy
-            TODO SPRAVNE RIESENIE?? a dopisat stromy
-
-
-            <hr>
+            <!--            Postupne preklikáme kartičky na správne výsledné riešenie.-->
+            <!--            <hr>-->
 
             <div class="row"><h3 id="spustenie">Spúštanie aktivít a kontrola riešenia</h3></div>
-            Aktivitu spúšťame kliknutím na tlačidlo TODO.
+            Aktivitu spúšťame kliknutím na tlačidlo
+            <button class="btn btn-warning bi-play"></button>
+            .
 
-            Jeho stlačením zmiznú z obrazovky všetky tlačidlá okrem dvoch.
-
-            TODO X tlačidlom spustenú aktivitu zavrieme a vrátime sa do módu upravovania aktivity.
-
-
-            Tlačidlo ( TODO otaznikove) slúži na kontrolu riešenia. Kliknutím naň sa dozvieme,
+            Jeho stlačením zmiznú z obrazovky všetky tlačidlá okrem dvoch:
+            <br>
+            Tlačidlom
+            <button class="btn btn-warning bi-x"></button>
+            spustenú aktivitu zavrieme a vrátime sa do módu upravovania aktivity.
+            <br>
+            Tlačidlo
+            <button class="btn btn-warning bi-question"></button>
+            slúži na kontrolu riešenia. Kliknutím naň sa dozvieme,
             či je úloha vyriešená správne, alebo nie.
 
-
-
-            Ak aktivitu spustiť nejde, môže to byť preto, že v domácom stave je iný počet kartičiek, ako vo finálnom stave.
+            <br>
+            Ak aktivitu spustiť nejde, môže to byť preto, že v domácom stave je iný počet kartičiek, ako vo finálnom
+            stave.
             Aktivitu nepôjde spustiť ani ak sme presunuli kartičku, ktorá je nepohyblivá.
-
 
             <hr>
             <div class="row"><h3 id="ukladanie">Ukladanie a načítavanie aktivít</h3></div>
 
-            Hotovú aktivitu vieme uložiť pomocou tlačidla (TODO save).
+            Hotovú aktivitu vieme uložiť pomocou tlačidla
+            <button class="btn btn-warning bi-save"></button>
+            .
             Údaje o nej sa uložia do .json súboru, uloží sa do stiahnutých súborov.
 
             Takýto súbor vieme následne aj načítať a otvoriť si z neho aktivitu.
@@ -248,11 +378,15 @@
             Keď načítavame aktivitu zo súboru si treba dať pozor, aby sme nemali nejakú rozrobenú,
             neuloženú aktivitu, pretože by sa vymazala.
 
-            Klikneme na tlačidlo (TODO)
+            <br>
+            Klikneme na tlačidlo
+            <button class="btn btn-warning bi-folder2-open"></button>
+            .
             Vybrať súbor - zvolíme si nachystanú aktivitu vo forme .json súboru.
-            Kliknutím na tlačidlo (TODO - OK alebo file) sa plocha celá prekreslí a vykreslí sa aktivita zo súboru.
-            Vieme ju potom rovno spustiť, alebo aj ďalej upravovať.
-
+            Kliknutím na tlačidlo
+            <button class="btn btn-primary">ok</button>
+            sa plocha celá prekreslí a vykreslí sa aktivita zo súboru.
+            Vieme ju potom rovno spustiť, alebo ešte ďalej upravovať.
 
 
         </div>

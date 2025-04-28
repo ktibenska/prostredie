@@ -20,6 +20,7 @@ class Buttons {
 
     removeCardCtxBtn: HTMLElement
 
+    showGridBtn: HTMLInputElement;
 
     contextMenu: HTMLElement;
 
@@ -174,6 +175,11 @@ class Buttons {
         this.removeCardCtxBtn = document.getElementById('remove_card');
         this.removeCardCtxBtn.addEventListener('mouseup', () => {
             this.sketchpad.removeCard();
+        });
+
+        this.showGridBtn = document.getElementById('show_grid') as HTMLInputElement;
+        this.showGridBtn.addEventListener('mouseup', () => {
+            this.sketchpad.gridOn(!this.showGridBtn.checked);
         });
 
     }
