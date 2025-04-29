@@ -103,11 +103,13 @@
 
                     <div>
 
-                        <input type="radio" name="d" id="reveal" checked>
-                        <label for="reveal">obrázok</label>
+                        <input class="form-check-input" type="radio" name="txtorImageRadio" id="reveal" checked>
+                        <label class="form-check-label" for="reveal">obrázok</label>
 
-                        <input type="radio" name="d" id="hideBack">
-                        <label for="hideBack">text</label>
+                        <input class="form-check-input" type="radio" name="txtorImageRadio" id="hideBack">
+                        <label class="form-check-label" for="hideBack">text</label>
+
+                        <div id="modal-message">Nebol vložený obrázok.</div>
 
                         <div id="email">
                             <form id="email-form" class="nice" action="" method="post">
@@ -151,7 +153,8 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="submit">ok
+                    <button type="button" class="btn btn-primary" id="submit">ok</button>
+                    <button hidden type="button" class="btn btn-primary" data-dismiss="modal" id="hiddenSubmit">
                     </button>
                 </div>
             </div>

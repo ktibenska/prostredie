@@ -16,6 +16,16 @@ class Main {
     finalCanvas: Canvas;
     homeCanvas: Canvas;
 
+    private closeModal(e) {
+        let modal = document.getElementById('exampleModal') as HTMLElement;
+
+        e.preventDefault();
+        // modal.classList.remove('show'); // Remove show class
+        // modal.style.display = 'none'; // Hide it
+        // document.body.classList.remove('modal-open'); // Remove modal-open from body
+        // modal.setAttribute('aria-hidden', 'true'); // Set aria-hidden to true
+    }
+
 
     constructor() {
         this.canvas = new Canvas('sketchpad_main')
@@ -34,13 +44,18 @@ class Main {
         this.clearAll()
 
         this.submitButton.addEventListener('click', (event: Event) => {
+            const message = document.getElementById("modal-message");
             const input = this.imageInput
             let c: Card;
 
-            if (input.files && input.files[0]) {
+            const selectedOption = (<HTMLInputElement>document.querySelector('input[name="txtorImageRadio"]:checked')).id;
 
-                //todo check aj podla toho ci je zakliknuty checkbox text/obrazok!
-                // ked je pridany obrazok a kliknuty text, vykresli sa obrazok aj tak - text naopak
+            if (selectedOption == 'reveal') {
+
+                if (!(input.files && input.files[0])) {
+                    message.style.visibility = 'visible'
+                    return;
+                }
 
                 c = new ImageCard(this.x, this.y, this.generateID())
                 const filesArray: File[] = [];
@@ -94,10 +109,10 @@ class Main {
             this.canvas.cards.push(c)
             if (!c.movable) {
                 this.addImmovableCard(c)
-                // this.homeCanvas.cards.push(c.clone())
-                // this.finalCanvas.cards.push(c.clone())
             }
 
+            message.style.visibility = 'hidden'
+            document.getElementById('hiddenSubmit').click();
             this.redrawAll();
         });
 

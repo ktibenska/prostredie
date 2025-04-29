@@ -3,14 +3,14 @@ class Buttons {
 
     moveButton: HTMLElement;
     addButton: HTMLElement;
-    resizeButton: HTMLElement;
-
+    resizeButton: HTMLElement
 
     finalStateButton: HTMLElement;
     homeStateButton: HTMLElement;
     clearButton: HTMLElement;
 
     runButton: HTMLElement;
+    txtRadio: HTMLElement
     closeButton: HTMLElement;
     checkButton: HTMLElement
 
@@ -126,6 +126,11 @@ class Buttons {
 
         });
 
+        this.txtRadio = document.getElementById('hideBack');
+        this.txtRadio.addEventListener('click', () => {
+            let message = document.getElementById("modal-message");
+            message.style.visibility = 'hidden'
+        })
 
         this.closeButton = document.getElementById('close_button');
         this.closeButton.hidden = true;

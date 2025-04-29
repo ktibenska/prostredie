@@ -78,6 +78,11 @@ var Buttons = /** @class */ (function () {
                 _this.buttonsHidden(true);
             }
         });
+        this.txtRadio = document.getElementById('hideBack');
+        this.txtRadio.addEventListener('click', function () {
+            var message = document.getElementById("modal-message");
+            message.style.visibility = 'hidden';
+        });
         this.closeButton = document.getElementById('close_button');
         this.closeButton.hidden = true;
         this.closeButton.addEventListener('mouseup', function () {

@@ -92,16 +92,26 @@ h2, h3{
 }
 
 
-#hideBack:not(:checked) ~ #text_values {
+
+#hideBack:not(:checked) ~ #text_values { /*prekliknutie na obrazky*/
     display: none;
 }
 
-#hideBack:checked ~ #text_values {
+#hideBack:checked ~ #text_values { /* prekliknutie na text*/
     display: block;
+}
+
+#hideBack:checked ~ #modal-message {
+    visibility: hidden;
 }
 
 #email, #text_values {
     display: none;
+}
+
+#modal-message{
+    color: red;
+    visibility: hidden;
 }
 
 /* context menu */

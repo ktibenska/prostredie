@@ -16,11 +16,15 @@ var Main = /** @class */ (function () {
         this.finalCanvas = new Canvas('final_state_canvas');
         this.clearAll();
         this.submitButton.addEventListener('click', function (event) {
+            var message = document.getElementById("modal-message");
             var input = _this.imageInput;
             var c;
-            if (input.files && input.files[0]) {
-                //todo check aj podla toho ci je zakliknuty checkbox text/obrazok!
-                // ked je pridany obrazok a kliknuty text, vykresli sa obrazok aj tak - text naopak
+            var selectedOption = document.querySelector('input[name="txtorImageRadio"]:checked').id;
+            if (selectedOption == 'reveal') {
+                if (!(input.files && input.files[0])) {
+                    message.style.visibility = 'visible';
+                    return;
+                }
                 c = new ImageCard(_this.x, _this.y, _this.generateID());
                 var filesArray = [];
                 for (var i = 0; i < input.files.length; i++) {
@@ -65,9 +69,9 @@ var Main = /** @class */ (function () {
             _this.canvas.cards.push(c);
             if (!c.movable) {
                 _this.addImmovableCard(c);
-                // this.homeCanvas.cards.push(c.clone())
-                // this.finalCanvas.cards.push(c.clone())
             }
+            message.style.visibility = 'hidden';
+            document.getElementById('hiddenSubmit').click();
             _this.redrawAll();
         });
         this.bgSubmitButton.addEventListener('click', function (event) {
@@ -119,6 +123,14 @@ var Main = /** @class */ (function () {
             });
         });
     }
+    Main.prototype.closeModal = function (e) {
+        var modal = document.getElementById('exampleModal');
+        e.preventDefault();
+        // modal.classList.remove('show'); // Remove show class
+        // modal.style.display = 'none'; // Hide it
+        // document.body.classList.remove('modal-open'); // Remove modal-open from body
+        // modal.setAttribute('aria-hidden', 'true'); // Set aria-hidden to true
+    };
     Main.prototype.toJSON = function () {
         var data = "{";
         data += '\"bgcolor\":' + JSON.stringify(this.canvas.bgColor) + ',';
