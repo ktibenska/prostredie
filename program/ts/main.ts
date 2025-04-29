@@ -24,7 +24,7 @@ class Main {
             e => this.onMouseMove(e),
             e => this.onMouseUp(e),
             e => this.onMouseEnter(e),
-            e => this.onMouseLeave(e)
+            e => this.onMouseLeave()
         );
 
         this.homeCanvas = new Canvas('home_state_canvas');
@@ -353,7 +353,8 @@ class Main {
         this.redraw();
     }
 
-    private onMouseLeave(e) {
+    private onMouseLeave() {
+        this.selected = null
         this.redraw();
     }
 

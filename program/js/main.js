@@ -11,7 +11,7 @@ var Main = /** @class */ (function () {
         this.outlineButton = document.getElementById('outline_cards');
         this.canvas = new Canvas('sketchpad_main');
         this.mode = "move" /* Types.MOVE */;
-        this.canvas.addEventListeners(function (e) { return _this.onMouseDown(e); }, function (e) { return _this.onMouseMove(e); }, function (e) { return _this.onMouseUp(e); }, function (e) { return _this.onMouseEnter(e); }, function (e) { return _this.onMouseLeave(e); });
+        this.canvas.addEventListeners(function (e) { return _this.onMouseDown(e); }, function (e) { return _this.onMouseMove(e); }, function (e) { return _this.onMouseUp(e); }, function (e) { return _this.onMouseEnter(e); }, function (e) { return _this.onMouseLeave(); });
         this.homeCanvas = new Canvas('home_state_canvas');
         this.finalCanvas = new Canvas('final_state_canvas');
         this.clearAll();
@@ -273,7 +273,8 @@ var Main = /** @class */ (function () {
         this.y = e.offsetY;
         this.redraw();
     };
-    Main.prototype.onMouseLeave = function (e) {
+    Main.prototype.onMouseLeave = function () {
+        this.selected = null;
         this.redraw();
     };
     Main.prototype.onMouseEnter = function (e) {
