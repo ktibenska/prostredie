@@ -78,11 +78,11 @@ class Buttons {
             this.sketchpad.redraw()
         });
 
-        this.addButton = document.getElementById('add_button');
-        this.addButton.addEventListener('mouseup', () => {
-            this.sketchpad.setMode(Types.ADD)
-            this.sketchpad.redraw()
-        });
+        // this.addButton = document.getElementById('add_button');
+        // this.addButton.addEventListener('mouseup', () => {
+        //     this.sketchpad.setMode(Types.ADD)
+        //     this.sketchpad.redraw()
+        // });
 
         this.resizeButton = document.getElementById('resize_button');
         this.resizeButton.addEventListener('mouseup', () => {

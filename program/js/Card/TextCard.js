@@ -64,8 +64,23 @@ var TextCard = /** @class */ (function (_super) {
         ctx.fillStyle = this.bg_color;
         ctx.fillRect(this.x, this.y, this.width, this.height);
         ctx.fillStyle = this.text_color;
-        ctx.font = "20px Arial";
-        ctx.fillText(this.text, this.x, this.y + this.height / 2);
+        ctx.font = "24px Arial";
+        var padding = 5;
+        var maxFontSize = 24;
+        var minFontSize = 10;
+        var fontSize = maxFontSize;
+        var textWidth = ctx.measureText(this.text).width;
+        while (textWidth > Math.abs(this.width - 2 * padding) && fontSize > minFontSize) {
+            fontSize--;
+            ctx.font = fontSize + 'px Arial';
+            textWidth = Math.abs(ctx.measureText(this.text).width);
+        }
+        ctx.font = fontSize + 'px Arial';
+        var x = this.x + this.width / 2;
+        var y = this.y + this.height / 2;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(this.text, x, y);
     };
     TextCard.prototype.drawResize = function (ctx) {
         this.drawHandle(ctx, this.x, this.y); // TL

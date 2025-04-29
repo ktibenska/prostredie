@@ -93,8 +93,9 @@ class Main {
 
             this.canvas.cards.push(c)
             if (!c.movable) {
-                this.homeCanvas.cards.push(c.clone())
-                this.finalCanvas.cards.push(c.clone())
+                this.addImmovableCard(c)
+                // this.homeCanvas.cards.push(c.clone())
+                // this.finalCanvas.cards.push(c.clone())
             }
 
             this.redrawAll();
@@ -524,12 +525,21 @@ class Main {
 
         this.canvas.cards.push(duplicate)
         if (!duplicate.movable) {
-            this.homeCanvas.cards.push(duplicate.clone())
-            this.finalCanvas.cards.push(duplicate.clone())
+            this.addImmovableCard(duplicate)
         }
 
         this.redrawAll();
         this.selected = null;
+    }
+
+
+    // adds immovable card to home and final canvas
+    private addImmovableCard(card: Card): void {
+        this.homeCanvas.cards.push(card.clone())
+
+        let finalDuplicate = card.clone()
+        finalDuplicate.home = false
+        this.finalCanvas.cards.push(finalDuplicate)
     }
 
 
@@ -544,8 +554,6 @@ class Main {
 
         this.selected = null;
     }
-
-
 
 
     private generateID(): number {

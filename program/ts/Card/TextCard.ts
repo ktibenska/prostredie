@@ -58,9 +58,31 @@ class TextCard extends Card {
         ctx.fillRect(this.x, this.y, this.width, this.height);
 
         ctx.fillStyle = this.text_color;
-        ctx.font = "20px Arial";
 
-        ctx.fillText(this.text, this.x, this.y + this.height / 2);
+        ctx.font = "24px Arial";
+
+        const padding = 5
+
+        const maxFontSize = 24
+        const minFontSize = 10
+
+        let fontSize = maxFontSize;
+        let textWidth = ctx.measureText(this.text).width;
+
+        while (textWidth > Math.abs(this.width - 2 * padding) && fontSize > minFontSize) {
+            fontSize--;
+            ctx.font = fontSize + 'px Arial';
+            textWidth = Math.abs(ctx.measureText(this.text).width);
+        }
+
+        ctx.font = fontSize + 'px Arial';
+
+        const x = this.x + this.width / 2;
+        const y = this.y + this.height / 2;
+
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle"
+        ctx.fillText(this.text, x, y);
     }
 
     public drawResize(ctx: any): void {

@@ -37,11 +37,11 @@ var Buttons = /** @class */ (function () {
             _this.sketchpad.setMode("move" /* Types.MOVE */);
             _this.sketchpad.redraw();
         });
-        this.addButton = document.getElementById('add_button');
-        this.addButton.addEventListener('mouseup', function () {
-            _this.sketchpad.setMode("add" /* Types.ADD */);
-            _this.sketchpad.redraw();
-        });
+        // this.addButton = document.getElementById('add_button');
+        // this.addButton.addEventListener('mouseup', () => {
+        //     this.sketchpad.setMode(Types.ADD)
+        //     this.sketchpad.redraw()
+        // });
         this.resizeButton = document.getElementById('resize_button');
         this.resizeButton.addEventListener('mouseup', function () {
             _this.sketchpad.setMode("resize" /* Types.RESIZE */);

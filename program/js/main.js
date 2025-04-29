@@ -64,8 +64,9 @@ var Main = /** @class */ (function () {
                 c.height = +height.value;
             _this.canvas.cards.push(c);
             if (!c.movable) {
-                _this.homeCanvas.cards.push(c.clone());
-                _this.finalCanvas.cards.push(c.clone());
+                _this.addImmovableCard(c);
+                // this.homeCanvas.cards.push(c.clone())
+                // this.finalCanvas.cards.push(c.clone())
             }
             _this.redrawAll();
         });
@@ -416,11 +417,17 @@ var Main = /** @class */ (function () {
         duplicate.id = this.generateID();
         this.canvas.cards.push(duplicate);
         if (!duplicate.movable) {
-            this.homeCanvas.cards.push(duplicate.clone());
-            this.finalCanvas.cards.push(duplicate.clone());
+            this.addImmovableCard(duplicate);
         }
         this.redrawAll();
         this.selected = null;
+    };
+    // adds immovable card to home and final canvas
+    Main.prototype.addImmovableCard = function (card) {
+        this.homeCanvas.cards.push(card.clone());
+        var finalDuplicate = card.clone();
+        finalDuplicate.home = false;
+        this.finalCanvas.cards.push(finalDuplicate);
     };
     Main.prototype.removeCard = function () {
         var id = this.selected.id;

@@ -265,12 +265,6 @@
                 <div id="left_panel_content">
 
                     <div class="row">
-                        <button class="input-block-level btn btn-warning bi bi-square" title='nová aktivita'
-                                id="new_activity_button" data-toggle="modal" data-target="#clearModal">
-                        </button>
-                    </div>
-
-                    <div class="row">
                         <button type="button" class="btn btn-warning bi bi-plus" data-toggle="modal"
                                 data-target="#exampleModal"
                                 title='pridaj kartičku'>
@@ -283,15 +277,15 @@
                         </button>
                     </div>
 
-                    <div class="row">
-                        <button class="input-block-level btn btn-warning bi bi-square-fill"
-                                title='pridaj prázdnu kartičku'
-                                id="add_button">
-                        </button>
-                    </div>
+                    <!--                    <div class="row">-->
+                    <!--                        <button class="input-block-level btn btn-warning bi bi-square-fill"-->
+                    <!--                                title='pridaj prázdnu kartičku'-->
+                    <!--                                id="add_button">-->
+                    <!--                        </button>-->
+                    <!--                    </div>-->
 
                     <div class="row">
-                        <button class="input-block-level btn btn-warning bi bi-textarea-resize"
+                        <button class="input-block-level btn btn-warning bi bi-arrows-angle-expand"
                                 title='uprav veľkosť kartičky'
                                 id="resize_button">
                         </button>
@@ -302,6 +296,13 @@
                                 data-target="#bgChangeModal" title='zmena pozadia'>
                         </button>
                     </div>
+
+                    <div class="row">
+                        <button class="input-block-level btn btn-warning bi bi-square" title='nová aktivita'
+                                id="new_activity_button" data-toggle="modal" data-target="#clearModal">
+                        </button>
+                    </div>
+
 
                     <div class="row">
                         <div class="form-check form-switch">
@@ -374,14 +375,15 @@
                                         id="home_state_button"></button>
                             </div>
 
-                            <div class="col-6">
-                                <button class="btn btn-warning bi-check" title="ulož finálny stav"
-                                        id="final_state_button"></button>
-                            </div>
 
                             <div>
                                 <label>domáci stav</label>
                                 <canvas id="home_state_canvas"></canvas>
+                            </div>
+
+                            <div class="col-6">
+                                <button class="btn btn-warning bi-check" title="ulož finálny stav"
+                                        id="final_state_button"></button>
                             </div>
 
                             <div>
