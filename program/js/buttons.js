@@ -80,7 +80,12 @@ var Buttons = /** @class */ (function () {
         });
         this.txtRadio = document.getElementById('hideBack');
         this.txtRadio.addEventListener('click', function () {
-            var message = document.getElementById("modal-message");
+            var message = document.getElementById("modal_message");
+            message.style.visibility = 'hidden';
+        });
+        this.imageInput = document.getElementById('id_image_input');
+        this.imageInput.addEventListener('change', function () {
+            var message = document.getElementById("modal_message");
             message.style.visibility = 'hidden';
         });
         this.closeButton = document.getElementById('close_button');

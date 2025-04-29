@@ -109,13 +109,12 @@
                         <input class="form-check-input" type="radio" name="txtorImageRadio" id="hideBack">
                         <label class="form-check-label" for="hideBack">text</label>
 
-                        <div id="modal-message">Nebol vložený obrázok.</div>
-
-                        <div id="email">
-                            <form id="email-form" class="nice" action="" method="post">
-                                <input type="file" accept="image/*" name="EMAIL" id="id_email" multiple>
-                                <input type="hidden" name="name" id="id_name_email">
+                        <div id="image_input">
+                            <br>
+                            <form id="image_input-form" class="nice" action="" method="post">
+                                <input type="file" accept="image/*" id="id_image_input" multiple>
                             </form>
+                            <div id="modal_message">Nebol vložený obrázok.</div>
                         </div>
 
                         <div id="text_values">
@@ -244,7 +243,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="clearModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="clearModalLabel">Nová aktivita</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

@@ -83,11 +83,11 @@ h2, h3{
 }
 
 /*dolezite pre schovanie vkladania obrazkov*/
-#reveal:not(:checked) ~ #email {
+#reveal:not(:checked) ~ #image_input {
     display: none;
 }
 
-#reveal:checked ~ #email {
+#reveal:checked ~ #image_input {
     display: block;
 }
 
@@ -101,15 +101,15 @@ h2, h3{
     display: block;
 }
 
-#hideBack:checked ~ #modal-message {
+#hideBack:checked ~ #modal_message {
     visibility: hidden;
 }
 
-#email, #text_values {
+#image_input, #text_values {
     display: none;
 }
 
-#modal-message{
+#modal_message{
     color: red;
     visibility: hidden;
 }

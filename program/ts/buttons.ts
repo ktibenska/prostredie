@@ -10,7 +10,10 @@ class Buttons {
     clearButton: HTMLElement;
 
     runButton: HTMLElement;
-    txtRadio: HTMLElement
+
+    txtRadio: HTMLElement;
+    imageInput: HTMLElement;
+
     closeButton: HTMLElement;
     checkButton: HTMLElement
 
@@ -128,7 +131,13 @@ class Buttons {
 
         this.txtRadio = document.getElementById('hideBack');
         this.txtRadio.addEventListener('click', () => {
-            let message = document.getElementById("modal-message");
+            let message = document.getElementById("modal_message");
+            message.style.visibility = 'hidden'
+        })
+
+        this.imageInput = document.getElementById('id_image_input') as HTMLInputElement;
+        this.imageInput.addEventListener('change', () => {
+            let message = document.getElementById("modal_message");
             message.style.visibility = 'hidden'
         })
 

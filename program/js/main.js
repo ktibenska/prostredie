@@ -3,7 +3,7 @@ var Main = /** @class */ (function () {
         var _this = this;
         this.x = -10;
         this.y = -10;
-        this.imageInput = document.getElementById('id_email');
+        this.imageInput = document.getElementById('id_image_input');
         this.submitButton = document.getElementById('submit');
         this.bgImageInput = document.getElementById('id_bg');
         this.bgSubmitButton = document.getElementById('bg_submit');
@@ -16,7 +16,7 @@ var Main = /** @class */ (function () {
         this.finalCanvas = new Canvas('final_state_canvas');
         this.clearAll();
         this.submitButton.addEventListener('click', function (event) {
-            var message = document.getElementById("modal-message");
+            var message = document.getElementById("modal_message");
             var input = _this.imageInput;
             var c;
             var selectedOption = document.querySelector('input[name="txtorImageRadio"]:checked').id;
@@ -123,14 +123,6 @@ var Main = /** @class */ (function () {
             });
         });
     }
-    Main.prototype.closeModal = function (e) {
-        var modal = document.getElementById('exampleModal');
-        e.preventDefault();
-        // modal.classList.remove('show'); // Remove show class
-        // modal.style.display = 'none'; // Hide it
-        // document.body.classList.remove('modal-open'); // Remove modal-open from body
-        // modal.setAttribute('aria-hidden', 'true'); // Set aria-hidden to true
-    };
     Main.prototype.toJSON = function () {
         var data = "{";
         data += '\"bgcolor\":' + JSON.stringify(this.canvas.bgColor) + ',';

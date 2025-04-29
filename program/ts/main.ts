@@ -5,7 +5,7 @@ class Main {
     mode: Types;
     canvas: Canvas;
     selected: Card;
-    imageInput = document.getElementById('id_email') as HTMLInputElement;
+    imageInput = document.getElementById('id_image_input') as HTMLInputElement;
     submitButton = document.getElementById('submit') as HTMLInputElement;
 
     bgImageInput = document.getElementById('id_bg') as HTMLInputElement;
@@ -15,17 +15,6 @@ class Main {
 
     finalCanvas: Canvas;
     homeCanvas: Canvas;
-
-    private closeModal(e) {
-        let modal = document.getElementById('exampleModal') as HTMLElement;
-
-        e.preventDefault();
-        // modal.classList.remove('show'); // Remove show class
-        // modal.style.display = 'none'; // Hide it
-        // document.body.classList.remove('modal-open'); // Remove modal-open from body
-        // modal.setAttribute('aria-hidden', 'true'); // Set aria-hidden to true
-    }
-
 
     constructor() {
         this.canvas = new Canvas('sketchpad_main')
@@ -44,7 +33,7 @@ class Main {
         this.clearAll()
 
         this.submitButton.addEventListener('click', (event: Event) => {
-            const message = document.getElementById("modal-message");
+            const message = document.getElementById("modal_message");
             const input = this.imageInput
             let c: Card;
 
