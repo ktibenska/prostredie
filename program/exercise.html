@@ -136,19 +136,18 @@
                                 </label>
                             </div>
 
+                            <label>šírka:
+                                <input class="form-control form-control-sm" type="text" placeholder="100" id="width">
+                            </label>
+
+                            <label>výška:
+                                <input class="form-control form-control-sm" type="text" placeholder="100" id="height">
+                            </label>
 
                         </div>
 
                     </div>
 
-
-                    <label> šírka:
-                        <input class="form-control form-control-sm" type="text" placeholder="100" id="width">
-                    </label>
-
-                    <label>výška:
-                        <input class="form-control form-control-sm" type="text" placeholder="100" id="height">
-                    </label>
 
                 </div>
                 <div class="modal-footer">
@@ -220,7 +219,8 @@
                     </div>
 
                     <div>
-
+                        <div class="text-danger"> Načítaním novej aktivity sa vymaže rozrobená aktivita.</div>
+                        <br>
                         <div id="load">
                             <form id="json" class="nice" action="" method="post">
                                 <input type="file" accept="application/json" name="json_input" id="json_input">
@@ -231,7 +231,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="load_submit">ok
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="load_submit_button">ok
                     </button>
                 </div>
             </div>
@@ -253,7 +253,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Nie</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="clear_button">Áno</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="clear_submit_button">Áno
+                    </button>
                 </div>
             </div>
         </div>
@@ -301,7 +302,7 @@
 
                     <div class="row">
                         <button class="input-block-level btn btn-warning bi bi-square" title='nová aktivita'
-                                id="new_activity_button" data-toggle="modal" data-target="#clearModal">
+                                id="clear_button" data-toggle="modal" data-target="#clearModal">
                         </button>
                     </div>
 

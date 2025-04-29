@@ -7,7 +7,7 @@ class Buttons {
 
     finalStateButton: HTMLElement;
     homeStateButton: HTMLElement;
-    clearButton: HTMLElement;
+
 
     runButton: HTMLElement;
 
@@ -15,12 +15,13 @@ class Buttons {
     imageInput: HTMLElement;
 
     closeButton: HTMLElement;
-    checkButton: HTMLElement
+    checkButton: HTMLElement;
 
-    saveButton: HTMLElement;
+    clearSubmitButton: HTMLElement;
 
     loadInput: HTMLInputElement;
-    loadSubmitButton: HTMLInputElement;
+    loadSubmitButton: HTMLElement;
+    saveButton: HTMLElement;
 
     duplicateCardCtxBtn: HTMLElement;
     removeCardCtxBtn: HTMLElement;
@@ -115,8 +116,8 @@ class Buttons {
 
         });
 
-        this.clearButton = document.getElementById('clear_button');
-        this.clearButton.addEventListener('mouseup', () => {
+        this.clearSubmitButton = document.getElementById('clear_submit_button');
+        this.clearSubmitButton.addEventListener('mouseup', () => {
             this.sketchpad.clearAll();
         });
 
@@ -167,7 +168,7 @@ class Buttons {
         });
 
         this.loadInput = document.getElementById('id_load') as HTMLInputElement;
-        this.loadSubmitButton = document.getElementById('load_submit') as HTMLInputElement;
+        this.loadSubmitButton = document.getElementById('load_submit_button') as HTMLInputElement;
 
         this.loadSubmitButton.addEventListener('mouseup', () => {
 
@@ -203,7 +204,6 @@ class Buttons {
         this.showGridBtn.addEventListener('mouseup', () => {
             this.sketchpad.gridOn(!this.showGridBtn.checked);
         });
-
     }
 
 

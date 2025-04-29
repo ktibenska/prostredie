@@ -67,8 +67,8 @@ var Buttons = /** @class */ (function () {
             }
             _this.sketchpad.finalCanvas.redraw();
         });
-        this.clearButton = document.getElementById('clear_button');
-        this.clearButton.addEventListener('mouseup', function () {
+        this.clearSubmitButton = document.getElementById('clear_submit_button');
+        this.clearSubmitButton.addEventListener('mouseup', function () {
             _this.sketchpad.clearAll();
         });
         this.runButton = document.getElementById('run_button');
@@ -110,7 +110,7 @@ var Buttons = /** @class */ (function () {
             _this.sketchpad.toJSON();
         });
         this.loadInput = document.getElementById('id_load');
-        this.loadSubmitButton = document.getElementById('load_submit');
+        this.loadSubmitButton = document.getElementById('load_submit_button');
         this.loadSubmitButton.addEventListener('mouseup', function () {
             var jsonData;
             var jsonInput = document.getElementById('json_input');

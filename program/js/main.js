@@ -75,18 +75,20 @@ var Main = /** @class */ (function () {
             _this.redrawAll();
         });
         this.bgSubmitButton.addEventListener('click', function (event) {
-            var image = new Image();
+            var image = null;
             var files = _this.bgImageInput.files;
             if (files && files[0]) {
+                image = new Image();
                 var reader = new FileReader();
                 reader.onload = function (e) {
                     image.src = e.target.result;
                 };
                 reader.readAsDataURL(files[0]);
-                _this.canvas.setBg(image);
-                _this.homeCanvas.setBg(image);
-                _this.finalCanvas.setBg(image);
+                _this.bgImageInput.value = null;
             }
+            _this.canvas.setBg(image);
+            _this.homeCanvas.setBg(image);
+            _this.finalCanvas.setBg(image);
             var bgColorSelector = document.getElementById('bg_color');
             _this.canvas.bgColor = bgColorSelector.value;
             _this.homeCanvas.bgColor = bgColorSelector.value;
@@ -275,7 +277,7 @@ var Main = /** @class */ (function () {
     };
     Main.prototype.onMouseLeave = function () {
         this.selected = null;
-        this.redraw();
+        this.redrawAll();
     };
     Main.prototype.onMouseEnter = function (e) {
         this.x = e.offsetX;
@@ -302,7 +304,7 @@ var Main = /** @class */ (function () {
     // funkcie pri tlacidlach
     Main.prototype.runApplication = function () {
         if (!this.checkCards()) {
-            window.alert("nesprávne položené kartičky"); //todo change message
+            window.alert("Nesprávne položené kartičky."); //todo change message
             return;
         }
         this.canvas.cards = [];
@@ -329,8 +331,10 @@ var Main = /** @class */ (function () {
     //
     Main.prototype.checkCards = function () {
         if (this.homeCanvas.cards.length != this.finalCanvas.cards.length) {
+            window.alert("V domovskom a finálnom stave nie je rovnaký počet kartičiek."); //todo change message
             return false;
         }
+        //todo check ci su karticky rovnakej velkosti
         // console.log(this.homeCanvas.cards.length)
         // console.log(this.finalCanvas.cards.length)
         for (var i = 0; i < this.homeCanvas.cards.length; i++) {
@@ -411,10 +415,10 @@ var Main = /** @class */ (function () {
                 break;
         }
         if (ok) {
-            alert("riešenie je správne!");
+            alert("Riešenie je správne!");
         }
         else {
-            alert("riešenie je nesprávne");
+            alert("Riešenie je nesprávne.");
         }
     };
     Main.prototype.duplicateCard = function () {

@@ -107,21 +107,23 @@ class Main {
 
 
         this.bgSubmitButton.addEventListener('click', (event: Event) => {
-            let image = new Image();
+            let image = null
             const files = this.bgImageInput.files;
 
             if (files && files[0]) {
+                image = new Image();
                 const reader = new FileReader();
                 reader.onload = function (e) {
                     image.src = e.target.result as string;
                 };
                 reader.readAsDataURL(files[0]);
 
-                this.canvas.setBg(image)
-                this.homeCanvas.setBg(image)
-                this.finalCanvas.setBg(image)
+                this.bgImageInput.value = null
             }
 
+            this.canvas.setBg(image)
+            this.homeCanvas.setBg(image)
+            this.finalCanvas.setBg(image)
 
             let bgColorSelector = document.getElementById('bg_color') as HTMLInputElement
             this.canvas.bgColor = bgColorSelector.value;
@@ -355,7 +357,7 @@ class Main {
 
     private onMouseLeave() {
         this.selected = null
-        this.redraw();
+        this.redrawAll();
     }
 
     private onMouseEnter(e) {
@@ -390,7 +392,7 @@ class Main {
 
     public runApplication() {
         if (!this.checkCards()) {
-            window.alert("nesprávne položené kartičky"); //todo change message
+            window.alert("Nesprávne položené kartičky."); //todo change message
             return;
         }
 
@@ -428,8 +430,11 @@ class Main {
 
     private checkCards(): boolean {
         if (this.homeCanvas.cards.length != this.finalCanvas.cards.length) {
+            window.alert("V domovskom a finálnom stave nie je rovnaký počet kartičiek."); //todo change message
             return false;
         }
+
+        //todo check ci su karticky rovnakej velkosti
 
         // console.log(this.homeCanvas.cards.length)
         // console.log(this.finalCanvas.cards.length)
@@ -516,9 +521,9 @@ class Main {
         }
 
         if (ok) {
-            alert("riešenie je správne!")
+            alert("Riešenie je správne!")
         } else {
-            alert("riešenie je nesprávne")
+            alert("Riešenie je nesprávne.")
         }
 
     }
