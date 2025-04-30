@@ -345,8 +345,12 @@ class Main {
         if (e.button !== 0) return;
 
         if (this.selected != null) {
-            this.selected.x -= (this.selected.x %= 10)
-            this.selected.y -= (this.selected.y %= 10)
+            let grid = 10
+
+            let x = Math.round(this.selected.x / grid) * grid;
+            let y = Math.round(this.selected.y / grid) * grid;
+
+            this.selected.setCoordinates(x, y)
         }
         this.selected = null
 

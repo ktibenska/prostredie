@@ -267,8 +267,10 @@ var Main = /** @class */ (function () {
         if (e.button !== 0)
             return;
         if (this.selected != null) {
-            this.selected.x -= (this.selected.x %= 10);
-            this.selected.y -= (this.selected.y %= 10);
+            var grid = 10;
+            var x = Math.round(this.selected.x / grid) * grid;
+            var y = Math.round(this.selected.y / grid) * grid;
+            this.selected.setCoordinates(x, y);
         }
         this.selected = null;
         this.x = e.offsetX;
