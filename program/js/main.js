@@ -118,12 +118,17 @@ var Main = /** @class */ (function () {
                     contextMenu.style.left = "".concat(event.pageX - 15, "px");
                     contextMenu.style.top = "".concat(event.pageY - 15, "px");
                     var change_text = document.getElementById('change_text');
+                    var change_bg_color = document.getElementById('change_bg_color');
                     var change_text_button = document.getElementById('change_text_button');
+                    var change_bg_color_button = document.getElementById('change_bg_color_button');
                     if (_this.selected != null && _this.selected.images.length > 0) {
                         change_text.style.display = 'none';
+                        change_bg_color.style.display = 'none';
                     }
                     else {
                         change_text_button.value = _this.selected.text;
+                        change_text.style.display = 'block';
+                        change_bg_color_button.value = _this.selected.bg_color;
                         change_text.style.display = 'block';
                     }
                 }
@@ -348,13 +353,22 @@ var Main = /** @class */ (function () {
             this.redrawAll();
         }
     };
+    Main.prototype.updateCardBgColor = function (color) {
+        if (this.selected && this.selected.images.length == 0) {
+            this.selected.bg_color = color;
+            this.updateCardHF();
+            this.redrawAll();
+        }
+    };
     //updates card parameters by id both in home and final state
     Main.prototype.updateCardHF = function () {
         for (var _i = 0, _a = [this.homeCanvas, this.finalCanvas]; _i < _a.length; _i++) {
             var c = _a[_i];
             var card = c.getCardByID(this.selected.id);
             if (card) {
+                //todo podla typu karty
                 card.text = this.selected.text;
+                card.bg_color = this.selected.bg_color;
                 card.x = this.selected.x;
                 card.y = this.selected.y;
                 card.width = this.selected.width;

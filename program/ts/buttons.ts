@@ -213,6 +213,11 @@ class Buttons {
             this.sketchpad.updateCardText(changeTextCtxBtn.value)
         });
 
+        const changeBgColorCtxBtn = document.getElementById('change_bg_color_button') as HTMLInputElement;
+        changeBgColorCtxBtn.addEventListener('input', (event) => {
+            this.sketchpad.updateCardBgColor((event.target as HTMLInputElement).value)
+        });
+
         this.showGridBtn = document.getElementById('show_grid') as HTMLInputElement;
         this.showGridBtn.addEventListener('mouseup', () => {
             this.sketchpad.gridOn(!this.showGridBtn.checked);

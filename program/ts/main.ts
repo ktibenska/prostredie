@@ -165,14 +165,21 @@ class Main {
 
 
                     let change_text = document.getElementById('change_text') as HTMLInputElement;
+                    let change_bg_color = document.getElementById('change_bg_color') as HTMLInputElement;
+
                     let change_text_button = document.getElementById('change_text_button') as HTMLInputElement;
+                    let change_bg_color_button = document.getElementById('change_bg_color_button') as HTMLInputElement;
 
 
                     if (this.selected != null && this.selected.images.length > 0) {
                         change_text.style.display = 'none';
+                        change_bg_color.style.display = 'none';
 
                     } else {
                         change_text_button.value = this.selected.text;
+                        change_text.style.display = 'block';
+                        
+                        change_bg_color_button.value = this.selected.bg_color;
                         change_text.style.display = 'block';
                     }
                 }
@@ -445,7 +452,7 @@ class Main {
         this.selected = null
     }
 
-    public updateCardText(text: string): void {
+    public updateCardText(text: string ): void {
         if (this.selected && this.selected.images.length == 0) {
 
             this.selected.text = text;
@@ -455,6 +462,15 @@ class Main {
         }
     }
 
+    public updateCardBgColor(color: string ): void {
+        if (this.selected && this.selected.images.length == 0) {
+
+            this.selected.bg_color = color;
+
+            this.updateCardHF()
+            this.redrawAll()
+        }
+    }
 
     //updates card parameters by id both in home and final state
     private updateCardHF(): void {
@@ -463,7 +479,10 @@ class Main {
             let card = c.getCardByID(this.selected.id)
 
             if (card) {
+                //todo podla typu karty
                 card.text = this.selected.text
+                card.bg_color = this.selected.bg_color
+
                 card.x = this.selected.x
                 card.y = this.selected.y
                 card.width = this.selected.width

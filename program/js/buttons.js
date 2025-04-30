@@ -139,6 +139,10 @@ var Buttons = /** @class */ (function () {
         changeTextCtxBtn.addEventListener('input', function (event) {
             _this.sketchpad.updateCardText(changeTextCtxBtn.value);
         });
+        var changeBgColorCtxBtn = document.getElementById('change_bg_color_button');
+        changeBgColorCtxBtn.addEventListener('input', function (event) {
+            _this.sketchpad.updateCardBgColor(event.target.value);
+        });
         this.showGridBtn = document.getElementById('show_grid');
         this.showGridBtn.addEventListener('mouseup', function () {
             _this.sketchpad.gridOn(!_this.showGridBtn.checked);
