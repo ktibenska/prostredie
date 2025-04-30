@@ -117,6 +117,15 @@ var Main = /** @class */ (function () {
                     contextMenu.style.display = 'block';
                     contextMenu.style.left = "".concat(event.pageX - 15, "px");
                     contextMenu.style.top = "".concat(event.pageY - 15, "px");
+                    var change_text = document.getElementById('change_text');
+                    var change_text_button = document.getElementById('change_text_button');
+                    if (_this.selected != null && _this.selected.images.length > 0) {
+                        change_text.style.display = 'none';
+                    }
+                    else {
+                        change_text_button.value = _this.selected.text;
+                        change_text.style.display = 'block';
+                    }
                 }
             }
             contextMenu.addEventListener("mouseleave", function () {
@@ -246,6 +255,8 @@ var Main = /** @class */ (function () {
                     this.selected.height = y - this.selected.y;
                     break;
             }
+            this.updateCardHF();
+            this.redrawAll();
         }
         if (this.selected) {
             if (this.mode == "move" /* Types.MOVE */ || (this.mode == "run" /* Types.RUN */ && this.selected.isMovable())) {
@@ -278,10 +289,10 @@ var Main = /** @class */ (function () {
         this.redraw();
     };
     Main.prototype.onMouseLeave = function () {
-        this.selected = null;
         this.redrawAll();
     };
     Main.prototype.onMouseEnter = function (e) {
+        this.selected = null;
         this.x = e.offsetX;
         this.y = e.offsetY;
         this.redraw();
@@ -306,7 +317,7 @@ var Main = /** @class */ (function () {
     // funkcie pri tlacidlach
     Main.prototype.runApplication = function () {
         if (!this.checkCards()) {
-            window.alert("Nesprávne položené kartičky."); //todo change message
+            window.alert("Nesprávne položené kartičky.");
             return;
         }
         this.canvas.cards = [];
@@ -330,7 +341,27 @@ var Main = /** @class */ (function () {
             finalCard.category = color;
         this.selected = null;
     };
-    //
+    Main.prototype.updateCardText = function (text) {
+        if (this.selected && this.selected.images.length == 0) {
+            this.selected.text = text;
+            this.updateCardHF();
+            this.redrawAll();
+        }
+    };
+    //updates card parameters by id both in home and final state
+    Main.prototype.updateCardHF = function () {
+        for (var _i = 0, _a = [this.homeCanvas, this.finalCanvas]; _i < _a.length; _i++) {
+            var c = _a[_i];
+            var card = c.getCardByID(this.selected.id);
+            if (card) {
+                card.text = this.selected.text;
+                card.x = this.selected.x;
+                card.y = this.selected.y;
+                card.width = this.selected.width;
+                card.height = this.selected.height;
+            }
+        }
+    };
     Main.prototype.checkCards = function () {
         if (this.homeCanvas.cards.length != this.finalCanvas.cards.length) {
             window.alert("V domovskom a finálnom stave nie je rovnaký počet kartičiek."); //todo change message
@@ -426,6 +457,7 @@ var Main = /** @class */ (function () {
     Main.prototype.duplicateCard = function () {
         var duplicate = this.selected.clone();
         duplicate.id = this.generateID();
+        duplicate.setCoordinates(this.selected.x + 10, this.selected.y + 10);
         this.canvas.cards.push(duplicate);
         if (!duplicate.movable) {
             this.addImmovableCard(duplicate);

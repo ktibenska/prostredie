@@ -8,7 +8,7 @@ var Buttons = /** @class */ (function () {
         var _this = this;
         this.contextMenu = document.getElementById('contextMenu');
         window.addEventListener('click', function () {
-            _this.contextMenu.style.display = 'none';
+            // this.contextMenu.style.display = 'none';
         });
         // hide on escape key
         window.addEventListener('keydown', function (e) {
@@ -128,10 +128,16 @@ var Buttons = /** @class */ (function () {
         this.duplicateCardCtxBtn = document.getElementById('duplicate_card');
         this.duplicateCardCtxBtn.addEventListener('mouseup', function () {
             _this.sketchpad.duplicateCard();
+            _this.contextMenu.style.display = 'none';
         });
         this.removeCardCtxBtn = document.getElementById('remove_card');
         this.removeCardCtxBtn.addEventListener('mouseup', function () {
             _this.sketchpad.removeCard();
+            _this.contextMenu.style.display = 'none';
+        });
+        var changeTextCtxBtn = document.getElementById('change_text_button');
+        changeTextCtxBtn.addEventListener('input', function (event) {
+            _this.sketchpad.updateCardText(changeTextCtxBtn.value);
         });
         this.showGridBtn = document.getElementById('show_grid');
         this.showGridBtn.addEventListener('mouseup', function () {

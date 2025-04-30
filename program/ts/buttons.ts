@@ -41,7 +41,9 @@ class Buttons {
         this.contextMenu = document.getElementById('contextMenu');
 
         window.addEventListener('click', () => {
-            this.contextMenu.style.display = 'none';
+            // this.contextMenu.style.display = 'none';
+
+
         });
 
         // hide on escape key
@@ -51,6 +53,7 @@ class Buttons {
                 this.sketchpad.selected = null
             }
         });
+
 
         document.querySelectorAll(".color-btn").forEach(button => {
 
@@ -193,11 +196,21 @@ class Buttons {
         this.duplicateCardCtxBtn = document.getElementById('duplicate_card');
         this.duplicateCardCtxBtn.addEventListener('mouseup', () => {
             this.sketchpad.duplicateCard();
+            this.contextMenu.style.display = 'none';
+
         });
 
         this.removeCardCtxBtn = document.getElementById('remove_card');
         this.removeCardCtxBtn.addEventListener('mouseup', () => {
             this.sketchpad.removeCard();
+            this.contextMenu.style.display = 'none';
+
+        });
+
+
+        const changeTextCtxBtn = document.getElementById('change_text_button') as HTMLInputElement;
+        changeTextCtxBtn.addEventListener('input', (event) => {
+            this.sketchpad.updateCardText(changeTextCtxBtn.value)
         });
 
         this.showGridBtn = document.getElementById('show_grid') as HTMLInputElement;

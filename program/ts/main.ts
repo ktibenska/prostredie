@@ -162,6 +162,19 @@ class Main {
                     contextMenu.style.display = 'block';
                     contextMenu.style.left = `${event.pageX - 15}px`;
                     contextMenu.style.top = `${event.pageY - 15}px`;
+
+
+                    let change_text = document.getElementById('change_text') as HTMLInputElement;
+                    let change_text_button = document.getElementById('change_text_button') as HTMLInputElement;
+
+
+                    if (this.selected != null && this.selected.images.length > 0) {
+                        change_text.style.display = 'none';
+
+                    } else {
+                        change_text_button.value = this.selected.text;
+                        change_text.style.display = 'block';
+                    }
                 }
             }
 
@@ -317,6 +330,9 @@ class Main {
                     this.selected.height = y - this.selected.y;
                     break;
             }
+
+            this.updateCardHF()
+            this.redrawAll()
         }
 
         if (this.selected) {
@@ -360,11 +376,12 @@ class Main {
     }
 
     private onMouseLeave() {
-        this.selected = null
         this.redrawAll();
     }
 
     private onMouseEnter(e) {
+        this.selected = null
+
         this.x = e.offsetX;
         this.y = e.offsetY;
         this.redraw();
@@ -396,7 +413,7 @@ class Main {
 
     public runApplication() {
         if (!this.checkCards()) {
-            window.alert("Nesprávne položené kartičky."); //todo change message
+            window.alert("Nesprávne položené kartičky.");
             return;
         }
 
@@ -428,8 +445,33 @@ class Main {
         this.selected = null
     }
 
+    public updateCardText(text: string): void {
+        if (this.selected && this.selected.images.length == 0) {
 
-    //
+            this.selected.text = text;
+
+            this.updateCardHF()
+            this.redrawAll()
+        }
+    }
+
+
+    //updates card parameters by id both in home and final state
+    private updateCardHF(): void {
+
+        for (let c of [this.homeCanvas, this.finalCanvas]) {
+            let card = c.getCardByID(this.selected.id)
+
+            if (card) {
+                card.text = this.selected.text
+                card.x = this.selected.x
+                card.y = this.selected.y
+                card.width = this.selected.width
+                card.height = this.selected.height
+            }
+
+        }
+    }
 
 
     private checkCards(): boolean {
@@ -536,7 +578,7 @@ class Main {
     public duplicateCard() {
         let duplicate = this.selected.clone()
         duplicate.id = this.generateID()
-
+        duplicate.setCoordinates(this.selected.x + 10, this.selected.y + 10)
         this.canvas.cards.push(duplicate)
         if (!duplicate.movable) {
             this.addImmovableCard(duplicate)
