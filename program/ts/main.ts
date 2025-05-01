@@ -178,7 +178,7 @@ class Main {
                     } else {
                         change_text_button.value = this.selected.text;
                         change_text.style.display = 'block';
-                        
+
                         change_bg_color_button.value = this.selected.bg_color;
                         change_text.style.display = 'block';
                     }
@@ -452,7 +452,7 @@ class Main {
         this.selected = null
     }
 
-    public updateCardText(text: string ): void {
+    public updateCardText(text: string): void {
         if (this.selected && this.selected.images.length == 0) {
 
             this.selected.text = text;
@@ -462,7 +462,7 @@ class Main {
         }
     }
 
-    public updateCardBgColor(color: string ): void {
+    public updateCardBgColor(color: string): void {
         if (this.selected && this.selected.images.length == 0) {
 
             this.selected.bg_color = color;

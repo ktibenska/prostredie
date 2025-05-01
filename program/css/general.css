@@ -16,7 +16,7 @@ main {
     padding: 5px;
 }
 
-.tutorial{
+.tutorial {
     align-content: center;
     text-align: left;
     font-size: 18px;
@@ -28,26 +28,15 @@ img {
     width: 50%;
 }
 
-h2, h3{
+h2, h3, h6, #left_panel_content {
     text-align: center;
 }
 
-#settings_col .btn {
+#left_panel_content .btn, #right_panel_content .btn {
     margin-bottom: 1px
 }
 
-#settings_col input {
-    padding: 0 !important;
-    /*border-radius: 2px;*/
-    /*border: 1px solid #888;*/
-    /*margin: 5px 0*/
-}
-
 #navbar {
-    /*min-height: 6vh;*/
-    /*max-height: 6vh;*/
-    /*margin: 0;*/
-    /*padding: 0;*/
     position: sticky;
     top: 0;
     background-color: white;
@@ -92,7 +81,6 @@ h2, h3{
 }
 
 
-
 #hideBack:not(:checked) ~ #text_values { /*prekliknutie na obrazky*/
     display: none;
 }
@@ -109,7 +97,7 @@ h2, h3{
     display: none;
 }
 
-#modal_message{
+#modal_message {
     color: red;
     visibility: hidden;
 }

@@ -5,26 +5,24 @@
     <meta charset="UTF-8">
     <title>prostredie</title>
 
-    <!--    <link rel="stylesheet" href="bootstrap/bootstrap-icons-1.10.5/font/bootstrap-icons.min.css">-->
-    <!--    <link rel="stylesheet" href="bootstrap/bootstrap-5.3.0-dist/css/bootstrap.min.css">-->
     <link rel="stylesheet" href="css/general.css">
-
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
-          integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 </head>
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+<!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"-->
+<!--        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"-->
+<!--        crossorigin="anonymous"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"-->
+<!--        integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"-->
+<!--        crossorigin="anonymous"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
         crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
-        integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
-        crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
-        integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
-        crossorigin="anonymous"></script>
+
+
 <script src='js/main.js'></script>
 <script src='js/canvas.js'></script>
 <script src='js/buttons.js'></script>
@@ -40,18 +38,18 @@
 
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-warning" id="navbar">
+<nav class="navbar navbar-expand-lg n bg-warning" id="navbar">
     <div class="container-fluid">
         <a class="navbar-brand" href="exercise.html">PROSTREDIE</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main_nav"
+                aria-controls="main_nav"
                 aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="">
+        <div class="collapse navbar-collapse" id="main_nav">
             <ul class="navbar-nav">
                 <li class="nav-item"><a class="nav-link" href="index.html">úvod</a></li>
                 <li class="nav-item"><a class="nav-link" href="tutorial.html">návod</a></li>
-                <li class="nav-item"><a class="nav-link" href="exercise.html">prostredie</a></li>
             </ul>
         </div>
     </div>
@@ -73,8 +71,8 @@
 
 
             <li class="row text-center">
-                <label for="x">Kategória:</label>
-                <div class="color-button-row" id="x">
+                <div>Kategória:</div>
+                <div class="color-button-row" id="category_colors">
                     <button class="color-btn" style="background-color: orange;"></button>
                     <button class="color-btn" style="background-color: red;"></button>
                     <button class="color-btn" style="background-color: rebeccapurple;"></button>
@@ -92,9 +90,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Nová kartička</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
                 </div>
                 <div class="modal-body">
                     <div class="form-check">
@@ -121,7 +118,7 @@
                         <div id="image_input">
                             <br>
                             <form id="image_input-form" class="nice" action="" method="post">
-                                <input type="file" accept="image/*" id="id_image_input" multiple>
+                                <input class="form-control" type="file" accept="image/*" id="id_image_input" multiple>
                             </form>
                             <div id="modal_message">Nebol vložený obrázok.</div>
                         </div>
@@ -130,12 +127,12 @@
 
                             <div>
                                 <input class="input-block-level btn btn-light outline-light form-control form-control-color"
-                                       title="vyber farbu" type="color" id="color_selector_text" value="#000000">
+                                       title="Vyber farbu textu" type="color" id="color_selector_text" value="#000000">
                                 <label for="color_selector_text">farba textu</label>
                             </div>
                             <div>
                                 <input class="input-block-level btn btn-light outline-light form-control form-control-color"
-                                       title="vyber farbu" type="color" id="color_selector_bg" value="#ffff00">
+                                       title="Vyber farbu pozadia" type="color" id="color_selector_bg" value="#ffff00">
                                 <label for="color_selector_bg">farba pozadia</label>
                             </div>
                             <div>
@@ -161,7 +158,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" id="submit">ok</button>
-                    <button hidden type="button" class="btn btn-primary" data-dismiss="modal" id="hiddenSubmit">
+                    <button hidden type="button" class="btn btn-primary" data-bs-dismiss="modal" id="hiddenSubmit">
                     </button>
                 </div>
             </div>
@@ -175,9 +172,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="bgChangeModalLabel">Zmena pozadia</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
                 </div>
 
                 <div class="modal-body">
@@ -190,21 +186,21 @@
 
                             <label for="id_bg"> Obrázok pozadia:</label>
                             <form id="bg-form" class="nice" action="" method="post">
-                                <input type="file" accept="image/*" name="bg" id="id_bg">
+                                <input class="form-control" type="file" accept="image/*" name="bg" id="id_bg">
                             </form>
 
 
                             <label for="bg_color"> alebo farba pozadia:</label>
 
                             <input class="input-block-level btn btn-outline-dark btn-light form-control form-control-color"
-                                   title="vyber farbu pozadia" type="color" id="bg_color" value="#ffffff">
+                                   title="Vyber farbu pozadia" type="color" id="bg_color" value="#ffffff">
                         </div>
                     </div>
 
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="bg_submit">ok
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="bg_submit">ok
                     </button>
                 </div>
             </div>
@@ -218,9 +214,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="loadModalLabel">Načítaj aktivitu</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
                 </div>
 
                 <div class="modal-body">
@@ -228,11 +223,12 @@
                     </div>
 
                     <div>
-                        <div class="text-danger"> Načítaním novej aktivity sa vymaže rozrobená aktivita.</div>
+                        <div class="text-danger"> Načítaním novej aktivity sa vymaže rozrobená aktivita!</div>
                         <br>
                         <div id="load">
                             <form id="json" class="nice" action="" method="post">
-                                <input type="file" accept="application/json" name="json_input" id="json_input">
+                                <input class="form-control" type="file" accept="application/json" name="json_input"
+                                       id="json_input">
                             </form>
                         </div>
 
@@ -240,7 +236,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="load_submit_button">ok
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="load_submit_button">ok
                     </button>
                 </div>
             </div>
@@ -253,16 +249,15 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="clearModalLabel">Nová aktivita</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
                 </div>
                 <div class="modal-body">
                     Naozaj chcete vymazať celú plochu?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Nie</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="clear_submit_button">Áno
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Nie</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="clear_submit_button">Áno
                     </button>
                 </div>
             </div>
@@ -277,14 +272,14 @@
                 <div id="left_panel_content">
 
                     <div class="row">
-                        <button type="button" class="btn btn-warning bi bi-plus" data-toggle="modal"
-                                data-target="#exampleModal"
-                                title='pridaj kartičku'>
+                        <button type="button" class="btn btn-warning bi bi-plus" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal"
+                                title='Pridaj kartičku'>
                         </button>
 
                     </div>
                     <div class="row">
-                        <button class="input-block-level btn btn-warning bi bi-arrows-move" title='posúvaj kartičky'
+                        <button class="input-block-level btn btn-warning bi bi-arrows-move" title='Posúvaj kartičky'
                                 id="move_button">
                         </button>
                     </div>
@@ -298,20 +293,20 @@
 
                     <div class="row">
                         <button class="input-block-level btn btn-warning bi bi-arrows-angle-expand"
-                                title='uprav veľkosť kartičky'
+                                title='Uprav veľkosť kartičky'
                                 id="resize_button">
                         </button>
                     </div>
 
                     <div class="row">
-                        <button class="input-block-level btn btn-warning bi bi-tree" data-toggle="modal"
-                                data-target="#bgChangeModal" title='zmena pozadia'>
+                        <button class="input-block-level btn btn-warning bi bi-tree" data-bs-toggle="modal"
+                                data-bs-target="#bgChangeModal" title='Zmena pozadia'>
                         </button>
                     </div>
 
                     <div class="row">
-                        <button class="input-block-level btn btn-warning bi bi-square" title='nová aktivita'
-                                id="clear_button" data-toggle="modal" data-target="#clearModal">
+                        <button class="input-block-level btn btn-warning bi bi-trash" title='Nová aktivita'
+                                id="clear_button" data-bs-toggle="modal" data-bs-target="#clearModal">
                         </button>
                     </div>
 
@@ -319,7 +314,8 @@
                     <div class="row">
                         <div class="form-check form-switch">
                             <label class="form-check-label bi-shuffle" for="shuffle_cards"></label>
-                            <input title='zamiešaj kartičky' class="form-check-input" type="checkbox"
+                            <input title='Miešanie pohyblivých kartičiek pri spustení hry' class="form-check-input"
+                                   type="checkbox"
                                    id="shuffle_cards" checked>
                         </div>
                     </div>
@@ -327,7 +323,7 @@
                     <div class="row">
                         <div class="form-check form-switch">
                             <label class="form-check-label bi-square" for="outline_cards"></label>
-                            <input title='zobraz koncové pozície' class="form-check-input" type="checkbox"
+                            <input title='Zobraz koncové pozície pri hre' class="form-check-input" type="checkbox"
                                    id="outline_cards" checked>
                         </div>
                     </div>
@@ -335,7 +331,7 @@
                     <div class="row">
                         <div class="form-check form-switch">
                             <label class="form-check-label bi-grid-3x3" for="show_grid"></label>
-                            <input title='zobraz mriežku' class="form-check-input" type="checkbox"
+                            <input title='Zobraz mriežku' class="form-check-input" type="checkbox"
                                    id="show_grid" checked>
                         </div>
                     </div>
@@ -358,11 +354,11 @@
 
                     <div class="col" style="height: 3em">
                         <button type="button" class="btn btn-warning bi bi-x"
-                                id="close_button" title='zavri'>
+                                id="close_button" title='Zavri'>
                         </button>
 
                         <button type="button" class="btn btn-warning bi bi-question"
-                                id="check_answer_button" title='kontrola riešenia'>
+                                id="check_answer_button" title='Kontrola riešenia'>
                         </button>
 
                     </div>
@@ -383,41 +379,41 @@
 
                             <div class="col-6">
 
-                                <button class="btn btn-warning bi-house" title="ulož domáci stav"
+                                <button class="btn btn-warning bi-house" title="Ulož domovský stav"
                                         id="home_state_button"></button>
                             </div>
 
 
                             <div>
-                                <label>domáci stav</label>
+                                <h6>Domovský stav</h6>
                                 <canvas id="home_state_canvas"></canvas>
                             </div>
 
                             <div class="col-6">
-                                <button class="btn btn-warning bi-check" title="ulož finálny stav"
+                                <button class="btn btn-warning bi-check" title="Ulož finálny stav"
                                         id="final_state_button"></button>
                             </div>
 
                             <div>
-                                <label>finálny stav</label>
+                                <h6>Finálny stav</h6>
                                 <canvas id="final_state_canvas"></canvas>
                             </div>
 
 
                             <div>
-                                <button class="input-block-level btn btn-secondary bi bi-play" title='spusti aktivitu'
+                                <button class="input-block-level btn btn-secondary bi bi-play" title='Spusti aktivitu'
                                         id="run_button">
                                 </button>
                             </div>
 
                             <div class="col">
                                 <button class="input-block-level btn btn-secondary bi bi-save" id="save_button"
-                                        title='ulož'>
+                                        title='Ulož aktivitu'>
                                 </button>
                             </div>
                             <div class="col">
                                 <button class="input-block-level btn btn-secondary bi-folder2-open" id="load_button"
-                                        data-toggle="modal" data-target="#loadModal" title='načítaj súbor'>
+                                        data-bs-toggle="modal" data-bs-target="#loadModal" title='Načítaj aktivitu'>
                                 </button>
 
                             </div>
