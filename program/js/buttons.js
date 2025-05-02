@@ -74,6 +74,7 @@ var Buttons = /** @class */ (function () {
         });
         this.runButton = document.getElementById('run_button');
         this.runButton.addEventListener('mouseup', function () {
+            _this.tempCardList = [];
             for (var _i = 0, _a = _this.sketchpad.canvas.cards; _i < _a.length; _i++) {
                 var card = _a[_i];
                 _this.tempCardList.push(card.clone());

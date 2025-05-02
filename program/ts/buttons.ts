@@ -129,6 +129,7 @@ class Buttons {
         this.runButton = document.getElementById('run_button');
         this.runButton.addEventListener('mouseup', () => {
 
+            this.tempCardList = []
             for (let card of this.sketchpad.canvas.cards) {
                 this.tempCardList.push(card.clone())
             }
@@ -137,7 +138,6 @@ class Buttons {
             if (this.sketchpad.mode == Types.RUN) {
                 this.buttonsHidden(true);
             }
-
 
         });
 
