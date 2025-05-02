@@ -31,22 +31,22 @@ var Buttons = /** @class */ (function () {
         });
     };
     Buttons.prototype.initButtons = function () {
+        // this.moveButton = document.getElementById('move_button');
+        // this.moveButton.addEventListener('mouseup', () => {
+        //     this.sketchpad.setMode(Types.MOVE)
+        //     this.sketchpad.redraw()
+        // });
         var _this = this;
-        this.moveButton = document.getElementById('move_button');
-        this.moveButton.addEventListener('mouseup', function () {
-            _this.sketchpad.setMode("move" /* Types.MOVE */);
-            _this.sketchpad.redraw();
-        });
         // this.addButton = document.getElementById('add_button');
         // this.addButton.addEventListener('mouseup', () => {
         //     this.sketchpad.setMode(Types.ADD)
         //     this.sketchpad.redraw()
         // });
-        this.resizeButton = document.getElementById('resize_button');
-        this.resizeButton.addEventListener('mouseup', function () {
-            _this.sketchpad.setMode("resize" /* Types.RESIZE */);
-            _this.sketchpad.redraw();
-        });
+        // this.resizeButton = document.getElementById('resize_button');
+        // this.resizeButton.addEventListener('mouseup', () => {
+        //     this.sketchpad.setMode(Types.RESIZE)
+        //     this.sketchpad.redraw()
+        // });
         this.homeStateButton = document.getElementById('home_state_button');
         this.homeStateButton.addEventListener('mouseup', function () {
             _this.sketchpad.homeCanvas.cards = [];

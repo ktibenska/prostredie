@@ -64,6 +64,10 @@ class ImageCard extends Card {
     }
 
 
+    public drawResize(ctx: any) {
+        this.draw(ctx)
+    }
+
     public drawOutline(ctx: any): void {
         ctx.fillStyle = "lightgray";
         ctx.strokeStyle = "black";

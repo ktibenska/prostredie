@@ -219,7 +219,7 @@ class Main {
             const content = data + '\"cards\":[' + cardDataString.slice(0, -1) + ']}';
             const file = new Blob([content], {type: 'application/json'});
             link.href = URL.createObjectURL(file);
-            link.download = "test.json";
+            link.download = "aktivita.json";
             link.click();
             URL.revokeObjectURL(link.href);
         };
@@ -294,15 +294,23 @@ class Main {
             this.redraw();
         }
 
-
-        if (this.mode == Types.RESIZE) {
+        if (this.mode != Types.RUN) {
             for (let card of this.canvas.cards) {
                 if (card.getClickedHandle(x, y)) {
                     this.selected = card;
+                    this.mode = Types.RESIZE
                     break;
                 }
             }
         }
+        // if (this.mode == Types.RESIZE) {
+        //     for (let card of this.canvas.cards) {
+        //         if (card.getClickedHandle(x, y)) {
+        //             this.selected = card;
+        //             break;
+        //         }
+        //     }
+        // }
 
     }
 
@@ -380,6 +388,8 @@ class Main {
         this.x = e.offsetX;
         this.y = e.offsetY;
         this.redraw();
+
+        if (this.mode == Types.RESIZE) this.mode = Types.MOVE
     }
 
     private onMouseLeave() {
@@ -404,7 +414,7 @@ class Main {
             this.canvas.redraw()
         }
 
-        if (this.mode == Types.RESIZE) {
+        if (this.mode != Types.RUN) {
             this.canvas.redrawResize()
         }
 
@@ -420,7 +430,6 @@ class Main {
 
     public runApplication() {
         if (!this.checkCards()) {
-            window.alert("Nesprávne položené kartičky.");
             return;
         }
 
@@ -479,12 +488,14 @@ class Main {
             let card = c.getCardByID(this.selected.id)
 
             if (card) {
-                //todo podla typu karty
+                //todo podla typu karty?
                 card.text = this.selected.text
                 card.bg_color = this.selected.bg_color
 
-                card.x = this.selected.x
-                card.y = this.selected.y
+                if (!card.movable) {
+                    card.x = this.selected.x
+                    card.y = this.selected.y
+                }
                 card.width = this.selected.width
                 card.height = this.selected.height
             }
@@ -499,7 +510,7 @@ class Main {
             return false;
         }
 
-        //todo check ci su karticky rovnakej velkosti
+        //todo check ci su karticky rovnakej velkosti, farby  textu
 
         // console.log(this.homeCanvas.cards.length)
         // console.log(this.finalCanvas.cards.length)
@@ -513,6 +524,7 @@ class Main {
             let finalcard = this.finalCanvas.getCardByID(homeCard.id)
 
             if (!this.isSamePosition(homeCard, finalcard)) {
+                window.alert("Nesprávne položené kartičky.");
                 return false;
             }
         }

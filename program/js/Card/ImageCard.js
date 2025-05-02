@@ -67,6 +67,9 @@ var ImageCard = /** @class */ (function (_super) {
         var img = this.images[this.selected_image];
         ctx.drawImage(img, this.x, this.y, img.width, img.height);
     };
+    ImageCard.prototype.drawResize = function (ctx) {
+        this.draw(ctx);
+    };
     ImageCard.prototype.drawOutline = function (ctx) {
         ctx.fillStyle = "lightgray";
         ctx.strokeStyle = "black";

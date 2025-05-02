@@ -32,9 +32,32 @@ h2, h3, h6, #left_panel_content {
     text-align: center;
 }
 
-#left_panel_content .btn, #right_panel_content .btn {
-    margin-bottom: 1px
+#left_panel_content, #right_panel_content {
+    padding: 10px
 }
+
+#left_panel_content .btn {
+    margin-bottom: 10px
+}
+
+#right_panel_content .btn {
+    margin-bottom: 10px;
+    margin-top: 10px
+}
+
+.state_box .row{
+    margin: auto;
+    align-items: flex-end;
+}
+
+
+#left_panel_content .btn-secondary{
+    margin-bottom: 10px
+
+}
+
+
+
 
 #navbar {
     position: sticky;

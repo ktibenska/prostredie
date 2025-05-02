@@ -38,7 +38,7 @@
 
 <body>
 
-<nav class="navbar navbar-expand-lg n bg-warning" id="navbar">
+<nav class="navbar navbar-expand-lg bg-warning" id="navbar">
     <div class="container-fluid">
         <a class="navbar-brand" href="exercise.html">PROSTREDIE</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main_nav"
@@ -48,7 +48,7 @@
         </button>
         <div class="collapse navbar-collapse" id="main_nav">
             <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" href="index.html">úvod</a></li>
+                <!--                <li class="nav-item"><a class="nav-link" href="index.html">úvod</a></li>-->
                 <li class="nav-item"><a class="nav-link" href="tutorial.html">návod</a></li>
             </ul>
         </div>
@@ -62,7 +62,7 @@
         <ul>
             <li id="change_text"><input class="form-control form-control-sm" type="text"
                                         id="change_text_button"></li>
-            <li id="change_bg_color">Farba pozadia <input
+            <li id="change_bg_color">Farba kartičky<input
                     class="btn btn-light outline-light form-control-sm form-control-color"
                     type="color" id="change_bg_color_button"></li>
 
@@ -278,11 +278,11 @@
                         </button>
 
                     </div>
-                    <div class="row">
-                        <button class="input-block-level btn btn-warning bi bi-arrows-move" title='Posúvaj kartičky'
-                                id="move_button">
-                        </button>
-                    </div>
+                    <!--                    <div class="row">-->
+                    <!--                        <button class="input-block-level btn btn-warning bi bi-arrows-move" title='Posúvaj kartičky'-->
+                    <!--                                id="move_button">-->
+                    <!--                        </button>-->
+                    <!--                    </div>-->
 
                     <!--                    <div class="row">-->
                     <!--                        <button class="input-block-level btn btn-warning bi bi-square-fill"-->
@@ -291,12 +291,12 @@
                     <!--                        </button>-->
                     <!--                    </div>-->
 
-                    <div class="row">
-                        <button class="input-block-level btn btn-warning bi bi-arrows-angle-expand"
-                                title='Uprav veľkosť kartičky'
-                                id="resize_button">
-                        </button>
-                    </div>
+                    <!--                    <div class="row">-->
+                    <!--                        <button class="input-block-level btn btn-warning bi bi-arrows-angle-expand"-->
+                    <!--                                title='Uprav veľkosť kartičky'-->
+                    <!--                                id="resize_button">-->
+                    <!--                        </button>-->
+                    <!--                    </div>-->
 
                     <div class="row">
                         <button class="input-block-level btn btn-warning bi bi-tree" data-bs-toggle="modal"
@@ -305,7 +305,7 @@
                     </div>
 
                     <div class="row">
-                        <button class="input-block-level btn btn-warning bi bi-trash" title='Nová aktivita'
+                        <button class="input-block-level btn btn-warning bi bi-square" title='Vymaž plochu'
                                 id="clear_button" data-bs-toggle="modal" data-bs-target="#clearModal">
                         </button>
                     </div>
@@ -377,28 +377,40 @@
 
                         <div class="row">
 
-                            <div class="col-6">
+                            <div class="state_box">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <button class="btn btn-warning bi-house" title="Ulož domovský stav"
+                                                id="home_state_button"></button>
+                                    </div>
 
-                                <button class="btn btn-warning bi-house" title="Ulož domovský stav"
-                                        id="home_state_button"></button>
+                                    <div class="col-8">
+                                        <h6 class="">Domovský stav</h6>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <canvas id="home_state_canvas"></canvas>
+                                </div>
+
                             </div>
 
+                            <div class="state_box">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <button class="btn btn-warning bi-check" title="Ulož finálny stav"
+                                                id="final_state_button"></button>
+                                    </div>
+                                    <div class="col-9">
+                                        <h6>Finálny stav</h6>
+                                    </div>
+                                </div>
 
-                            <div>
-                                <h6>Domovský stav</h6>
-                                <canvas id="home_state_canvas"></canvas>
+                                <div>
+                                    <canvas id="final_state_canvas"></canvas>
+                                </div>
+
                             </div>
-
-                            <div class="col-6">
-                                <button class="btn btn-warning bi-check" title="Ulož finálny stav"
-                                        id="final_state_button"></button>
-                            </div>
-
-                            <div>
-                                <h6>Finálny stav</h6>
-                                <canvas id="final_state_canvas"></canvas>
-                            </div>
-
 
                             <div>
                                 <button class="input-block-level btn btn-secondary bi bi-play" title='Spusti aktivitu'

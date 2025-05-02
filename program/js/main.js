@@ -161,7 +161,7 @@ var Main = /** @class */ (function () {
             var content = data + '\"cards\":[' + cardDataString.slice(0, -1) + ']}';
             var file = new Blob([content], { type: 'application/json' });
             link.href = URL.createObjectURL(file);
-            link.download = "test.json";
+            link.download = "aktivita.json";
             link.click();
             URL.revokeObjectURL(link.href);
         };
@@ -222,15 +222,24 @@ var Main = /** @class */ (function () {
             this.y = e.offsetY;
             this.redraw();
         }
-        if (this.mode == "resize" /* Types.RESIZE */) {
+        if (this.mode != "run" /* Types.RUN */) {
             for (var _b = 0, _c = this.canvas.cards; _b < _c.length; _b++) {
                 var card = _c[_b];
                 if (card.getClickedHandle(x, y)) {
                     this.selected = card;
+                    this.mode = "resize" /* Types.RESIZE */;
                     break;
                 }
             }
         }
+        // if (this.mode == Types.RESIZE) {
+        //     for (let card of this.canvas.cards) {
+        //         if (card.getClickedHandle(x, y)) {
+        //             this.selected = card;
+        //             break;
+        //         }
+        //     }
+        // }
     };
     Main.prototype.onMouseMove = function (e) {
         if (this.canvas.cards[0]) { // todo ?
@@ -292,6 +301,8 @@ var Main = /** @class */ (function () {
         this.x = e.offsetX;
         this.y = e.offsetY;
         this.redraw();
+        if (this.mode == "resize" /* Types.RESIZE */)
+            this.mode = "move" /* Types.MOVE */;
     };
     Main.prototype.onMouseLeave = function () {
         this.redrawAll();
@@ -310,7 +321,7 @@ var Main = /** @class */ (function () {
         else {
             this.canvas.redraw();
         }
-        if (this.mode == "resize" /* Types.RESIZE */) {
+        if (this.mode != "run" /* Types.RUN */) {
             this.canvas.redrawResize();
         }
     };
@@ -322,7 +333,6 @@ var Main = /** @class */ (function () {
     // funkcie pri tlacidlach
     Main.prototype.runApplication = function () {
         if (!this.checkCards()) {
-            window.alert("Nesprávne položené kartičky.");
             return;
         }
         this.canvas.cards = [];
@@ -366,11 +376,13 @@ var Main = /** @class */ (function () {
             var c = _a[_i];
             var card = c.getCardByID(this.selected.id);
             if (card) {
-                //todo podla typu karty
+                //todo podla typu karty?
                 card.text = this.selected.text;
                 card.bg_color = this.selected.bg_color;
-                card.x = this.selected.x;
-                card.y = this.selected.y;
+                if (!card.movable) {
+                    card.x = this.selected.x;
+                    card.y = this.selected.y;
+                }
                 card.width = this.selected.width;
                 card.height = this.selected.height;
             }
@@ -381,7 +393,7 @@ var Main = /** @class */ (function () {
             window.alert("V domovskom a finálnom stave nie je rovnaký počet kartičiek."); //todo change message
             return false;
         }
-        //todo check ci su karticky rovnakej velkosti
+        //todo check ci su karticky rovnakej velkosti, farby  textu
         // console.log(this.homeCanvas.cards.length)
         // console.log(this.finalCanvas.cards.length)
         for (var i = 0; i < this.homeCanvas.cards.length; i++) {
@@ -391,6 +403,7 @@ var Main = /** @class */ (function () {
             }
             var finalcard = this.finalCanvas.getCardByID(homeCard.id);
             if (!this.isSamePosition(homeCard, finalcard)) {
+                window.alert("Nesprávne položené kartičky.");
                 return false;
             }
         }

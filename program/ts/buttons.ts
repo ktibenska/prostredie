@@ -1,9 +1,9 @@
 class Buttons {
     sketchpad: Main
 
-    moveButton: HTMLElement;
-    addButton: HTMLElement;
-    resizeButton: HTMLElement
+    // moveButton: HTMLElement;
+    // addButton: HTMLElement;
+    // resizeButton: HTMLElement
 
     finalStateButton: HTMLElement;
     homeStateButton: HTMLElement;
@@ -79,11 +79,11 @@ class Buttons {
 
     private initButtons() {
 
-        this.moveButton = document.getElementById('move_button');
-        this.moveButton.addEventListener('mouseup', () => {
-            this.sketchpad.setMode(Types.MOVE)
-            this.sketchpad.redraw()
-        });
+        // this.moveButton = document.getElementById('move_button');
+        // this.moveButton.addEventListener('mouseup', () => {
+        //     this.sketchpad.setMode(Types.MOVE)
+        //     this.sketchpad.redraw()
+        // });
 
         // this.addButton = document.getElementById('add_button');
         // this.addButton.addEventListener('mouseup', () => {
@@ -91,11 +91,11 @@ class Buttons {
         //     this.sketchpad.redraw()
         // });
 
-        this.resizeButton = document.getElementById('resize_button');
-        this.resizeButton.addEventListener('mouseup', () => {
-            this.sketchpad.setMode(Types.RESIZE)
-            this.sketchpad.redraw()
-        });
+        // this.resizeButton = document.getElementById('resize_button');
+        // this.resizeButton.addEventListener('mouseup', () => {
+        //     this.sketchpad.setMode(Types.RESIZE)
+        //     this.sketchpad.redraw()
+        // });
 
         this.homeStateButton = document.getElementById('home_state_button');
         this.homeStateButton.addEventListener('mouseup', () => {
