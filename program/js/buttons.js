@@ -1,5 +1,6 @@
 var Buttons = /** @class */ (function () {
     function Buttons(sketchpad) {
+        this.tempCardList = [];
         this.sketchpad = sketchpad;
         this.initContextMenu();
         this.initButtons();
@@ -73,6 +74,10 @@ var Buttons = /** @class */ (function () {
         });
         this.runButton = document.getElementById('run_button');
         this.runButton.addEventListener('mouseup', function () {
+            for (var _i = 0, _a = _this.sketchpad.canvas.cards; _i < _a.length; _i++) {
+                var card = _a[_i];
+                _this.tempCardList.push(card.clone());
+            }
             _this.sketchpad.runApplication();
             if (_this.sketchpad.mode == "run" /* Types.RUN */) {
                 _this.buttonsHidden(true);
@@ -93,7 +98,7 @@ var Buttons = /** @class */ (function () {
         this.closeButton.addEventListener('mouseup', function () {
             _this.buttonsHidden(false);
             _this.sketchpad.canvas.cards = [];
-            for (var _i = 0, _a = _this.sketchpad.homeCanvas.cards; _i < _a.length; _i++) {
+            for (var _i = 0, _a = _this.tempCardList; _i < _a.length; _i++) {
                 var card = _a[_i];
                 _this.sketchpad.canvas.cards.push(card.clone());
             }

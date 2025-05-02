@@ -30,6 +30,8 @@ class Buttons {
 
     contextMenu: HTMLElement;
 
+    tempCardList = [];
+
     constructor(sketchpad: Main) {
         this.sketchpad = sketchpad;
         this.initContextMenu()
@@ -126,10 +128,16 @@ class Buttons {
 
         this.runButton = document.getElementById('run_button');
         this.runButton.addEventListener('mouseup', () => {
+
+            for (let card of this.sketchpad.canvas.cards) {
+                this.tempCardList.push(card.clone())
+            }
+
             this.sketchpad.runApplication();
             if (this.sketchpad.mode == Types.RUN) {
                 this.buttonsHidden(true);
             }
+
 
         });
 
@@ -151,9 +159,10 @@ class Buttons {
             this.buttonsHidden(false);
 
             this.sketchpad.canvas.cards = []
-            for (let card of this.sketchpad.homeCanvas.cards) {
+            for (let card of this.tempCardList) {
                 this.sketchpad.canvas.cards.push(card.clone())
             }
+
             this.sketchpad.mode = Types.MOVE;
             this.sketchpad.redraw();
         });
