@@ -1,13 +1,8 @@
 class Buttons {
-    sketchpad: Main
-
-    // moveButton: HTMLElement;
-    // addButton: HTMLElement;
-    // resizeButton: HTMLElement
+    main: Main
 
     finalStateButton: HTMLElement;
     homeStateButton: HTMLElement;
-
 
     runButton: HTMLElement;
 
@@ -32,9 +27,9 @@ class Buttons {
 
     tempCardList = [];
 
-    constructor(sketchpad: Main) {
-        this.sketchpad = sketchpad;
-        this.initContextMenu()
+    constructor(main: Main) {
+        this.main = main;
+        this.initContextMenu();
         this.initButtons();
     }
 
@@ -44,15 +39,13 @@ class Buttons {
 
         window.addEventListener('click', () => {
             // this.contextMenu.style.display = 'none';
-
-
         });
 
         // hide on escape key
         window.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 this.contextMenu.style.display = 'none';
-                this.sketchpad.selected = null
+                this.main.selected = null
             }
         });
 
@@ -62,7 +55,7 @@ class Buttons {
             button.addEventListener("click", (e) => {
                 const color = (e.target as HTMLButtonElement).style.backgroundColor;
 
-                this.sketchpad.updateCardCategory(color)
+                this.main.updateCardCategory(color)
 
                 document.querySelectorAll(".color-btn").forEach(btn => {
                     btn.classList.remove("selected-color");
@@ -74,68 +67,48 @@ class Buttons {
                 this.contextMenu.style.display = "none";
 
             });
-
         });
-
     }
 
     private initButtons() {
 
-        // this.moveButton = document.getElementById('move_button');
-        // this.moveButton.addEventListener('mouseup', () => {
-        //     this.sketchpad.setMode(Types.MOVE)
-        //     this.sketchpad.redraw()
-        // });
-
-        // this.addButton = document.getElementById('add_button');
-        // this.addButton.addEventListener('mouseup', () => {
-        //     this.sketchpad.setMode(Types.ADD)
-        //     this.sketchpad.redraw()
-        // });
-
-        // this.resizeButton = document.getElementById('resize_button');
-        // this.resizeButton.addEventListener('mouseup', () => {
-        //     this.sketchpad.setMode(Types.RESIZE)
-        //     this.sketchpad.redraw()
-        // });
-
         this.homeStateButton = document.getElementById('home_state_button');
         this.homeStateButton.addEventListener('mouseup', () => {
-            this.sketchpad.homeCanvas.cards = []
-            for (let card of this.sketchpad.canvas.cards) {
-                this.sketchpad.homeCanvas.cards.push(card.clone())
+            this.main.homeCanvas.cards = []
+            for (let card of this.main.canvas.cards) {
+                this.main.homeCanvas.cards.push(card.clone())
             }
-            this.sketchpad.homeCanvas.redraw();
+            this.main.homeCanvas.redraw();
         });
 
         this.finalStateButton = document.getElementById('final_state_button');
         this.finalStateButton.addEventListener('mouseup', () => {
 
-            this.sketchpad.finalCanvas.cards = []
-            for (let card of this.sketchpad.canvas.cards) {
+            this.main.finalCanvas.cards = []
+            for (let card of this.main.canvas.cards) {
                 let c = card.clone()
                 c.home = false
-                this.sketchpad.finalCanvas.cards.push(c)
+                this.main.finalCanvas.cards.push(c)
             }
-            this.sketchpad.finalCanvas.redraw();
+            this.main.finalCanvas.redraw();
 
         });
 
         this.clearSubmitButton = document.getElementById('clear_submit_button');
         this.clearSubmitButton.addEventListener('mouseup', () => {
-            this.sketchpad.clearAll();
+            this.main.clearAll();
         });
 
         this.runButton = document.getElementById('run_button');
         this.runButton.addEventListener('mouseup', () => {
 
             this.tempCardList = []
-            for (let card of this.sketchpad.canvas.cards) {
+            for (let card of this.main.canvas.cards) {
                 this.tempCardList.push(card.clone())
             }
 
-            this.sketchpad.runApplication();
-            if (this.sketchpad.mode == Types.RUN) {
+            this.main.runApplication();
+            if (this.main.mode == Types.RUN) {
                 this.buttonsHidden(true);
             }
 
@@ -158,25 +131,25 @@ class Buttons {
         this.closeButton.addEventListener('mouseup', () => {
             this.buttonsHidden(false);
 
-            this.sketchpad.canvas.cards = []
+            this.main.canvas.cards = []
             for (let card of this.tempCardList) {
-                this.sketchpad.canvas.cards.push(card.clone())
+                this.main.canvas.cards.push(card.clone())
             }
 
-            this.sketchpad.mode = Types.MOVE;
-            this.sketchpad.redraw();
+            this.main.mode = Types.MOVE;
+            this.main.redraw();
         });
 
         this.checkButton = document.getElementById('check_answer_button');
         this.checkButton.hidden = true;
         this.checkButton.addEventListener('mouseup', () => {
-            this.sketchpad.checkSolution();
+            this.main.checkSolution();
         });
 
 
         this.saveButton = document.getElementById('save_button');
         this.saveButton.addEventListener('mouseup', () => {
-            this.sketchpad.toJSON();
+            this.main.toJSON();
         });
 
         this.loadInput = document.getElementById('id_load') as HTMLInputElement;
@@ -190,12 +163,10 @@ class Buttons {
 
             const files = jsonInput.files;
             if (files && files[0]) {
-                // if (file[0].type === 'application/json')
-
                 const reader = new FileReader();
                 reader.onload = () => {
                     jsonData = JSON.parse(reader.result as string);
-                    this.sketchpad.fromJSON(jsonData)
+                    this.main.fromJSON(jsonData)
                 }
                 reader.readAsText(files[0]);
             }
@@ -204,14 +175,14 @@ class Buttons {
 
         this.duplicateCardCtxBtn = document.getElementById('duplicate_card');
         this.duplicateCardCtxBtn.addEventListener('mouseup', () => {
-            this.sketchpad.duplicateCard();
+            this.main.duplicateCard();
             this.contextMenu.style.display = 'none';
 
         });
 
         this.removeCardCtxBtn = document.getElementById('remove_card');
         this.removeCardCtxBtn.addEventListener('mouseup', () => {
-            this.sketchpad.removeCard();
+            this.main.removeCard();
             this.contextMenu.style.display = 'none';
 
         });
@@ -219,17 +190,17 @@ class Buttons {
 
         const changeTextCtxBtn = document.getElementById('change_text_button') as HTMLInputElement;
         changeTextCtxBtn.addEventListener('input', (event) => {
-            this.sketchpad.updateCardText(changeTextCtxBtn.value)
+            this.main.updateCardText(changeTextCtxBtn.value)
         });
 
         const changeBgColorCtxBtn = document.getElementById('change_bg_color_button') as HTMLInputElement;
         changeBgColorCtxBtn.addEventListener('input', (event) => {
-            this.sketchpad.updateCardBgColor((event.target as HTMLInputElement).value)
+            this.main.updateCardBgColor((event.target as HTMLInputElement).value)
         });
 
         this.showGridBtn = document.getElementById('show_grid') as HTMLInputElement;
         this.showGridBtn.addEventListener('mouseup', () => {
-            this.sketchpad.gridOn(!this.showGridBtn.checked);
+            this.main.gridOn(!this.showGridBtn.checked);
         });
     }
 

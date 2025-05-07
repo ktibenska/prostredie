@@ -65,6 +65,10 @@ h2, h3, h6, #left_panel_content {
     background-color: white;
 }
 
+.navtext{
+    cursor: pointer;
+}
+
 #canvas-row {
     min-height: 75vh;
     max-height: 75vh;
@@ -185,4 +189,13 @@ h2, h3, h6, #left_panel_content {
 
 .color-btn.selected-color {
     outline: 3px solid black;
+}
+
+#footer {
+    margin-top: 40px;
+    padding: 20px;
+    text-align: center;
+    font-weight: 500;
+    color: dimgray;
+    bottom: 0;
 }

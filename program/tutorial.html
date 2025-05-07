@@ -15,14 +15,13 @@
 
 <nav class="navbar navbar-expand-lg bg-warning" id="navbar">
     <div class="container-fluid">
-        <a class="navbar-brand" href="exercise.html">PROSTREDIE</a>
+        <a class="navbar-brand" href="exercise.html">KARTOMIX</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main_nav"
                 aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="">
             <ul class="navbar-nav">
-<!--                <li class="nav-item"><a class="nav-link" href="index.html">úvod</a></li>-->
                 <li class="nav-item"><a class="nav-link" href="tutorial.html">návod</a></li>
             </ul>
         </div>
@@ -65,24 +64,159 @@
                     ukladať kartičky.
                 </div>
             </div>
-            <hr>
-            <div class="row"><h3 id="pozadie">Zmena pozadia</h3></div>
 
-            Pozadie vieme nastaviť na obrázok z galérie alebo ho nastaviť na jednu farbu.
+            <hr>
+
+            <div class="row"><h3 id="tlacidla">Ovládanie</h3></div>
+
+            V tomto návode je vysvetlené ovládanie všetkých tlačidiel potrebných pri výrobe aktivít.
+            Taktiež obsahuje postup pre vytvorenie niekoľko konkrétnych aktivít rôznych typov.
+
+            <hr>
+
+            <div class="row">
+                <button class="btn btn-warning bi bi-plus col-1" title='Pridaj kartičku'></button>
+                <div class="col-10"><h4>Pridaj kartičku</h4></div>
+            </div>
+
+            <div >
+
+                Po kliknutí na toto tlačidlo sa zobrazí okno a vieme si zvoliť parametre kartičky, ktorú chceme
+                vytvoriť.
+                Môže obsahovať text alebo obrázok.
+                <br>
+                Pevnú kartičku počas hrania už nie je možné posúvať
+                Pohyblivé kartičky možno posúvať aj počas hrania.
+                <br>
+                Položené kartičky sa dajú ťahaním presúvať.
+                Ťahaním za rohy sa dá upravovať ich veľkosť.
+            </div>
+
             <br>
-            Pre nastavenie pozadia klikneme na tlačidlo
-            <button class="btn btn-warning bi bi-tree"></button>
+
+
+            <div class="row">
+                <div class="col-10"><h4>Uprava položenej kartičky</h4></div>
+                Veľkosť kartičiek sa dá upravovať ťahaním za jej rožky.
+                <br>
+                Položená kartička sa dá meniť kliknutím pravým tlačidlom myši. Zobrazí sa kontextové menu.
+                Pre textovú kartičku sa dá zmeniť farba a text.
+                <br>
+                Kartičku je možné vymazať, alebo vytvoriť jej kópiu.
+
+            </div>
             <br>
-            Zobrazí sa modálne okno.
-            Ak chceme nastaviť obrázok, klikneme na tlačidlo Vybrať súbor a zvolíme vhodný obrázok.
-            Ak chceme zvoliť farbu, klikneme na farebný štvorec a vyberieme farbu.
+
+            <div class="row">
+                <div class="col-10"><h4>Kategória kartičky</h4></div>
+                Pri pravom kliknutí na kartičku je možné kartičke nastaviť kategóriu.
+                Kartičky s rovnakou kategóriou sú zamieňateľné, riešenie je správne aj keď majú navzáojm vymenené
+                pozície.
+                Pre všetky kartičky, ktoré chceme zaradiť do jednej kategórie musíme zvoliť rovnakú farbu.
+            </div>
+
+
             <br>
-            Kliknutím na tlačidlo
-            <button type="button" class="btn btn-primary">ok</button>
-            sa pozadie zmení.
-            <br>
-            Ak pozadie nechceme meniť, zostane nastavené na pôvodnú mriežku.
-            Vieme ju vypnúť/zapnúť tlačidlom označeným <label class="form-check-label bi-grid-3x3"></label>.
+            <div class="row">
+                <button class="btn btn-warning bi bi-tree col-1" title='Zmena pozadia'></button>
+                <div class="col-10"><h4> Zmena pozadia</h4></div>
+            </div>
+
+
+            Pomocou tohto tlačidla vieme nastaviť pozadie aktivity. Dá sa vložiť obrázok alebo zvoliť farbu.
+            <hr>
+            <div class="row">
+                <button class="btn btn-warning bi bi-x-square col-1" title='Vymaž plochu'></button>
+                <div class="col-10"><h4> Vymaž plochu</h4></div>
+            </div>
+
+
+            Kliknutím na toto tlačidlo sa vymaže celá grafická plocha, aj ak je na nej rozrobená aktivita.
+
+            <hr>
+
+            <div class="row">
+                <div class="form-check form-switch col-1">
+                    <label class="form-check-label bi-shuffle" title='Miešanie pohyblivých kartičiek pri spustení hry'
+                           for="sc"></label>
+                    <input title='Miešanie pohyblivých kartičiek pri spustení hry' class="form-check-input"
+                           type="checkbox"
+                           id="sc" checked>
+                </div>
+                <div class="col-10"><h4> Miešanie pohyblivých kartičiek pri spustení hry</h4></div>
+            </div>
+
+
+            Keď je táto možnosť zakliknutá, pri spustení hry sa pohyblivé kartičky premiešajú.
+            <hr>
+
+
+            <div class="row">
+                <div class="form-check form-switch col-1">
+                    <label class="form-check-label bi-square" title='Zobraz koncové pozície pri hre' for="oc"></label>
+                    <input title='Zobraz koncové pozície pri hre' class="form-check-input" type="checkbox"
+                           id="oc" checked>
+                </div>
+                <div class="col-10"><h4>Zobraz koncové pozície pri hre</h4></div>
+            </div>
+
+
+            Keď je táto možnosť zakliknutá, pri spustenej hre sa vykresľujú pozície, na ktoré boli kartičky uložené vo
+            finálnom stave a kam ich treba ukladať.
+
+            <hr>
+            <div class="row">
+                <div class="form-check form-switch col-1">
+                    <label class="form-check-label bi-grid-3x3" title='Zobraz mriežku' for="sg"></label>
+                    <input title='Zobraz mriežku' class="form-check-input" type="checkbox"
+                           id="sg" checked>
+                </div>
+                <div class="col-10"><h4> Zobraz mriežku</h4></div>
+            </div>
+
+            Prepína, či sa grafickej ploche vykresľuje mriežka, alebo nie.
+            <hr>
+            <div class="row">
+                <button class="btn btn-warning bi-house col-1" title="Ulož domovský stav"></button>
+                <div class="col-10"><h4> Ulož domovský stav</h4></div>
+            </div>
+
+            Kliknutím na toto tlačidlo sa prekreslí horná malá grafická plocha na stav, aký sa práve nachádza na hlavnej
+            ploche. Pri spustení sa aktivita vykreslí presne rovnako.
+
+            <hr>
+            <div class="row">
+                <button class="btn btn-sm btn-warning bi-check col-1" title="Ulož finálny stav"></button>
+                <div class="col-10"><h4> Ulož finálny stav</h4></div>
+
+            </div>
+            Kliknutím na toto tlačidlo sa prekreslí dolná malá grafická plocha na stav, aký sa práve nachádza na hlavnej
+            ploche. Pri hraní aktivity bude toto výsledný stav, ku ktorému sa chceme dopracovať.
+            <hr>
+            <div class="row">
+                <button class="btn btn-secondary bi bi-play col-1" title='Spusti aktivitu'>
+                </button>
+                <div class="col-10"><h4>Spusti aktivitu</h4></div>
+            </div>
+
+            Kliknutím na toto tlačidlo sa aktivita spustí, môžeme si ju zahrať.
+            <hr>
+            <div class="row">
+                <button class="input-block-level btn btn-secondary bi bi-save col-1" title='Ulož aktivitu'></button>
+                <div class="col-10"><h4>Ulož aktivitu</h4></div>
+            </div>
+
+            Kliknutím na toto tlačidlo sa uloží súbor s aktivitou do počítača podľa nastavení v prehliadači.
+
+            <hr>
+            <div class="row">
+                <button class="btn btn-secondary bi-folder2-open col-1" title='Načítaj aktivitu'></button>
+                <div class="col-10"><h4>Načítaj aktivitu</h4></div>
+            </div>
+            Otvorí sa modálne okno, pomocou ktorého vieme načítať súbor s aktivitou, ktorú sme si predtým vytvorili a
+            uložili. Následne sa prekreslí celá plocha aktivita, takže je treba si dať pozor aby sme nemali rozrobenú
+            neuloženú aktivitu.
+
             <hr>
 
             <div class="row"><h3 id="vytvaranie">Vytváranie aktivít</h3></div>
@@ -385,6 +519,10 @@
             sa plocha celá prekreslí a vykreslí sa aktivita zo súboru.
             Vieme ju potom rovno spustiť, alebo ešte ďalej upravovať.
 
+
+            <div class="row" id="footer">
+                Túto aplikáciu vytvorila Bc. Katarína Tibenská ako diplomovú prácu v roku 2025.
+            </div>
 
         </div>
         <div class="col-2 sidenav">

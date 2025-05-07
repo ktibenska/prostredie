@@ -2,7 +2,7 @@ class TextCard extends Card {
 
     text: string = "test";
     text_color: string = "#000000";
-    bg_color: string = "#ffff00";
+    bg_color: string = "#8ea2ec";
 
     public clone(): TextCard {
         let clone = new TextCard(this.x, this.y, this.id);
@@ -106,7 +106,7 @@ class TextCard extends Card {
     }
 
     private isHandleClicked(mx: number, my: number, x: number, y: number): boolean {
-        let handleBorder = 5;
+        let handleBorder = 10;
         return (
             (mx >= x - handleBorder - this.handleSize / 2) && (mx <= x + handleBorder + this.handleSize / 2) &&
             (my >= y - handleBorder - this.handleSize / 2) && (my <= y + handleBorder + this.handleSize / 2)

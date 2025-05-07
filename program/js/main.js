@@ -9,7 +9,8 @@ var Main = /** @class */ (function () {
         this.bgSubmitButton = document.getElementById('bg_submit');
         this.shuffleButton = document.getElementById('shuffle_cards');
         this.outlineButton = document.getElementById('outline_cards');
-        this.canvas = new Canvas('sketchpad_main');
+        this.gridButton = document.getElementById('show_grid');
+        this.canvas = new Canvas('main_canvas');
         this.mode = "move" /* Types.MOVE */;
         this.canvas.addEventListeners(function (e) { return _this.onMouseDown(e); }, function (e) { return _this.onMouseMove(e); }, function (e) { return _this.onMouseUp(e); }, function (e) { return _this.onMouseEnter(e); }, function (e) { return _this.onMouseLeave(); });
         this.homeCanvas = new Canvas('home_state_canvas');
@@ -38,7 +39,6 @@ var Main = /** @class */ (function () {
                 imageFiles_1.forEach(function (file, index) {
                     var reader = new FileReader();
                     reader.onload = function () {
-                        // console.log(`Image ${index + 1}:`, reader.result);
                         var image = new Image();
                         image.src = reader.result;
                         c.images.push(image);
@@ -181,6 +181,8 @@ var Main = /** @class */ (function () {
         }
         this.shuffleButton.checked = json.shuffle;
         this.outlineButton.checked = json.outline;
+        this.gridButton.checked = json.grid;
+        this.gridOn(json.grid);
         for (var _i = 0, _a = json.cards; _i < _a.length; _i++) {
             var x = _a[_i];
             var card = void 0;
@@ -199,9 +201,6 @@ var Main = /** @class */ (function () {
         }
         this.sortCards();
         this.redrawAll();
-    };
-    Main.prototype.setMode = function (mode) {
-        this.mode = mode;
     };
     Main.prototype.onMouseDown = function (e) {
         if (e.button !== 0)
@@ -223,6 +222,8 @@ var Main = /** @class */ (function () {
             this.redraw();
         }
         if (this.mode != "run" /* Types.RUN */) {
+            if (this.selected != null)
+                return;
             for (var _b = 0, _c = this.canvas.cards; _b < _c.length; _b++) {
                 var card = _c[_b];
                 if (card.getClickedHandle(x, y)) {
@@ -232,14 +233,6 @@ var Main = /** @class */ (function () {
                 }
             }
         }
-        // if (this.mode == Types.RESIZE) {
-        //     for (let card of this.canvas.cards) {
-        //         if (card.getClickedHandle(x, y)) {
-        //             this.selected = card;
-        //             break;
-        //         }
-        //     }
-        // }
     };
     Main.prototype.onMouseMove = function (e) {
         if (this.canvas.cards[0]) { // todo ?
@@ -330,7 +323,7 @@ var Main = /** @class */ (function () {
         this.homeCanvas.clear();
         this.finalCanvas.clear();
     };
-    // funkcie pri tlacidlach
+    // functions for buttons
     Main.prototype.runApplication = function () {
         if (!this.checkCards()) {
             return;
@@ -390,12 +383,10 @@ var Main = /** @class */ (function () {
     };
     Main.prototype.checkCards = function () {
         if (this.homeCanvas.cards.length != this.finalCanvas.cards.length) {
-            window.alert("V domovskom a finálnom stave nie je rovnaký počet kartičiek."); //todo change message
+            window.alert("V domovskom a finálnom stave nie je rovnaký počet kartičiek.");
             return false;
         }
         //todo check ci su karticky rovnakej velkosti, farby  textu
-        // console.log(this.homeCanvas.cards.length)
-        // console.log(this.finalCanvas.cards.length)
         for (var i = 0; i < this.homeCanvas.cards.length; i++) {
             var homeCard = this.homeCanvas.cards[i];
             if (homeCard.isMovable()) {
@@ -450,7 +441,7 @@ var Main = /** @class */ (function () {
                     }
                 }
             }
-            else //ma nastavenu kategoriu
+            else //if category is set
              {
                 var categorycards = this_1.canvas.cards.filter(function (c) { return c.category === card.category; });
                 var okCategorycards = false;

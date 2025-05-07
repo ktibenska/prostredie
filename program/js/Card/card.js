@@ -5,7 +5,6 @@ var Card = /** @class */ (function () {
         this.handleSize = 10;
         this.movable = true;
         this.home = true;
-        //todo home t/f nech sa meni podla umiestnenia, pripadne zmenit ze si pamata obe polohy - lahsie ukladanie?
         this.images = [];
         this.selected_image = 0;
         this.category = 'white';

@@ -28,10 +28,11 @@ var Canvas = /** @class */ (function () {
         var h = this.canvas.height;
         if (this.image) {
             this.ctx.drawImage(this.image, 0, 0, w, h);
-            return;
         }
-        this.ctx.fillStyle = this.bgColor;
-        this.ctx.fillRect(0, 0, w, h);
+        else {
+            this.ctx.fillStyle = this.bgColor;
+            this.ctx.fillRect(0, 0, w, h);
+        }
         if (!this.grid)
             return;
         this.ctx.lineWidth = 0.3;

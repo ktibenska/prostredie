@@ -1,4 +1,0 @@
-class MovableCard extends Card {
-
-
-}

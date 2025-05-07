@@ -19,7 +19,7 @@ var TextCard = /** @class */ (function (_super) {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.text = "test";
         _this.text_color = "#000000";
-        _this.bg_color = "#ffff00";
+        _this.bg_color = "#8ea2ec";
         return _this;
     }
     TextCard.prototype.clone = function () {
@@ -104,7 +104,7 @@ var TextCard = /** @class */ (function (_super) {
         return null;
     };
     TextCard.prototype.isHandleClicked = function (mx, my, x, y) {
-        var handleBorder = 5;
+        var handleBorder = 10;
         return ((mx >= x - handleBorder - this.handleSize / 2) && (mx <= x + handleBorder + this.handleSize / 2) &&
             (my >= y - handleBorder - this.handleSize / 2) && (my <= y + handleBorder + this.handleSize / 2));
     };

@@ -12,12 +12,14 @@ class Main {
     bgSubmitButton = document.getElementById('bg_submit') as HTMLInputElement;
     shuffleButton = document.getElementById('shuffle_cards') as HTMLInputElement;
     outlineButton = document.getElementById('outline_cards') as HTMLInputElement;
+    gridButton = document.getElementById('show_grid') as HTMLInputElement;
+
 
     finalCanvas: Canvas;
     homeCanvas: Canvas;
 
     constructor() {
-        this.canvas = new Canvas('sketchpad_main')
+        this.canvas = new Canvas('main_canvas')
         this.mode = Types.MOVE;
         this.canvas.addEventListeners(
             e => this.onMouseDown(e),
@@ -62,8 +64,6 @@ class Main {
                 imageFiles.forEach((file, index) => {
                     const reader = new FileReader();
                     reader.onload = () => {
-                        // console.log(`Image ${index + 1}:`, reader.result);
-
                         let image = new Image();
                         image.src = reader.result as string;
 
@@ -196,7 +196,7 @@ class Main {
     }
 
 
-    public toJSON() {
+    public toJSON():void {
         let data = "{"
 
         data += '\"bgcolor\":' + JSON.stringify(this.canvas.bgColor) + ','
@@ -214,7 +214,7 @@ class Main {
             cardDataString += JSON.stringify(card) + ","
         }
 
-        const downloadFile = () => { //todo
+        const downloadFile = () => {
             const link = document.createElement("a");
             const content = data + '\"cards\":[' + cardDataString.slice(0, -1) + ']}';
             const file = new Blob([content], {type: 'application/json'});
@@ -245,6 +245,8 @@ class Main {
 
         this.shuffleButton.checked = json.shuffle
         this.outlineButton.checked = json.outline
+        this.gridButton.checked = json.grid
+        this.gridOn(json.grid)
 
 
         for (let x of json.cards) {
@@ -268,11 +270,7 @@ class Main {
     }
 
 
-    public setMode(mode: Types) {
-        this.mode = mode
-    }
-
-    private onMouseDown(e) {
+    private onMouseDown(e): void {
         if (e.button !== 0) return;
 
 
@@ -295,6 +293,8 @@ class Main {
         }
 
         if (this.mode != Types.RUN) {
+            if (this.selected != null) return;
+
             for (let card of this.canvas.cards) {
                 if (card.getClickedHandle(x, y)) {
                     this.selected = card;
@@ -303,18 +303,10 @@ class Main {
                 }
             }
         }
-        // if (this.mode == Types.RESIZE) {
-        //     for (let card of this.canvas.cards) {
-        //         if (card.getClickedHandle(x, y)) {
-        //             this.selected = card;
-        //             break;
-        //         }
-        //     }
-        // }
 
     }
 
-    private onMouseMove(e) {
+    private onMouseMove(e): void {
         if (this.canvas.cards[0]) { // todo ?
         }
 
@@ -372,7 +364,7 @@ class Main {
     }
 
 
-    private onMouseUp(e) {
+    private onMouseUp(e): void {
         if (e.button !== 0) return;
 
         if (this.selected != null) {
@@ -392,11 +384,11 @@ class Main {
         if (this.mode == Types.RESIZE) this.mode = Types.MOVE
     }
 
-    private onMouseLeave() {
+    private onMouseLeave(): void {
         this.redrawAll();
     }
 
-    private onMouseEnter(e) {
+    private onMouseEnter(e): void {
         this.selected = null
 
         this.x = e.offsetX;
@@ -420,14 +412,14 @@ class Main {
 
     }
 
-    clearAll() {
+    public clearAll(): void {
         this.canvas.clear();
         this.homeCanvas.clear();
         this.finalCanvas.clear();
     }
 
-    // funkcie pri tlacidlach
 
+    // functions for buttons
     public runApplication() {
         if (!this.checkCards()) {
             return;
@@ -506,14 +498,11 @@ class Main {
 
     private checkCards(): boolean {
         if (this.homeCanvas.cards.length != this.finalCanvas.cards.length) {
-            window.alert("V domovskom a finálnom stave nie je rovnaký počet kartičiek."); //todo change message
+            window.alert("V domovskom a finálnom stave nie je rovnaký počet kartičiek.");
             return false;
         }
 
         //todo check ci su karticky rovnakej velkosti, farby  textu
-
-        // console.log(this.homeCanvas.cards.length)
-        // console.log(this.finalCanvas.cards.length)
 
         for (let i = 0; i < this.homeCanvas.cards.length; i++) {
             let homeCard = this.homeCanvas.cards[i]
@@ -533,7 +522,7 @@ class Main {
     }
 
     //adds cards from homestate to canvas, sorts all movable cards
-    private sortCards() {
+    private sortCards(): void {
 
         for (let card of this.homeCanvas.cards) {
             this.canvas.cards.push(card.clone())
@@ -558,7 +547,7 @@ class Main {
         return !(Math.abs(card1.x - card2.x) > 20 || Math.abs(card1.y - card2.y) > 20);
     }
 
-    public checkSolution() {
+    public checkSolution(): void {
         let ok = true;
 
         for (let card of this.finalCanvas.cards) {
@@ -579,7 +568,7 @@ class Main {
                     }
                 }
 
-            } else //ma nastavenu kategoriu
+            } else //if category is set
             {
                 let categorycards = this.canvas.cards.filter(c => c.category === card.category)
                 let okCategorycards = false
@@ -606,7 +595,7 @@ class Main {
     }
 
 
-    public duplicateCard() {
+    public duplicateCard(): void {
         let duplicate = this.selected.clone()
         duplicate.id = this.generateID()
         duplicate.setCoordinates(this.selected.x + 10, this.selected.y + 10)
@@ -630,7 +619,7 @@ class Main {
     }
 
 
-    public removeCard() {
+    public removeCard(): void {
         let id = this.selected.id;
 
         this.canvas.cards = this.canvas.cards.filter(item => item.id !== id)
@@ -650,7 +639,7 @@ class Main {
         return 1;
     }
 
-    private redrawAll() {
+    private redrawAll(): void {
         this.redraw();
         this.homeCanvas.redraw();
         this.finalCanvas.redraw();

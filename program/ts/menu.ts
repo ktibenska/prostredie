@@ -1,10 +1,9 @@
 class Menu {
-    n: number = 0;
-    sketchpad: Main;
+    main: Main;
 
     constructor() {
-        this.sketchpad = new Main();
-        new Buttons(this.sketchpad);
+        this.main = new Main();
+        new Buttons(this.main);
     }
 
 

@@ -43,12 +43,10 @@ class Canvas {
 
         if (this.image) {
             this.ctx.drawImage(this.image, 0, 0, w, h)
-            return
+        } else {
+            this.ctx.fillStyle = this.bgColor;
+            this.ctx.fillRect(0, 0, w, h);
         }
-
-
-        this.ctx.fillStyle = this.bgColor;
-        this.ctx.fillRect(0, 0, w, h);
 
         if (!this.grid) return;
 
@@ -89,7 +87,7 @@ class Canvas {
         this.ctx.lineWidth = 2;
     }
 
-    public addEventListeners(onMouseDown, onMouseMove, onMouseUp, onMouseEnter, onMouseLeave) {
+    public addEventListeners(onMouseDown, onMouseMove, onMouseUp, onMouseEnter, onMouseLeave): void {
         this.canvas.addEventListener('mousedown', onMouseDown);
         this.canvas.addEventListener('mousemove', onMouseMove);
         this.canvas.addEventListener('mouseup', onMouseUp);

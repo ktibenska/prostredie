@@ -11,11 +11,10 @@ class Card {
 
     movable: boolean = true;
 
-    home = true;
-    //todo home t/f nech sa meni podla umiestnenia, pripadne zmenit ze si pamata obe polohy - lahsie ukladanie?
+    home: boolean = true;
 
     images = []
-    selected_image = 0
+    selected_image: number = 0
     text: string;
     text_color: string;
     bg_color: string;
@@ -33,7 +32,7 @@ class Card {
     }
 
 
-    public toJSON() {
+    public toJSON(): any {
         return {
             x: this.x,
             y: this.y
