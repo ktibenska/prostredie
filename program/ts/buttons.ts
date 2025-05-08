@@ -1,5 +1,5 @@
 class Buttons {
-    main: Main
+    main: Main;
 
     finalStateButton: HTMLElement;
     homeStateButton: HTMLElement;
@@ -45,7 +45,7 @@ class Buttons {
         window.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 this.contextMenu.style.display = 'none';
-                this.main.selected = null
+                this.main.selected = null;
             }
         });
 
@@ -55,7 +55,7 @@ class Buttons {
             button.addEventListener("click", (e) => {
                 const color = (e.target as HTMLButtonElement).style.backgroundColor;
 
-                this.main.updateCardCategory(color)
+                this.main.updateCardCategory(color);
 
                 document.querySelectorAll(".color-btn").forEach(btn => {
                     btn.classList.remove("selected-color");
@@ -74,9 +74,9 @@ class Buttons {
 
         this.homeStateButton = document.getElementById('home_state_button');
         this.homeStateButton.addEventListener('mouseup', () => {
-            this.main.homeCanvas.cards = []
+            this.main.homeCanvas.cards = [];
             for (let card of this.main.canvas.cards) {
-                this.main.homeCanvas.cards.push(card.clone())
+                this.main.homeCanvas.addCard(card.clone());
             }
             this.main.homeCanvas.redraw();
         });
@@ -84,11 +84,11 @@ class Buttons {
         this.finalStateButton = document.getElementById('final_state_button');
         this.finalStateButton.addEventListener('mouseup', () => {
 
-            this.main.finalCanvas.cards = []
+            this.main.finalCanvas.cards = [];
             for (let card of this.main.canvas.cards) {
-                let c = card.clone()
-                c.home = false
-                this.main.finalCanvas.cards.push(c)
+                let c = card.clone();
+                c.home = false;
+                this.main.finalCanvas.addCard(c);
             }
             this.main.finalCanvas.redraw();
 
@@ -102,9 +102,9 @@ class Buttons {
         this.runButton = document.getElementById('run_button');
         this.runButton.addEventListener('mouseup', () => {
 
-            this.tempCardList = []
+            this.tempCardList = [];
             for (let card of this.main.canvas.cards) {
-                this.tempCardList.push(card.clone())
+                this.tempCardList.push(card.clone());
             }
 
             this.main.runApplication();
@@ -117,13 +117,13 @@ class Buttons {
         this.txtRadio = document.getElementById('hideBack');
         this.txtRadio.addEventListener('click', () => {
             let message = document.getElementById("modal_message");
-            message.style.visibility = 'hidden'
+            message.style.visibility = 'hidden';
         })
 
         this.imageInput = document.getElementById('id_image_input') as HTMLInputElement;
         this.imageInput.addEventListener('change', () => {
             let message = document.getElementById("modal_message");
-            message.style.visibility = 'hidden'
+            message.style.visibility = 'hidden';
         })
 
         this.closeButton = document.getElementById('close_button');
@@ -131,9 +131,9 @@ class Buttons {
         this.closeButton.addEventListener('mouseup', () => {
             this.buttonsHidden(false);
 
-            this.main.canvas.cards = []
+            this.main.canvas.cards = [];
             for (let card of this.tempCardList) {
-                this.main.canvas.cards.push(card.clone())
+                this.main.canvas.addCard(card.clone())
             }
 
             this.main.mode = Types.MOVE;
@@ -166,7 +166,7 @@ class Buttons {
                 const reader = new FileReader();
                 reader.onload = () => {
                     jsonData = JSON.parse(reader.result as string);
-                    this.main.fromJSON(jsonData)
+                    this.main.fromJSON(jsonData);
                 }
                 reader.readAsText(files[0]);
             }
@@ -190,12 +190,12 @@ class Buttons {
 
         const changeTextCtxBtn = document.getElementById('change_text_button') as HTMLInputElement;
         changeTextCtxBtn.addEventListener('input', (event) => {
-            this.main.updateCardText(changeTextCtxBtn.value)
+            this.main.updateCardText(changeTextCtxBtn.value);
         });
 
         const changeBgColorCtxBtn = document.getElementById('change_bg_color_button') as HTMLInputElement;
         changeBgColorCtxBtn.addEventListener('input', (event) => {
-            this.main.updateCardBgColor((event.target as HTMLInputElement).value)
+            this.main.updateCardBgColor((event.target as HTMLInputElement).value);
         });
 
         this.showGridBtn = document.getElementById('show_grid') as HTMLInputElement;
@@ -205,9 +205,9 @@ class Buttons {
     }
 
 
-    private buttonsHidden(hidden: boolean) {
-        this.closeButton.hidden = !hidden
-        this.checkButton.hidden = !hidden
+    private buttonsHidden(hidden: boolean): void {
+        this.closeButton.hidden = !hidden;
+        this.checkButton.hidden = !hidden;
 
         document.getElementById('left_panel_content').hidden = hidden;
         document.getElementById('right_panel_content').hidden = hidden;

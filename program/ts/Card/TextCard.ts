@@ -7,9 +7,9 @@ class TextCard extends Card {
     public clone(): TextCard {
         let clone = new TextCard(this.x, this.y, this.id);
 
-        clone.width = this.width
-        clone.height = this.height
-        clone.movable = this.movable
+        clone.width = this.width;
+        clone.height = this.height;
+        clone.movable = this.movable;
         clone.category = this.category;
 
         clone.text = this.text;
@@ -18,7 +18,7 @@ class TextCard extends Card {
         return clone;
     }
 
-    public toJSON() {
+    public toJSON(): any {
         return {
             id: this.id,
             x: this.x,
@@ -61,10 +61,10 @@ class TextCard extends Card {
 
         ctx.font = "24px Arial";
 
-        const padding = 10
+        const padding = 10;
 
-        const maxFontSize = 24
-        const minFontSize = 10
+        const maxFontSize = 24;
+        const minFontSize = 10;
 
         let fontSize = maxFontSize;
         let textWidth = ctx.measureText(this.text).width;
@@ -81,7 +81,7 @@ class TextCard extends Card {
         const y = this.y + this.height / 2;
 
         ctx.textAlign = "center";
-        ctx.textBaseline = "middle"
+        ctx.textBaseline = "middle";
         ctx.fillText(this.text, x, y);
     }
 
@@ -118,7 +118,7 @@ class TextCard extends Card {
         ctx.fillStyle = "lightgray";
         ctx.strokeStyle = "black";
 
-        ctx.strokeRect(this.x, this.y, this.width, this.height)
+        ctx.strokeRect(this.x, this.y, this.width, this.height);
     }
 
 

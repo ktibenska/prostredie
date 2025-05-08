@@ -38,7 +38,7 @@ var Buttons = /** @class */ (function () {
             _this.main.homeCanvas.cards = [];
             for (var _i = 0, _a = _this.main.canvas.cards; _i < _a.length; _i++) {
                 var card = _a[_i];
-                _this.main.homeCanvas.cards.push(card.clone());
+                _this.main.homeCanvas.addCard(card.clone());
             }
             _this.main.homeCanvas.redraw();
         });
@@ -49,7 +49,7 @@ var Buttons = /** @class */ (function () {
                 var card = _a[_i];
                 var c = card.clone();
                 c.home = false;
-                _this.main.finalCanvas.cards.push(c);
+                _this.main.finalCanvas.addCard(c);
             }
             _this.main.finalCanvas.redraw();
         });
@@ -86,7 +86,7 @@ var Buttons = /** @class */ (function () {
             _this.main.canvas.cards = [];
             for (var _i = 0, _a = _this.tempCardList; _i < _a.length; _i++) {
                 var card = _a[_i];
-                _this.main.canvas.cards.push(card.clone());
+                _this.main.canvas.addCard(card.clone());
             }
             _this.main.mode = "move" /* Types.MOVE */;
             _this.main.redraw();

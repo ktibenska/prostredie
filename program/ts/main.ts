@@ -2,7 +2,7 @@ class Main {
     x: number = -10;
     y: number = -10;
 
-    mode: Types;
+    mode: Types = Types.MOVE;
     canvas: Canvas;
     selected: Card;
     imageInput = document.getElementById('id_image_input') as HTMLInputElement;
@@ -19,182 +19,29 @@ class Main {
     homeCanvas: Canvas;
 
     constructor() {
-        this.canvas = new Canvas('main_canvas')
-        this.mode = Types.MOVE;
+        this.canvas = new Canvas('main_canvas');
         this.canvas.addEventListeners(
             e => this.onMouseDown(e),
             e => this.onMouseMove(e),
             e => this.onMouseUp(e),
             e => this.onMouseEnter(e),
-            e => this.onMouseLeave()
+            () => this.onMouseLeave()
         );
 
         this.homeCanvas = new Canvas('home_state_canvas');
         this.finalCanvas = new Canvas('final_state_canvas');
 
-        this.clearAll()
+        this.clearAll();
 
-        this.submitButton.addEventListener('click', (event: Event) => {
-            const message = document.getElementById("modal_message");
-            const input = this.imageInput
-            let c: Card;
-
-            const selectedOption = (<HTMLInputElement>document.querySelector('input[name="txtorImageRadio"]:checked')).id;
-
-            if (selectedOption == 'reveal') {
-
-                if (!(input.files && input.files[0])) {
-                    message.style.visibility = 'visible'
-                    return;
-                }
-
-                c = new ImageCard(this.x, this.y, this.generateID())
-                const filesArray: File[] = [];
-                for (let i = 0; i < input.files.length; i++) {
-                    filesArray.push(input.files[i]);
-                }
-
-                const imageFiles: File[] = [];
-                filesArray.forEach(file => {
-                    imageFiles.push(file);
-                });
-
-                console.log(imageFiles);
-
-                imageFiles.forEach((file, index) => {
-                    const reader = new FileReader();
-                    reader.onload = () => {
-                        let image = new Image();
-                        image.src = reader.result as string;
-
-                        c.images.push(image)
-                    };
-                    reader.readAsDataURL(file);
-                });
-
-            } else {
-                c = new TextCard(this.x, this.y, this.generateID())
-                let text = document.getElementById('text_value') as HTMLInputElement
-                c.text = ' '
-                if (text.value) c.text = text.value
-
-                let textColorSelector = document.getElementById('color_selector_text') as HTMLInputElement
-                c.text_color = textColorSelector.value;
-
-                let bgColorSelector = document.getElementById('color_selector_bg') as HTMLInputElement
-                c.bg_color = bgColorSelector.value;
-            }
-
-            let immovable = (<HTMLInputElement>document.querySelector('input[name="movableCardRadio"]:checked')).id;
-            if (immovable == 'iCardRadio') c.setMovable(false);
-
-
-            let width = document.getElementById('width') as HTMLInputElement;
-            let height = document.getElementById('height') as HTMLInputElement;
-
-            if (width.value) c.width = +width.value;
-            if (height.value) c.height = +height.value;
-
-            this.canvas.cards.push(c)
-            if (!c.movable) {
-                this.addImmovableCard(c)
-            }
-
-            message.style.visibility = 'hidden'
-            document.getElementById('hiddenSubmit').click();
-            this.redrawAll();
-        });
-
-
-        this.bgSubmitButton.addEventListener('click', () => {
-            let image = null
-            const files = this.bgImageInput.files;
-
-            if (files && files[0]) {
-                image = new Image();
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    image.src = e.target.result as string;
-                };
-                reader.readAsDataURL(files[0]);
-
-                this.bgImageInput.value = null
-            }
-
-            this.canvas.setBg(image)
-            this.homeCanvas.setBg(image)
-            this.finalCanvas.setBg(image)
-
-            let bgColorSelector = document.getElementById('bg_color') as HTMLInputElement
-            this.canvas.bgColor = bgColorSelector.value;
-            this.homeCanvas.bgColor = bgColorSelector.value;
-            this.finalCanvas.bgColor = bgColorSelector.value;
-
-
-            this.redrawAll();
-
-        });
-
-
-        this.canvas.canvas.addEventListener('contextmenu', (event: MouseEvent) => {
-            event.preventDefault();
-            const contextMenu = document.getElementById('contextMenu');
-
-            if (this.mode == Types.RUN) return;
-
-            let x = event.offsetX;
-            let y = event.offsetY;
-
-
-            let card = this.getClicked(x, y);
-            if (card == null) return;
-
-            this.selected = card;
-
-            // button color
-            if (this.selected.category) {
-                document.querySelectorAll('.color-btn').forEach((btn) => {
-                    const button = btn as HTMLButtonElement;
-                    const matches = button.style.backgroundColor === this.selected.category
-                    button.classList.toggle('selected-color', matches);
-                });
-            }
-
-            contextMenu.style.display = 'block';
-            contextMenu.style.left = `${event.pageX - 15}px`;
-            contextMenu.style.top = `${event.pageY - 15}px`;
-
-            let change_text = document.getElementById('change_text') as HTMLInputElement;
-            let change_bg_color = document.getElementById('change_bg_color') as HTMLInputElement;
-
-            let change_text_button = document.getElementById('change_text_button') as HTMLInputElement;
-            let change_bg_color_button = document.getElementById('change_bg_color_button') as HTMLInputElement;
-
-
-            if (this.selected.images.length > 0) {
-                change_text.style.display = 'none';
-                change_bg_color.style.display = 'none';
-
-            } else {
-                change_text_button.value = this.selected.text;
-                change_text.style.display = 'block';
-
-                change_bg_color_button.value = this.selected.bg_color;
-                change_text.style.display = 'block';
-            }
-
-            contextMenu.addEventListener("mouseleave", () => {
-                contextMenu.style.display = "none";
-                this.selected = null;
-            });
-
-        });
+        this.initSubmitButton();
+        this.initBgSubmitButton();
+        this.initContextMenu();
 
 
     }
 
 
-    public toJSON():void {
+    public toJSON(): void {
         let data = "{"
 
         data += '\"bgcolor\":' + JSON.stringify(this.canvas.bgColor) + ','
@@ -223,49 +70,49 @@ class Main {
             URL.revokeObjectURL(link.href);
         };
 
-        downloadFile()
+        downloadFile();
 
     }
 
     public fromJSON(json) {
         this.clearAll();
 
-        this.canvas.bgColor = json.bgcolor
-        this.homeCanvas.bgColor = json.bgcolor
-        this.finalCanvas.bgColor = json.bgcolor
+        this.canvas.bgColor = json.bgcolor;
+        this.homeCanvas.bgColor = json.bgcolor;
+        this.finalCanvas.bgColor = json.bgcolor;
 
         if (json.bg) {
-            let bgimage = new Image()
-            bgimage.src = json.bg
-            this.canvas.setBg(bgimage)
-            this.homeCanvas.setBg(bgimage)
-            this.finalCanvas.setBg(bgimage)
+            let bgimage = new Image();
+            bgimage.src = json.bg;
+            this.canvas.setBg(bgimage);
+            this.homeCanvas.setBg(bgimage);
+            this.finalCanvas.setBg(bgimage);
         }
 
-        this.shuffleButton.checked = json.shuffle
-        this.outlineButton.checked = json.outline
-        this.gridButton.checked = json.grid
-        this.gridOn(json.grid)
+        this.shuffleButton.checked = json.shuffle;
+        this.outlineButton.checked = json.outline;
+        this.gridButton.checked = json.grid;
+        this.gridOn(json.grid);
 
 
         for (let x of json.cards) {
             let card: Card;
             if (x.text) {
-                card = TextCard.fromJSON(x)
+                card = TextCard.fromJSON(x);
             } else {
-                card = ImageCard.fromJSON(x)
+                card = ImageCard.fromJSON(x);
             }
 
             if (x.home) {
-                this.homeCanvas.cards.push(card)
+                this.homeCanvas.addCard(card);
             } else {
-                this.finalCanvas.cards.push(card)
+                this.finalCanvas.addCard(card);
             }
         }
 
 
         this.sortCards();
-        this.redrawAll()
+        this.redrawAll();
     }
 
 
@@ -281,9 +128,9 @@ class Main {
 
             if (card != null) {
                 card = card.clone();
-                this.canvas.cards = this.canvas.cards.filter(item => item.id !== card.id)
+                this.canvas.cards = this.canvas.cards.filter(item => item.id !== card.id);
 
-                this.canvas.cards.push(card);
+                this.canvas.addCard(card);
                 this.selected = card;
 
                 if (this.selected instanceof ImageCard) {
@@ -303,7 +150,7 @@ class Main {
             for (let card of this.canvas.cards) {
                 if (card.getClickedHandle(x, y)) {
                     this.selected = card;
-                    this.mode = Types.RESIZE
+                    this.mode = Types.RESIZE;
                     break;
                 }
             }
@@ -325,8 +172,10 @@ class Main {
 
         if (this.selected) {
             document.body.style.cursor = "grab";
-
             if (this.mode == Types.RESIZE) {
+                let xbefore = this.selected.x;
+                let ybefore = this.selected.y;
+
                 switch (this.selected.getClickedHandle(x, y)) {
                     case Sides.TL:
                         this.selected.width += this.selected.x - x;
@@ -350,8 +199,8 @@ class Main {
                         break;
                 }
 
-                this.updateCardHF()
-                this.redrawAll()
+                this.updateCardHF(xbefore, ybefore);
+                this.redrawAll();
             }
 
 
@@ -362,8 +211,8 @@ class Main {
                 this.selected.setCoordinates(mx, my);
 
                 if (!this.selected.movable) {
-                    this.homeCanvas.getCardByID(this.selected.id).setCoordinates(mx, my)
-                    this.finalCanvas.getCardByID(this.selected.id).setCoordinates(mx, my)
+                    this.homeCanvas.getCardByID(this.selected.id).setCoordinates(mx, my);
+                    this.finalCanvas.getCardByID(this.selected.id).setCoordinates(mx, my);
 
                     this.redrawAll();
                 }
@@ -380,20 +229,22 @@ class Main {
         if (e.button !== 0) return;
 
         if (this.selected != null) {
-            let grid = 10
+            let grid = 10;
 
             let x = Math.round(this.selected.x / grid) * grid;
             let y = Math.round(this.selected.y / grid) * grid;
 
-            this.selected.setCoordinates(x, y)
+            this.selected.setCoordinates(x, y);
         }
-        this.selected = null
+        this.selected = null;
 
         this.x = e.offsetX;
         this.y = e.offsetY;
         this.redraw();
 
-        if (this.mode == Types.RESIZE) this.mode = Types.MOVE
+        if (this.mode == Types.RESIZE) {
+            this.mode = Types.MOVE;
+        }
     }
 
     private onMouseLeave(): void {
@@ -414,13 +265,13 @@ class Main {
         this.canvas.bg();
 
         if (this.mode == Types.RUN && this.outlineButton.checked) {
-            this.canvas.redraw(this.finalCanvas)
+            this.canvas.redraw(this.finalCanvas);
         } else {
-            this.canvas.redraw()
+            this.canvas.redraw();
         }
 
         if (this.mode != Types.RUN) {
-            this.canvas.redrawResize()
+            this.canvas.redrawResize();
         }
     }
 
@@ -470,41 +321,53 @@ class Main {
     }
 
     public updateCardText(text: string): void {
-        if (this.selected && this.selected.images.length == 0) {
+        if (this.selected && this.selected instanceof TextCard) {
 
             this.selected.text = text;
 
-            this.updateCardHF()
-            this.redrawAll()
+            this.updateCardHF();
+            this.redrawAll();
         }
     }
 
     public updateCardBgColor(color: string): void {
-        if (this.selected && this.selected.images.length == 0) {
+        if (this.selected && this.selected instanceof TextCard) {
 
             this.selected.bg_color = color;
 
-            this.updateCardHF()
-            this.redrawAll()
+            this.updateCardHF();
+            this.redrawAll();
         }
     }
 
     //updates card parameters by id both in home and final state
-    private updateCardHF(): void {
+    private updateCardHF(x: number = null, y: number = null): void {
 
         for (let c of [this.homeCanvas, this.finalCanvas]) {
-            let card = c.getCardByID(this.selected.id)
+            let card = c.getCardByID(this.selected.id);
 
             if (card) {
-                card.text = this.selected.text
-                card.bg_color = this.selected.bg_color
+                card.text = this.selected.text;
+                card.bg_color = this.selected.bg_color;
 
                 if (!card.movable) {
-                    card.x = this.selected.x
-                    card.y = this.selected.y
+                    card.x = this.selected.x;
+                    card.y = this.selected.y;
+
+                    card.width = this.selected.width;
+                    card.height = this.selected.height;
+                } else {
+                    if (x && x != this.selected.x) {
+                        card.x += (this.selected.x - x);
+                    }
+                    card.width = this.selected.width;
+
+                    if (y && y != this.selected.y) {
+                        card.y += (this.selected.y - y);
+                    }
+                    card.height = this.selected.height;
+
                 }
-                card.width = this.selected.width
-                card.height = this.selected.height
             }
 
         }
@@ -518,9 +381,9 @@ class Main {
         }
 
         for (let i = 0; i < this.homeCanvas.cards.length; i++) {
-            let homeCard = this.homeCanvas.cards[i]
+            let homeCard = this.homeCanvas.cards[i];
 
-            let finalcard = this.finalCanvas.getCardByID(homeCard.id)
+            let finalcard = this.finalCanvas.getCardByID(homeCard.id);
 
             if ((homeCard.bg_color != finalcard.bg_color) || (homeCard.text != finalcard.text)) {
                 window.alert("Farba alebo text kartičiek sa nezhoduje.");
@@ -545,7 +408,7 @@ class Main {
     private sortCards(): void {
 
         for (let card of this.homeCanvas.cards) {
-            this.canvas.cards.push(card.clone());
+            this.canvas.addCard(card.clone());
         }
 
         if (this.shuffleButton.checked) {
@@ -563,8 +426,8 @@ class Main {
                     continue;
                 }
                 let randomCardCoords = randomCard.getCoordinates();
-                randomCard.setCoordinates(...card.getCoordinates())
-                card.setCoordinates(...randomCardCoords)
+                randomCard.setCoordinates(...card.getCoordinates());
+                card.setCoordinates(...randomCardCoords);
             }
         }
 
@@ -582,7 +445,7 @@ class Main {
             // podla id
             if (card.category == 'white') {
 
-                let idcard = this.canvas.getCardByID(card.id)
+                let idcard = this.canvas.getCardByID(card.id);
                 if (!this.isSamePosition(card, idcard)) {
                     ok = false;
                     break;
@@ -597,16 +460,16 @@ class Main {
 
             } else //if category is set
             {
-                let categorycards = this.canvas.cards.filter(c => c.category === card.category)
-                let okCategorycards = false
-                for (let c of categorycards) {
+                let categoryCards = this.canvas.cards.filter(c => c.category === card.category);
+                let okCategoryCards = false;
+                for (let c of categoryCards) {
                     if (this.isSamePosition(card, c)) {
-                        okCategorycards = true;
+                        okCategoryCards = true;
                         break;
                     }
                 }
 
-                if (!okCategorycards) {
+                if (!okCategoryCards) {
                     ok = false;
                     break;
                 }
@@ -614,21 +477,21 @@ class Main {
         }
 
         if (ok) {
-            alert("Riešenie je správne!")
+            alert("Riešenie je správne!");
         } else {
-            alert("Riešenie je nesprávne.")
+            alert("Riešenie je nesprávne.");
         }
 
     }
 
 
     public duplicateCard(): void {
-        let duplicate = this.selected.clone()
-        duplicate.id = this.generateID()
-        duplicate.setCoordinates(this.selected.x + 10, this.selected.y + 10)
-        this.canvas.cards.push(duplicate)
+        let duplicate = this.selected.clone();
+        duplicate.id = this.generateID();
+        duplicate.setCoordinates(this.selected.x + 10, this.selected.y + 10);
+        this.canvas.addCard(duplicate);
         if (!duplicate.movable) {
-            this.addImmovableCard(duplicate)
+            this.addImmovableCard(duplicate);
         }
 
         this.redrawAll();
@@ -638,20 +501,20 @@ class Main {
 
     // adds immovable card to home and final canvas
     private addImmovableCard(card: Card): void {
-        this.homeCanvas.cards.push(card.clone())
+        this.homeCanvas.addCard(card.clone());
 
-        let finalDuplicate = card.clone()
-        finalDuplicate.home = false
-        this.finalCanvas.cards.push(finalDuplicate)
+        let finalDuplicate = card.clone();
+        finalDuplicate.home = false;
+        this.finalCanvas.addCard(finalDuplicate);
     }
 
 
     public removeCard(): void {
         let id = this.selected.id;
 
-        this.canvas.cards = this.canvas.cards.filter(item => item.id !== id)
-        this.homeCanvas.cards = this.homeCanvas.cards.filter(item => item.id !== id)
-        this.finalCanvas.cards = this.finalCanvas.cards.filter(item => item.id !== id)
+        this.canvas.cards = this.canvas.cards.filter(item => item.id !== id);
+        this.homeCanvas.cards = this.homeCanvas.cards.filter(item => item.id !== id);
+        this.finalCanvas.cards = this.finalCanvas.cards.filter(item => item.id !== id);
 
         this.redrawAll();
 
@@ -661,9 +524,7 @@ class Main {
 
     private generateID(): number {
         if (this.canvas.cards.length > 0) {
-            let h = Math.max(...this.canvas.cards.map(card => card.id));
-            console.log(h)
-            return h + 1
+            return Math.max(...this.canvas.cards.map(card => card.id)) + 1;
         }
         return 1;
     }
@@ -677,12 +538,172 @@ class Main {
 
     private getClicked(x: number, y: number): Card {
         for (let c of this.canvas.cards.slice().reverse()) {
-            if (c.isCLicked(x, y)) return c;
+            if (c.isCLicked(x, y)) {
+                return c;
+            }
         }
         return null;
     }
 
 
+    private initSubmitButton(): void {
+        this.submitButton.addEventListener('click', () => {
+            const message = document.getElementById("modal_message");
+            const input = this.imageInput;
+            let c: Card;
+
+            const selectedOption = (<HTMLInputElement>document.querySelector('input[name="txtorImageRadio"]:checked')).id;
+
+            if (selectedOption == 'reveal') {
+
+                if (!(input.files && input.files[0])) {
+                    message.style.visibility = 'visible';
+                    return;
+                }
+
+                c = new ImageCard(this.x, this.y, this.generateID());
+                const filesArray: File[] = [];
+                for (let i = 0; i < input.files.length; i++) {
+                    filesArray.push(input.files[i]);
+                }
+
+                const imageFiles: File[] = [];
+                filesArray.forEach(file => {
+                    imageFiles.push(file);
+                });
+
+                imageFiles.forEach((file) => {
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        let image = new Image();
+                        image.src = reader.result as string;
+
+                        c.images.push(image);
+                    };
+                    reader.readAsDataURL(file);
+                });
+
+            } else {
+                c = new TextCard(this.x, this.y, this.generateID());
+                let text = document.getElementById('text_value') as HTMLInputElement;
+                c.text = ' '
+                if (text.value) c.text = text.value;
+
+                let textColorSelector = document.getElementById('color_selector_text') as HTMLInputElement
+                c.text_color = textColorSelector.value;
+
+                let bgColorSelector = document.getElementById('color_selector_bg') as HTMLInputElement
+                c.bg_color = bgColorSelector.value;
+            }
+
+            let immovable = (<HTMLInputElement>document.querySelector('input[name="movableCardRadio"]:checked')).id;
+            if (immovable == 'iCardRadio') c.setMovable(false);
+
+
+            let width = document.getElementById('width') as HTMLInputElement;
+            let height = document.getElementById('height') as HTMLInputElement;
+
+            if (width.value) c.width = +width.value;
+            if (height.value) c.height = +height.value;
+
+            this.canvas.addCard(c);
+            if (!c.movable) {
+                this.addImmovableCard(c);
+            }
+
+            message.style.visibility = 'hidden';
+            document.getElementById('hiddenSubmit').click();
+            this.redrawAll();
+        });
+    }
+
+    private initBgSubmitButton(): void {
+        this.bgSubmitButton.addEventListener('click', () => {
+            let image = null;
+            const files = this.bgImageInput.files;
+
+            if (files && files[0]) {
+                image = new Image();
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    image.src = e.target.result as string;
+                };
+                reader.readAsDataURL(files[0]);
+
+                this.bgImageInput.value = null;
+            }
+
+            this.canvas.setBg(image);
+            this.homeCanvas.setBg(image);
+            this.finalCanvas.setBg(image);
+
+            let bgColorSelector = document.getElementById('bg_color') as HTMLInputElement;
+            this.canvas.bgColor = bgColorSelector.value;
+            this.homeCanvas.bgColor = bgColorSelector.value;
+            this.finalCanvas.bgColor = bgColorSelector.value;
+
+
+            this.redrawAll();
+
+        });
+    }
+
+    private initContextMenu(): void {
+        this.canvas.canvas.addEventListener('contextmenu', (event: MouseEvent) => {
+            event.preventDefault();
+            const contextMenu = document.getElementById('contextMenu');
+
+            if (this.mode == Types.RUN) return;
+
+            let x = event.offsetX;
+            let y = event.offsetY;
+
+
+            let card = this.getClicked(x, y);
+            if (card == null) return;
+
+            this.selected = card;
+
+            // button color
+            if (this.selected.category) {
+                document.querySelectorAll('.color-btn').forEach((btn) => {
+                    const button = btn as HTMLButtonElement;
+                    const matches = button.style.backgroundColor == this.selected.category;
+                    button.classList.toggle('selected-color', matches);
+                });
+            }
+
+            contextMenu.style.display = 'block';
+            contextMenu.style.left = `${event.pageX - 15}px`;
+            contextMenu.style.top = `${event.pageY - 15}px`;
+
+            let change_text = document.getElementById('change_text') as HTMLInputElement;
+            let change_bg_color = document.getElementById('change_bg_color') as HTMLInputElement;
+
+            let change_text_button = document.getElementById('change_text_button') as HTMLInputElement;
+            let change_bg_color_button = document.getElementById('change_bg_color_button') as HTMLInputElement;
+
+
+            if (this.selected instanceof ImageCard) {
+                change_text.style.display = 'none';
+                change_bg_color.style.display = 'none';
+
+            } else {
+                change_text_button.value = this.selected.text;
+                change_text.style.display = 'block';
+
+                change_bg_color_button.value = this.selected.bg_color;
+                change_text.style.display = 'block';
+            }
+
+            contextMenu.addEventListener("mouseleave", () => {
+                contextMenu.style.display = "none";
+                this.selected = null;
+            });
+
+        });
+
+    }
 }
 
 

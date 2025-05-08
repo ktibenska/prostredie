@@ -1,6 +1,6 @@
 class Card {
-    x: number
-    y: number
+    x: number;
+    y: number;
 
     id: number;
 
@@ -13,18 +13,18 @@ class Card {
 
     home: boolean = true;
 
-    images = []
-    selected_image: number = 0
+    images = [];
+    selected_image: number = 0;
     text: string;
     text_color: string;
     bg_color: string;
 
-    category: string = 'white'
+    category: string = 'white';
 
     constructor(x: number, y: number, id: number) {
-        this.x = x
-        this.y = y
-        this.id = id
+        this.x = x;
+        this.y = y;
+        this.id = id;
     }
 
     public clone(): Card {
@@ -49,8 +49,8 @@ class Card {
     }
 
     public setCoordinates(x: number, y: number): void {
-        this.x = x
-        this.y = y
+        this.x = x;
+        this.y = y;
     }
 
     public isMovable(): boolean {
@@ -71,7 +71,7 @@ class Card {
         return true;
     }
 
-    public drawResize(ctx: any) {
+    public drawResize(ctx: any): void {
     }
 
     public getClickedHandle(x: number, y: number): Sides {

@@ -3,6 +3,7 @@ var Main = /** @class */ (function () {
         var _this = this;
         this.x = -10;
         this.y = -10;
+        this.mode = "move" /* Types.MOVE */;
         this.imageInput = document.getElementById('id_image_input');
         this.submitButton = document.getElementById('submit');
         this.bgImageInput = document.getElementById('id_bg');
@@ -11,131 +12,13 @@ var Main = /** @class */ (function () {
         this.outlineButton = document.getElementById('outline_cards');
         this.gridButton = document.getElementById('show_grid');
         this.canvas = new Canvas('main_canvas');
-        this.mode = "move" /* Types.MOVE */;
-        this.canvas.addEventListeners(function (e) { return _this.onMouseDown(e); }, function (e) { return _this.onMouseMove(e); }, function (e) { return _this.onMouseUp(e); }, function (e) { return _this.onMouseEnter(e); }, function (e) { return _this.onMouseLeave(); });
+        this.canvas.addEventListeners(function (e) { return _this.onMouseDown(e); }, function (e) { return _this.onMouseMove(e); }, function (e) { return _this.onMouseUp(e); }, function (e) { return _this.onMouseEnter(e); }, function () { return _this.onMouseLeave(); });
         this.homeCanvas = new Canvas('home_state_canvas');
         this.finalCanvas = new Canvas('final_state_canvas');
         this.clearAll();
-        this.submitButton.addEventListener('click', function (event) {
-            var message = document.getElementById("modal_message");
-            var input = _this.imageInput;
-            var c;
-            var selectedOption = document.querySelector('input[name="txtorImageRadio"]:checked').id;
-            if (selectedOption == 'reveal') {
-                if (!(input.files && input.files[0])) {
-                    message.style.visibility = 'visible';
-                    return;
-                }
-                c = new ImageCard(_this.x, _this.y, _this.generateID());
-                var filesArray = [];
-                for (var i = 0; i < input.files.length; i++) {
-                    filesArray.push(input.files[i]);
-                }
-                var imageFiles_1 = [];
-                filesArray.forEach(function (file) {
-                    imageFiles_1.push(file);
-                });
-                console.log(imageFiles_1);
-                imageFiles_1.forEach(function (file, index) {
-                    var reader = new FileReader();
-                    reader.onload = function () {
-                        var image = new Image();
-                        image.src = reader.result;
-                        c.images.push(image);
-                    };
-                    reader.readAsDataURL(file);
-                });
-            }
-            else {
-                c = new TextCard(_this.x, _this.y, _this.generateID());
-                var text = document.getElementById('text_value');
-                c.text = ' ';
-                if (text.value)
-                    c.text = text.value;
-                var textColorSelector = document.getElementById('color_selector_text');
-                c.text_color = textColorSelector.value;
-                var bgColorSelector = document.getElementById('color_selector_bg');
-                c.bg_color = bgColorSelector.value;
-            }
-            var immovable = document.querySelector('input[name="movableCardRadio"]:checked').id;
-            if (immovable == 'iCardRadio')
-                c.setMovable(false);
-            var width = document.getElementById('width');
-            var height = document.getElementById('height');
-            if (width.value)
-                c.width = +width.value;
-            if (height.value)
-                c.height = +height.value;
-            _this.canvas.cards.push(c);
-            if (!c.movable) {
-                _this.addImmovableCard(c);
-            }
-            message.style.visibility = 'hidden';
-            document.getElementById('hiddenSubmit').click();
-            _this.redrawAll();
-        });
-        this.bgSubmitButton.addEventListener('click', function () {
-            var image = null;
-            var files = _this.bgImageInput.files;
-            if (files && files[0]) {
-                image = new Image();
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    image.src = e.target.result;
-                };
-                reader.readAsDataURL(files[0]);
-                _this.bgImageInput.value = null;
-            }
-            _this.canvas.setBg(image);
-            _this.homeCanvas.setBg(image);
-            _this.finalCanvas.setBg(image);
-            var bgColorSelector = document.getElementById('bg_color');
-            _this.canvas.bgColor = bgColorSelector.value;
-            _this.homeCanvas.bgColor = bgColorSelector.value;
-            _this.finalCanvas.bgColor = bgColorSelector.value;
-            _this.redrawAll();
-        });
-        this.canvas.canvas.addEventListener('contextmenu', function (event) {
-            event.preventDefault();
-            var contextMenu = document.getElementById('contextMenu');
-            if (_this.mode == "run" /* Types.RUN */)
-                return;
-            var x = event.offsetX;
-            var y = event.offsetY;
-            var card = _this.getClicked(x, y);
-            if (card == null)
-                return;
-            _this.selected = card;
-            // button color
-            if (_this.selected.category) {
-                document.querySelectorAll('.color-btn').forEach(function (btn) {
-                    var button = btn;
-                    var matches = button.style.backgroundColor === _this.selected.category;
-                    button.classList.toggle('selected-color', matches);
-                });
-            }
-            contextMenu.style.display = 'block';
-            contextMenu.style.left = "".concat(event.pageX - 15, "px");
-            contextMenu.style.top = "".concat(event.pageY - 15, "px");
-            var change_text = document.getElementById('change_text');
-            var change_bg_color = document.getElementById('change_bg_color');
-            var change_text_button = document.getElementById('change_text_button');
-            var change_bg_color_button = document.getElementById('change_bg_color_button');
-            if (_this.selected.images.length > 0) {
-                change_text.style.display = 'none';
-                change_bg_color.style.display = 'none';
-            }
-            else {
-                change_text_button.value = _this.selected.text;
-                change_text.style.display = 'block';
-                change_bg_color_button.value = _this.selected.bg_color;
-                change_text.style.display = 'block';
-            }
-            contextMenu.addEventListener("mouseleave", function () {
-                contextMenu.style.display = "none";
-                _this.selected = null;
-            });
-        });
+        this.initSubmitButton();
+        this.initBgSubmitButton();
+        this.initContextMenu();
     }
     Main.prototype.toJSON = function () {
         var data = "{";
@@ -192,10 +75,10 @@ var Main = /** @class */ (function () {
                 card = ImageCard.fromJSON(x);
             }
             if (x.home) {
-                this.homeCanvas.cards.push(card);
+                this.homeCanvas.addCard(card);
             }
             else {
-                this.finalCanvas.cards.push(card);
+                this.finalCanvas.addCard(card);
             }
         }
         this.sortCards();
@@ -211,7 +94,7 @@ var Main = /** @class */ (function () {
             if (card_1 != null) {
                 card_1 = card_1.clone();
                 this.canvas.cards = this.canvas.cards.filter(function (item) { return item.id !== card_1.id; });
-                this.canvas.cards.push(card_1);
+                this.canvas.addCard(card_1);
                 this.selected = card_1;
                 if (this.selected instanceof ImageCard) {
                     this.selected.nextImage();
@@ -246,6 +129,8 @@ var Main = /** @class */ (function () {
         if (this.selected) {
             document.body.style.cursor = "grab";
             if (this.mode == "resize" /* Types.RESIZE */) {
+                var xbefore = this.selected.x;
+                var ybefore = this.selected.y;
                 switch (this.selected.getClickedHandle(x, y)) {
                     case "top-left" /* Sides.TL */:
                         this.selected.width += this.selected.x - x;
@@ -268,7 +153,7 @@ var Main = /** @class */ (function () {
                         this.selected.height = y - this.selected.y;
                         break;
                 }
-                this.updateCardHF();
+                this.updateCardHF(xbefore, ybefore);
                 this.redrawAll();
             }
             if (this.mode == "move" /* Types.MOVE */ || (this.mode == "run" /* Types.RUN */ && this.selected.isMovable())) {
@@ -299,8 +184,9 @@ var Main = /** @class */ (function () {
         this.x = e.offsetX;
         this.y = e.offsetY;
         this.redraw();
-        if (this.mode == "resize" /* Types.RESIZE */)
+        if (this.mode == "resize" /* Types.RESIZE */) {
             this.mode = "move" /* Types.MOVE */;
+        }
     };
     Main.prototype.onMouseLeave = function () {
         this.redrawAll();
@@ -358,21 +244,23 @@ var Main = /** @class */ (function () {
         this.selected = null;
     };
     Main.prototype.updateCardText = function (text) {
-        if (this.selected && this.selected.images.length == 0) {
+        if (this.selected && this.selected instanceof TextCard) {
             this.selected.text = text;
             this.updateCardHF();
             this.redrawAll();
         }
     };
     Main.prototype.updateCardBgColor = function (color) {
-        if (this.selected && this.selected.images.length == 0) {
+        if (this.selected && this.selected instanceof TextCard) {
             this.selected.bg_color = color;
             this.updateCardHF();
             this.redrawAll();
         }
     };
     //updates card parameters by id both in home and final state
-    Main.prototype.updateCardHF = function () {
+    Main.prototype.updateCardHF = function (x, y) {
+        if (x === void 0) { x = null; }
+        if (y === void 0) { y = null; }
         for (var _i = 0, _a = [this.homeCanvas, this.finalCanvas]; _i < _a.length; _i++) {
             var c = _a[_i];
             var card = c.getCardByID(this.selected.id);
@@ -382,9 +270,19 @@ var Main = /** @class */ (function () {
                 if (!card.movable) {
                     card.x = this.selected.x;
                     card.y = this.selected.y;
+                    card.width = this.selected.width;
+                    card.height = this.selected.height;
                 }
-                card.width = this.selected.width;
-                card.height = this.selected.height;
+                else {
+                    if (x && x != this.selected.x) {
+                        card.x += (this.selected.x - x);
+                    }
+                    card.width = this.selected.width;
+                    if (y && y != this.selected.y) {
+                        card.y += (this.selected.y - y);
+                    }
+                    card.height = this.selected.height;
+                }
             }
         }
     };
@@ -415,7 +313,7 @@ var Main = /** @class */ (function () {
     Main.prototype.sortCards = function () {
         for (var _i = 0, _a = this.homeCanvas.cards; _i < _a.length; _i++) {
             var card = _a[_i];
-            this.canvas.cards.push(card.clone());
+            this.canvas.addCard(card.clone());
         }
         if (this.shuffleButton.checked) {
             for (var _b = 0, _c = this.canvas.cards; _b < _c.length; _b++) {
@@ -458,16 +356,16 @@ var Main = /** @class */ (function () {
             }
             else //if category is set
              {
-                var categorycards = this_1.canvas.cards.filter(function (c) { return c.category === card.category; });
-                var okCategorycards = false;
-                for (var _b = 0, categorycards_1 = categorycards; _b < categorycards_1.length; _b++) {
-                    var c = categorycards_1[_b];
+                var categoryCards = this_1.canvas.cards.filter(function (c) { return c.category === card.category; });
+                var okCategoryCards = false;
+                for (var _b = 0, categoryCards_1 = categoryCards; _b < categoryCards_1.length; _b++) {
+                    var c = categoryCards_1[_b];
                     if (this_1.isSamePosition(card, c)) {
-                        okCategorycards = true;
+                        okCategoryCards = true;
                         break;
                     }
                 }
-                if (!okCategorycards) {
+                if (!okCategoryCards) {
                     ok = false;
                     return "break";
                 }
@@ -491,7 +389,7 @@ var Main = /** @class */ (function () {
         var duplicate = this.selected.clone();
         duplicate.id = this.generateID();
         duplicate.setCoordinates(this.selected.x + 10, this.selected.y + 10);
-        this.canvas.cards.push(duplicate);
+        this.canvas.addCard(duplicate);
         if (!duplicate.movable) {
             this.addImmovableCard(duplicate);
         }
@@ -500,10 +398,10 @@ var Main = /** @class */ (function () {
     };
     // adds immovable card to home and final canvas
     Main.prototype.addImmovableCard = function (card) {
-        this.homeCanvas.cards.push(card.clone());
+        this.homeCanvas.addCard(card.clone());
         var finalDuplicate = card.clone();
         finalDuplicate.home = false;
-        this.finalCanvas.cards.push(finalDuplicate);
+        this.finalCanvas.addCard(finalDuplicate);
     };
     Main.prototype.removeCard = function () {
         var id = this.selected.id;
@@ -515,9 +413,7 @@ var Main = /** @class */ (function () {
     };
     Main.prototype.generateID = function () {
         if (this.canvas.cards.length > 0) {
-            var h = Math.max.apply(Math, this.canvas.cards.map(function (card) { return card.id; }));
-            console.log(h);
-            return h + 1;
+            return Math.max.apply(Math, this.canvas.cards.map(function (card) { return card.id; })) + 1;
         }
         return 1;
     };
@@ -529,10 +425,139 @@ var Main = /** @class */ (function () {
     Main.prototype.getClicked = function (x, y) {
         for (var _i = 0, _a = this.canvas.cards.slice().reverse(); _i < _a.length; _i++) {
             var c = _a[_i];
-            if (c.isCLicked(x, y))
+            if (c.isCLicked(x, y)) {
                 return c;
+            }
         }
         return null;
+    };
+    Main.prototype.initSubmitButton = function () {
+        var _this = this;
+        this.submitButton.addEventListener('click', function () {
+            var message = document.getElementById("modal_message");
+            var input = _this.imageInput;
+            var c;
+            var selectedOption = document.querySelector('input[name="txtorImageRadio"]:checked').id;
+            if (selectedOption == 'reveal') {
+                if (!(input.files && input.files[0])) {
+                    message.style.visibility = 'visible';
+                    return;
+                }
+                c = new ImageCard(_this.x, _this.y, _this.generateID());
+                var filesArray = [];
+                for (var i = 0; i < input.files.length; i++) {
+                    filesArray.push(input.files[i]);
+                }
+                var imageFiles_1 = [];
+                filesArray.forEach(function (file) {
+                    imageFiles_1.push(file);
+                });
+                imageFiles_1.forEach(function (file) {
+                    var reader = new FileReader();
+                    reader.onload = function () {
+                        var image = new Image();
+                        image.src = reader.result;
+                        c.images.push(image);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+            else {
+                c = new TextCard(_this.x, _this.y, _this.generateID());
+                var text = document.getElementById('text_value');
+                c.text = ' ';
+                if (text.value)
+                    c.text = text.value;
+                var textColorSelector = document.getElementById('color_selector_text');
+                c.text_color = textColorSelector.value;
+                var bgColorSelector = document.getElementById('color_selector_bg');
+                c.bg_color = bgColorSelector.value;
+            }
+            var immovable = document.querySelector('input[name="movableCardRadio"]:checked').id;
+            if (immovable == 'iCardRadio')
+                c.setMovable(false);
+            var width = document.getElementById('width');
+            var height = document.getElementById('height');
+            if (width.value)
+                c.width = +width.value;
+            if (height.value)
+                c.height = +height.value;
+            _this.canvas.addCard(c);
+            if (!c.movable) {
+                _this.addImmovableCard(c);
+            }
+            message.style.visibility = 'hidden';
+            document.getElementById('hiddenSubmit').click();
+            _this.redrawAll();
+        });
+    };
+    Main.prototype.initBgSubmitButton = function () {
+        var _this = this;
+        this.bgSubmitButton.addEventListener('click', function () {
+            var image = null;
+            var files = _this.bgImageInput.files;
+            if (files && files[0]) {
+                image = new Image();
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    image.src = e.target.result;
+                };
+                reader.readAsDataURL(files[0]);
+                _this.bgImageInput.value = null;
+            }
+            _this.canvas.setBg(image);
+            _this.homeCanvas.setBg(image);
+            _this.finalCanvas.setBg(image);
+            var bgColorSelector = document.getElementById('bg_color');
+            _this.canvas.bgColor = bgColorSelector.value;
+            _this.homeCanvas.bgColor = bgColorSelector.value;
+            _this.finalCanvas.bgColor = bgColorSelector.value;
+            _this.redrawAll();
+        });
+    };
+    Main.prototype.initContextMenu = function () {
+        var _this = this;
+        this.canvas.canvas.addEventListener('contextmenu', function (event) {
+            event.preventDefault();
+            var contextMenu = document.getElementById('contextMenu');
+            if (_this.mode == "run" /* Types.RUN */)
+                return;
+            var x = event.offsetX;
+            var y = event.offsetY;
+            var card = _this.getClicked(x, y);
+            if (card == null)
+                return;
+            _this.selected = card;
+            // button color
+            if (_this.selected.category) {
+                document.querySelectorAll('.color-btn').forEach(function (btn) {
+                    var button = btn;
+                    var matches = button.style.backgroundColor == _this.selected.category;
+                    button.classList.toggle('selected-color', matches);
+                });
+            }
+            contextMenu.style.display = 'block';
+            contextMenu.style.left = "".concat(event.pageX - 15, "px");
+            contextMenu.style.top = "".concat(event.pageY - 15, "px");
+            var change_text = document.getElementById('change_text');
+            var change_bg_color = document.getElementById('change_bg_color');
+            var change_text_button = document.getElementById('change_text_button');
+            var change_bg_color_button = document.getElementById('change_bg_color_button');
+            if (_this.selected instanceof ImageCard) {
+                change_text.style.display = 'none';
+                change_bg_color.style.display = 'none';
+            }
+            else {
+                change_text_button.value = _this.selected.text;
+                change_text.style.display = 'block';
+                change_bg_color_button.value = _this.selected.bg_color;
+                change_text.style.display = 'block';
+            }
+            contextMenu.addEventListener("mouseleave", function () {
+                contextMenu.style.display = "none";
+                _this.selected = null;
+            });
+        });
     };
     return Main;
 }());

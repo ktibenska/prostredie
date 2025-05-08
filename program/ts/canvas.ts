@@ -33,7 +33,7 @@ class Canvas {
 
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        function mod(n, m) {
+        function mod(n, m): number {
             return ((n % m) + m) % m;
         }
 

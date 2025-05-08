@@ -1,24 +1,24 @@
 class ImageCard extends Card {
 
-    images = []
-    selected_image: number = 0
+    images = [];
+    selected_image: number = 0;
 
     public clone(): ImageCard {
         let clone = new ImageCard(this.x, this.y, this.id);
 
-        clone.width = this.width
-        clone.height = this.height
-        clone.movable = this.movable
+        clone.width = this.width;
+        clone.height = this.height;
+        clone.movable = this.movable;
         clone.category = this.category;
 
-        clone.images = this.images
-        clone.selected_image = this.selected_image
+        clone.images = this.images;
+        clone.selected_image = this.selected_image;
         return clone;
     }
 
 
-    public toJSON() {
-        let images = []
+    public toJSON(): any {
+        let images = [];
         for (let i of this.images) {
             images.push(i.src)
         }
@@ -44,12 +44,12 @@ class ImageCard extends Card {
         card.home = json.home;
         card.category = json.category;
 
-        card.images = []
+        card.images = [];
 
         for (let i of json.images) {
             let im = new Image()
-            im.src = i
-            card.images.push(im)
+            im.src = i;
+            card.images.push(im);
         }
 
         card.selected_image = json.selected_image;
@@ -59,16 +59,16 @@ class ImageCard extends Card {
 
 
     public draw(ctx: any): void {
-        let img = this.images[this.selected_image]
+        let img = this.images[this.selected_image];
         if (img == undefined) return;
 
 
-        ctx.drawImage(img, this.x, this.y, img.width, img.height)
+        ctx.drawImage(img, this.x, this.y, img.width, img.height);
     }
 
 
-    public drawResize(ctx: any) {
-        this.draw(ctx)
+    public drawResize(ctx: any): void {
+        this.draw(ctx);
     }
 
     public drawOutline(ctx: any): void {
@@ -77,7 +77,7 @@ class ImageCard extends Card {
         let w = this.images[this.selected_image].width;
         let h = this.images[this.selected_image].height;
 
-        ctx.strokeRect(this.x, this.y, w, h)
+        ctx.strokeRect(this.x, this.y, w, h);
     }
 
 
@@ -89,7 +89,7 @@ class ImageCard extends Card {
 
     }
 
-    public nextImage() {
+    public nextImage(): void {
         this.selected_image++;
         this.selected_image %= (this.images.length);
     }
