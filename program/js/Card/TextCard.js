@@ -65,7 +65,7 @@ var TextCard = /** @class */ (function (_super) {
         ctx.fillRect(this.x, this.y, this.width, this.height);
         ctx.fillStyle = this.text_color;
         ctx.font = "24px Arial";
-        var padding = 5;
+        var padding = 10;
         var maxFontSize = 24;
         var minFontSize = 10;
         var fontSize = maxFontSize;
@@ -89,7 +89,7 @@ var TextCard = /** @class */ (function (_super) {
         this.drawHandle(ctx, this.x + this.width, this.y + this.height); //BR
     };
     TextCard.prototype.drawHandle = function (ctx, x, y) {
-        ctx.fillStyle = "#000";
+        ctx.fillStyle = "#444";
         ctx.fillRect(x - this.handleSize / 2, y - this.handleSize / 2, this.handleSize, this.handleSize);
     };
     TextCard.prototype.getClickedHandle = function (x, y) {
@@ -105,8 +105,8 @@ var TextCard = /** @class */ (function (_super) {
     };
     TextCard.prototype.isHandleClicked = function (mx, my, x, y) {
         var handleBorder = 10;
-        return ((mx >= x - handleBorder - this.handleSize / 2) && (mx <= x + handleBorder + this.handleSize / 2) &&
-            (my >= y - handleBorder - this.handleSize / 2) && (my <= y + handleBorder + this.handleSize / 2));
+        return ((mx >= (x - handleBorder - this.handleSize / 2)) && (mx <= (x + handleBorder + this.handleSize / 2)) &&
+            (my >= (y - handleBorder - this.handleSize / 2)) && ((my <= y + handleBorder + this.handleSize / 2)));
     };
     TextCard.prototype.drawOutline = function (ctx) {
         ctx.fillStyle = "lightgray";
@@ -114,7 +114,11 @@ var TextCard = /** @class */ (function (_super) {
         ctx.strokeRect(this.x, this.y, this.width, this.height);
     };
     TextCard.prototype.isCLicked = function (x, y) {
-        return (x >= this.x && x <= this.x + this.width) && (y >= this.y && y <= this.y + this.height);
+        var left = Math.min(this.x, this.x + this.width);
+        var right = Math.max(this.x, this.x + this.width);
+        var top = Math.min(this.y, this.y + this.height);
+        var bottom = Math.max(this.y, this.y + this.height);
+        return (x >= left && x <= right && y >= top && y <= bottom);
     };
     return TextCard;
 }(Card));

@@ -59,7 +59,7 @@ var Main = /** @class */ (function () {
             }
             var immovable = document.querySelector('input[name="movableCardRadio"]:checked').id;
             if (immovable == 'iCardRadio')
-                c.setMovable(false); //todo kontrola
+                c.setMovable(false);
             var width = document.getElementById('width');
             var height = document.getElementById('height');
             if (width.value)
@@ -74,7 +74,7 @@ var Main = /** @class */ (function () {
             document.getElementById('hiddenSubmit').click();
             _this.redrawAll();
         });
-        this.bgSubmitButton.addEventListener('click', function (event) {
+        this.bgSubmitButton.addEventListener('click', function () {
             var image = null;
             var files = _this.bgImageInput.files;
             if (files && files[0]) {
@@ -102,36 +102,34 @@ var Main = /** @class */ (function () {
                 return;
             var x = event.offsetX;
             var y = event.offsetY;
-            for (var _i = 0, _a = _this.canvas.cards; _i < _a.length; _i++) {
-                var card = _a[_i];
-                if (card.isCLicked(x, y)) {
-                    _this.selected = card;
-                    // button color
-                    if (_this.selected.category) {
-                        document.querySelectorAll('.color-btn').forEach(function (btn) {
-                            var button = btn;
-                            var matches = button.style.backgroundColor === _this.selected.category;
-                            button.classList.toggle('selected-color', matches);
-                        });
-                    }
-                    contextMenu.style.display = 'block';
-                    contextMenu.style.left = "".concat(event.pageX - 15, "px");
-                    contextMenu.style.top = "".concat(event.pageY - 15, "px");
-                    var change_text = document.getElementById('change_text');
-                    var change_bg_color = document.getElementById('change_bg_color');
-                    var change_text_button = document.getElementById('change_text_button');
-                    var change_bg_color_button = document.getElementById('change_bg_color_button');
-                    if (_this.selected != null && _this.selected.images.length > 0) {
-                        change_text.style.display = 'none';
-                        change_bg_color.style.display = 'none';
-                    }
-                    else {
-                        change_text_button.value = _this.selected.text;
-                        change_text.style.display = 'block';
-                        change_bg_color_button.value = _this.selected.bg_color;
-                        change_text.style.display = 'block';
-                    }
-                }
+            var card = _this.getClicked(x, y);
+            if (card == null)
+                return;
+            _this.selected = card;
+            // button color
+            if (_this.selected.category) {
+                document.querySelectorAll('.color-btn').forEach(function (btn) {
+                    var button = btn;
+                    var matches = button.style.backgroundColor === _this.selected.category;
+                    button.classList.toggle('selected-color', matches);
+                });
+            }
+            contextMenu.style.display = 'block';
+            contextMenu.style.left = "".concat(event.pageX - 15, "px");
+            contextMenu.style.top = "".concat(event.pageY - 15, "px");
+            var change_text = document.getElementById('change_text');
+            var change_bg_color = document.getElementById('change_bg_color');
+            var change_text_button = document.getElementById('change_text_button');
+            var change_bg_color_button = document.getElementById('change_bg_color_button');
+            if (_this.selected.images.length > 0) {
+                change_text.style.display = 'none';
+                change_bg_color.style.display = 'none';
+            }
+            else {
+                change_text_button.value = _this.selected.text;
+                change_text.style.display = 'block';
+                change_bg_color_button.value = _this.selected.bg_color;
+                change_text.style.display = 'block';
             }
             contextMenu.addEventListener("mouseleave", function () {
                 contextMenu.style.display = "none";
@@ -147,6 +145,7 @@ var Main = /** @class */ (function () {
         }
         data += '\"shuffle\":' + JSON.stringify(this.shuffleButton.checked) + ',';
         data += '\"outline\":' + JSON.stringify(this.outlineButton.checked) + ',';
+        data += '\"grid\":' + JSON.stringify(this.gridButton.checked) + ',';
         var cardDataString = "";
         for (var _i = 0, _a = this.homeCanvas.cards; _i < _a.length; _i++) {
             var card = _a[_i];
@@ -207,25 +206,26 @@ var Main = /** @class */ (function () {
             return;
         var x = e.offsetX;
         var y = e.offsetY;
-        if (this.mode == "add" /* Types.ADD */) {
-            this.canvas.addCard(new TextCard(e.offsetX - 50, e.offsetY - 50, this.generateID())); //?
-        }
         if (this.mode == "move" /* Types.MOVE */ || this.mode == "run" /* Types.RUN */) {
-            for (var _i = 0, _a = this.canvas.cards; _i < _a.length; _i++) {
-                var card = _a[_i];
-                if (card.isCLicked(x, y)) {
-                    this.selected = card;
+            var card_1 = this.getClicked(x, y);
+            if (card_1 != null) {
+                card_1 = card_1.clone();
+                this.canvas.cards = this.canvas.cards.filter(function (item) { return item.id !== card_1.id; });
+                this.canvas.cards.push(card_1);
+                this.selected = card_1;
+                if (this.selected instanceof ImageCard) {
+                    this.selected.nextImage();
                 }
+                this.x = e.offsetX;
+                this.y = e.offsetY;
+                this.redraw();
             }
-            this.x = e.offsetX;
-            this.y = e.offsetY;
-            this.redraw();
         }
         if (this.mode != "run" /* Types.RUN */) {
             if (this.selected != null)
                 return;
-            for (var _b = 0, _c = this.canvas.cards; _b < _c.length; _b++) {
-                var card = _c[_b];
+            for (var _i = 0, _a = this.canvas.cards; _i < _a.length; _i++) {
+                var card = _a[_i];
                 if (card.getClickedHandle(x, y)) {
                     this.selected = card;
                     this.mode = "resize" /* Types.RESIZE */;
@@ -235,37 +235,42 @@ var Main = /** @class */ (function () {
         }
     };
     Main.prototype.onMouseMove = function (e) {
-        if (this.canvas.cards[0]) { // todo ?
-        }
         var x = e.offsetX - this.canvas.getViewX();
         var y = e.offsetY - this.canvas.getViewY();
-        if (this.mode == "resize" /* Types.RESIZE */ && this.selected) {
-            switch (this.selected.getClickedHandle(x, y)) {
-                case "top-left" /* Sides.TL */:
-                    this.selected.width += this.selected.x - x;
-                    this.selected.height += this.selected.y - y;
-                    this.selected.x = x;
-                    this.selected.y = y;
-                    break;
-                case "top-right" /* Sides.TR */:
-                    this.selected.width = x - this.selected.x;
-                    this.selected.height += this.selected.y - y;
-                    this.selected.y = y;
-                    break;
-                case "bottom-left" /* Sides.BL */:
-                    this.selected.width += this.selected.x - x;
-                    this.selected.x = x;
-                    this.selected.height = y - this.selected.y;
-                    break;
-                case "bottom-right" /* Sides.BR */:
-                    this.selected.width = x - this.selected.x;
-                    this.selected.height = y - this.selected.y;
-                    break;
+        document.body.style.cursor = "auto";
+        if (this.canvas.cards[0]) {
+            if (this.getClicked(x, y)) {
+                document.body.style.cursor = "pointer";
             }
-            this.updateCardHF();
-            this.redrawAll();
         }
         if (this.selected) {
+            document.body.style.cursor = "grab";
+            if (this.mode == "resize" /* Types.RESIZE */) {
+                switch (this.selected.getClickedHandle(x, y)) {
+                    case "top-left" /* Sides.TL */:
+                        this.selected.width += this.selected.x - x;
+                        this.selected.height += this.selected.y - y;
+                        this.selected.x = x;
+                        this.selected.y = y;
+                        break;
+                    case "top-right" /* Sides.TR */:
+                        this.selected.width = x - this.selected.x;
+                        this.selected.height += this.selected.y - y;
+                        this.selected.y = y;
+                        break;
+                    case "bottom-left" /* Sides.BL */:
+                        this.selected.width += this.selected.x - x;
+                        this.selected.x = x;
+                        this.selected.height = y - this.selected.y;
+                        break;
+                    case "bottom-right" /* Sides.BR */:
+                        this.selected.width = x - this.selected.x;
+                        this.selected.height = y - this.selected.y;
+                        break;
+                }
+                this.updateCardHF();
+                this.redrawAll();
+            }
             if (this.mode == "move" /* Types.MOVE */ || (this.mode == "run" /* Types.RUN */ && this.selected.isMovable())) {
                 var mx = this.selected.x + (x - this.x);
                 var my = this.selected.y + (y - this.y);
@@ -299,6 +304,7 @@ var Main = /** @class */ (function () {
     };
     Main.prototype.onMouseLeave = function () {
         this.redrawAll();
+        document.body.style.cursor = "auto";
     };
     Main.prototype.onMouseEnter = function (e) {
         this.selected = null;
@@ -342,11 +348,13 @@ var Main = /** @class */ (function () {
     Main.prototype.updateCardCategory = function (color) {
         this.selected.category = color;
         var homeCard = this.homeCanvas.getCardByID(this.selected.id);
-        if (homeCard)
+        if (homeCard) {
             homeCard.category = color;
+        }
         var finalCard = this.finalCanvas.getCardByID(this.selected.id);
-        if (finalCard)
+        if (finalCard) {
             finalCard.category = color;
+        }
         this.selected = null;
     };
     Main.prototype.updateCardText = function (text) {
@@ -369,7 +377,6 @@ var Main = /** @class */ (function () {
             var c = _a[_i];
             var card = c.getCardByID(this.selected.id);
             if (card) {
-                //todo podla typu karty?
                 card.text = this.selected.text;
                 card.bg_color = this.selected.bg_color;
                 if (!card.movable) {
@@ -386,14 +393,18 @@ var Main = /** @class */ (function () {
             window.alert("V domovskom a finálnom stave nie je rovnaký počet kartičiek.");
             return false;
         }
-        //todo check ci su karticky rovnakej velkosti, farby  textu
         for (var i = 0; i < this.homeCanvas.cards.length; i++) {
             var homeCard = this.homeCanvas.cards[i];
-            if (homeCard.isMovable()) {
-                continue;
-            }
             var finalcard = this.finalCanvas.getCardByID(homeCard.id);
-            if (!this.isSamePosition(homeCard, finalcard)) {
+            if ((homeCard.bg_color != finalcard.bg_color) || (homeCard.text != finalcard.text)) {
+                window.alert("Farba alebo text kartičiek sa nezhoduje.");
+                return false;
+            }
+            if ((homeCard.width != finalcard.width) || (homeCard.height != finalcard.height)) {
+                window.alert("Rozmery kartičiek sa nezhodujú.");
+                return false;
+            }
+            if (!homeCard.isMovable() && !this.isSamePosition(homeCard, finalcard)) {
                 window.alert("Nesprávne položené kartičky.");
                 return false;
             }
@@ -409,12 +420,16 @@ var Main = /** @class */ (function () {
         if (this.shuffleButton.checked) {
             for (var _b = 0, _c = this.canvas.cards; _b < _c.length; _b++) {
                 var card = _c[_b];
+                if (card.images.length > 1) {
+                    card.selected_image = Math.floor(Math.random() * card.images.length);
+                }
                 if (!card.movable) {
                     continue;
                 }
                 var randomCard = this.canvas.cards[Math.floor(Math.random() * this.canvas.cards.length)];
-                if (!randomCard.movable)
+                if (!randomCard.movable) {
                     continue;
+                }
                 var randomCardCoords = randomCard.getCoordinates();
                 randomCard.setCoordinates.apply(randomCard, card.getCoordinates());
                 card.setCoordinates.apply(card, randomCardCoords);
@@ -500,7 +515,9 @@ var Main = /** @class */ (function () {
     };
     Main.prototype.generateID = function () {
         if (this.canvas.cards.length > 0) {
-            return this.canvas.cards.slice(-1)[0].id + 1;
+            var h = Math.max.apply(Math, this.canvas.cards.map(function (card) { return card.id; }));
+            console.log(h);
+            return h + 1;
         }
         return 1;
     };
@@ -508,6 +525,14 @@ var Main = /** @class */ (function () {
         this.redraw();
         this.homeCanvas.redraw();
         this.finalCanvas.redraw();
+    };
+    Main.prototype.getClicked = function (x, y) {
+        for (var _i = 0, _a = this.canvas.cards.slice().reverse(); _i < _a.length; _i++) {
+            var c = _a[_i];
+            if (c.isCLicked(x, y))
+                return c;
+        }
+        return null;
     };
     return Main;
 }());

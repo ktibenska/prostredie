@@ -60,6 +60,9 @@ class ImageCard extends Card {
 
     public draw(ctx: any): void {
         let img = this.images[this.selected_image]
+        if (img == undefined) return;
+
+
         ctx.drawImage(img, this.x, this.y, img.width, img.height)
     }
 
@@ -82,12 +85,13 @@ class ImageCard extends Card {
         let w = this.images[this.selected_image].width;
         let h = this.images[this.selected_image].height;
 
-        let clicked = (x >= this.x && x <= this.x + w) && (y >= this.y && y <= this.y + h);
+        return (x >= this.x && x <= this.x + w) && (y >= this.y && y <= this.y + h);
 
-        if (clicked) {
-            this.selected_image++;
-            this.selected_image %= (this.images.length)
-        }
-        return clicked;
     }
+
+    public nextImage() {
+        this.selected_image++;
+        this.selected_image %= (this.images.length);
+    }
+
 }

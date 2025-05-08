@@ -61,7 +61,7 @@ class TextCard extends Card {
 
         ctx.font = "24px Arial";
 
-        const padding = 5
+        const padding = 10
 
         const maxFontSize = 24
         const minFontSize = 10
@@ -93,7 +93,7 @@ class TextCard extends Card {
     }
 
     private drawHandle(ctx: any, x: number, y: number): void {
-        ctx.fillStyle = "#000"
+        ctx.fillStyle = "#444"
         ctx.fillRect(x - this.handleSize / 2, y - this.handleSize / 2, this.handleSize, this.handleSize);
     }
 
@@ -108,8 +108,8 @@ class TextCard extends Card {
     private isHandleClicked(mx: number, my: number, x: number, y: number): boolean {
         let handleBorder = 10;
         return (
-            (mx >= x - handleBorder - this.handleSize / 2) && (mx <= x + handleBorder + this.handleSize / 2) &&
-            (my >= y - handleBorder - this.handleSize / 2) && (my <= y + handleBorder + this.handleSize / 2)
+            (mx >= (x - handleBorder - this.handleSize / 2)) && (mx <= (x + handleBorder + this.handleSize / 2)) &&
+            (my >= (y - handleBorder - this.handleSize / 2)) && ((my <= y + handleBorder + this.handleSize / 2))
         );
     }
 
@@ -123,7 +123,12 @@ class TextCard extends Card {
 
 
     public isCLicked(x: number, y: number): boolean {
-        return (x >= this.x && x <= this.x + this.width) && (y >= this.y && y <= this.y + this.height)
+        let left = Math.min(this.x, this.x + this.width);
+        let right = Math.max(this.x, this.x + this.width);
+        let top = Math.min(this.y, this.y + this.height);
+        let bottom = Math.max(this.y, this.y + this.height);
+
+        return (x >= left && x <= right && y >= top && y <= bottom);
     }
 
 

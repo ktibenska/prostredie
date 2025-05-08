@@ -65,6 +65,8 @@ var ImageCard = /** @class */ (function (_super) {
     };
     ImageCard.prototype.draw = function (ctx) {
         var img = this.images[this.selected_image];
+        if (img == undefined)
+            return;
         ctx.drawImage(img, this.x, this.y, img.width, img.height);
     };
     ImageCard.prototype.drawResize = function (ctx) {
@@ -80,12 +82,11 @@ var ImageCard = /** @class */ (function (_super) {
     ImageCard.prototype.isCLicked = function (x, y) {
         var w = this.images[this.selected_image].width;
         var h = this.images[this.selected_image].height;
-        var clicked = (x >= this.x && x <= this.x + w) && (y >= this.y && y <= this.y + h);
-        if (clicked) {
-            this.selected_image++;
-            this.selected_image %= (this.images.length);
-        }
-        return clicked;
+        return (x >= this.x && x <= this.x + w) && (y >= this.y && y <= this.y + h);
+    };
+    ImageCard.prototype.nextImage = function () {
+        this.selected_image++;
+        this.selected_image %= (this.images.length);
     };
     return ImageCard;
 }(Card));

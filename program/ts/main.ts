@@ -86,7 +86,7 @@ class Main {
             }
 
             let immovable = (<HTMLInputElement>document.querySelector('input[name="movableCardRadio"]:checked')).id;
-            if (immovable == 'iCardRadio') c.setMovable(false); //todo kontrola
+            if (immovable == 'iCardRadio') c.setMovable(false);
 
 
             let width = document.getElementById('width') as HTMLInputElement;
@@ -106,7 +106,7 @@ class Main {
         });
 
 
-        this.bgSubmitButton.addEventListener('click', (event: Event) => {
+        this.bgSubmitButton.addEventListener('click', () => {
             let image = null
             const files = this.bgImageInput.files;
 
@@ -140,49 +140,47 @@ class Main {
             event.preventDefault();
             const contextMenu = document.getElementById('contextMenu');
 
-
             if (this.mode == Types.RUN) return;
 
             let x = event.offsetX;
             let y = event.offsetY;
 
-            for (let card of this.canvas.cards) {
-                if (card.isCLicked(x, y)) {
-                    this.selected = card;
 
-                    // button color
-                    if (this.selected.category) {
-                        document.querySelectorAll('.color-btn').forEach((btn) => {
-                            const button = btn as HTMLButtonElement;
-                            const matches = button.style.backgroundColor === this.selected.category
-                            button.classList.toggle('selected-color', matches);
-                        });
-                    }
+            let card = this.getClicked(x, y);
+            if (card == null) return;
 
-                    contextMenu.style.display = 'block';
-                    contextMenu.style.left = `${event.pageX - 15}px`;
-                    contextMenu.style.top = `${event.pageY - 15}px`;
+            this.selected = card;
+
+            // button color
+            if (this.selected.category) {
+                document.querySelectorAll('.color-btn').forEach((btn) => {
+                    const button = btn as HTMLButtonElement;
+                    const matches = button.style.backgroundColor === this.selected.category
+                    button.classList.toggle('selected-color', matches);
+                });
+            }
+
+            contextMenu.style.display = 'block';
+            contextMenu.style.left = `${event.pageX - 15}px`;
+            contextMenu.style.top = `${event.pageY - 15}px`;
+
+            let change_text = document.getElementById('change_text') as HTMLInputElement;
+            let change_bg_color = document.getElementById('change_bg_color') as HTMLInputElement;
+
+            let change_text_button = document.getElementById('change_text_button') as HTMLInputElement;
+            let change_bg_color_button = document.getElementById('change_bg_color_button') as HTMLInputElement;
 
 
-                    let change_text = document.getElementById('change_text') as HTMLInputElement;
-                    let change_bg_color = document.getElementById('change_bg_color') as HTMLInputElement;
+            if (this.selected.images.length > 0) {
+                change_text.style.display = 'none';
+                change_bg_color.style.display = 'none';
 
-                    let change_text_button = document.getElementById('change_text_button') as HTMLInputElement;
-                    let change_bg_color_button = document.getElementById('change_bg_color_button') as HTMLInputElement;
+            } else {
+                change_text_button.value = this.selected.text;
+                change_text.style.display = 'block';
 
-
-                    if (this.selected != null && this.selected.images.length > 0) {
-                        change_text.style.display = 'none';
-                        change_bg_color.style.display = 'none';
-
-                    } else {
-                        change_text_button.value = this.selected.text;
-                        change_text.style.display = 'block';
-
-                        change_bg_color_button.value = this.selected.bg_color;
-                        change_text.style.display = 'block';
-                    }
-                }
+                change_bg_color_button.value = this.selected.bg_color;
+                change_text.style.display = 'block';
             }
 
             contextMenu.addEventListener("mouseleave", () => {
@@ -205,6 +203,7 @@ class Main {
         }
         data += '\"shuffle\":' + JSON.stringify(this.shuffleButton.checked) + ','
         data += '\"outline\":' + JSON.stringify(this.outlineButton.checked) + ','
+        data += '\"grid\":' + JSON.stringify(this.gridButton.checked) + ','
 
         let cardDataString = ""
         for (let card of this.homeCanvas.cards) {
@@ -273,27 +272,33 @@ class Main {
     private onMouseDown(e): void {
         if (e.button !== 0) return;
 
-
         let x = e.offsetX;
         let y = e.offsetY;
 
-        if (this.mode == Types.ADD) {
-            this.canvas.addCard(new TextCard(e.offsetX - 50, e.offsetY - 50, this.generateID())); //?
-        }
-
         if (this.mode == Types.MOVE || this.mode == Types.RUN) {
-            for (let card of this.canvas.cards) {
-                if (card.isCLicked(x, y)) {
-                    this.selected = card;
+
+            let card = this.getClicked(x, y);
+
+            if (card != null) {
+                card = card.clone();
+                this.canvas.cards = this.canvas.cards.filter(item => item.id !== card.id)
+
+                this.canvas.cards.push(card);
+                this.selected = card;
+
+                if (this.selected instanceof ImageCard) {
+                    this.selected.nextImage();
                 }
+
+                this.x = e.offsetX;
+                this.y = e.offsetY;
+                this.redraw();
             }
-            this.x = e.offsetX;
-            this.y = e.offsetY;
-            this.redraw();
         }
 
         if (this.mode != Types.RUN) {
             if (this.selected != null) return;
+
 
             for (let card of this.canvas.cards) {
                 if (card.getClickedHandle(x, y)) {
@@ -306,43 +311,50 @@ class Main {
 
     }
 
-    private onMouseMove(e): void {
-        if (this.canvas.cards[0]) { // todo ?
-        }
 
+    private onMouseMove(e): void {
         let x = e.offsetX - this.canvas.getViewX();
         let y = e.offsetY - this.canvas.getViewY();
+        document.body.style.cursor = "auto";
 
-
-        if (this.mode == Types.RESIZE && this.selected) {
-            switch (this.selected.getClickedHandle(x, y)) {
-                case Sides.TL:
-                    this.selected.width += this.selected.x - x;
-                    this.selected.height += this.selected.y - y;
-                    this.selected.x = x;
-                    this.selected.y = y;
-                    break;
-                case Sides.TR:
-                    this.selected.width = x - this.selected.x;
-                    this.selected.height += this.selected.y - y;
-                    this.selected.y = y;
-                    break;
-                case Sides.BL:
-                    this.selected.width += this.selected.x - x;
-                    this.selected.x = x;
-                    this.selected.height = y - this.selected.y;
-                    break;
-                case Sides.BR:
-                    this.selected.width = x - this.selected.x;
-                    this.selected.height = y - this.selected.y;
-                    break;
+        if (this.canvas.cards[0]) {
+            if (this.getClicked(x, y)) {
+                document.body.style.cursor = "pointer";
             }
-
-            this.updateCardHF()
-            this.redrawAll()
         }
 
         if (this.selected) {
+            document.body.style.cursor = "grab";
+
+            if (this.mode == Types.RESIZE) {
+                switch (this.selected.getClickedHandle(x, y)) {
+                    case Sides.TL:
+                        this.selected.width += this.selected.x - x;
+                        this.selected.height += this.selected.y - y;
+                        this.selected.x = x;
+                        this.selected.y = y;
+                        break;
+                    case Sides.TR:
+                        this.selected.width = x - this.selected.x;
+                        this.selected.height += this.selected.y - y;
+                        this.selected.y = y;
+                        break;
+                    case Sides.BL:
+                        this.selected.width += this.selected.x - x;
+                        this.selected.x = x;
+                        this.selected.height = y - this.selected.y;
+                        break;
+                    case Sides.BR:
+                        this.selected.width = x - this.selected.x;
+                        this.selected.height = y - this.selected.y;
+                        break;
+                }
+
+                this.updateCardHF()
+                this.redrawAll()
+            }
+
+
             if (this.mode == Types.MOVE || (this.mode == Types.RUN && this.selected.isMovable())) {
                 let mx = this.selected.x + (x - this.x);
                 let my = this.selected.y + (y - this.y);
@@ -386,6 +398,7 @@ class Main {
 
     private onMouseLeave(): void {
         this.redrawAll();
+        document.body.style.cursor = "auto";
     }
 
     private onMouseEnter(e): void {
@@ -397,7 +410,7 @@ class Main {
     }
 
 
-    public redraw() {
+    public redraw(): void {
         this.canvas.bg();
 
         if (this.mode == Types.RUN && this.outlineButton.checked) {
@@ -409,7 +422,6 @@ class Main {
         if (this.mode != Types.RUN) {
             this.canvas.redrawResize()
         }
-
     }
 
     public clearAll(): void {
@@ -420,7 +432,7 @@ class Main {
 
 
     // functions for buttons
-    public runApplication() {
+    public runApplication(): void {
         if (!this.checkCards()) {
             return;
         }
@@ -433,24 +445,28 @@ class Main {
     }
 
 
-    public gridOn(grid: boolean) {
-        this.canvas.grid = grid
-        this.homeCanvas.grid = grid
-        this.finalCanvas.grid = grid
+    public gridOn(grid: boolean): void {
+        this.canvas.grid = grid;
+        this.homeCanvas.grid = grid;
+        this.finalCanvas.grid = grid;
 
-        this.redrawAll()
+        this.redrawAll();
     }
 
 
     public updateCardCategory(color: string): void {
-        this.selected.category = color
-        let homeCard = this.homeCanvas.getCardByID(this.selected.id)
-        if (homeCard) homeCard.category = color
+        this.selected.category = color;
+        let homeCard = this.homeCanvas.getCardByID(this.selected.id);
+        if (homeCard) {
+            homeCard.category = color;
+        }
 
-        let finalCard = this.finalCanvas.getCardByID(this.selected.id)
-        if (finalCard) finalCard.category = color
+        let finalCard = this.finalCanvas.getCardByID(this.selected.id);
+        if (finalCard) {
+            finalCard.category = color;
+        }
 
-        this.selected = null
+        this.selected = null;
     }
 
     public updateCardText(text: string): void {
@@ -480,7 +496,6 @@ class Main {
             let card = c.getCardByID(this.selected.id)
 
             if (card) {
-                //todo podla typu karty?
                 card.text = this.selected.text
                 card.bg_color = this.selected.bg_color
 
@@ -502,22 +517,27 @@ class Main {
             return false;
         }
 
-        //todo check ci su karticky rovnakej velkosti, farby  textu
-
         for (let i = 0; i < this.homeCanvas.cards.length; i++) {
             let homeCard = this.homeCanvas.cards[i]
-            if (homeCard.isMovable()) {
-                continue;
-            }
 
             let finalcard = this.finalCanvas.getCardByID(homeCard.id)
 
-            if (!this.isSamePosition(homeCard, finalcard)) {
+            if ((homeCard.bg_color != finalcard.bg_color) || (homeCard.text != finalcard.text)) {
+                window.alert("Farba alebo text kartičiek sa nezhoduje.");
+                return false;
+            }
+
+            if ((homeCard.width != finalcard.width) || (homeCard.height != finalcard.height)) {
+                window.alert("Rozmery kartičiek sa nezhodujú.");
+                return false;
+            }
+
+            if (!homeCard.isMovable() && !this.isSamePosition(homeCard, finalcard)) {
                 window.alert("Nesprávne položené kartičky.");
                 return false;
             }
-        }
 
+        }
         return true;
     }
 
@@ -525,16 +545,23 @@ class Main {
     private sortCards(): void {
 
         for (let card of this.homeCanvas.cards) {
-            this.canvas.cards.push(card.clone())
+            this.canvas.cards.push(card.clone());
         }
 
         if (this.shuffleButton.checked) {
             for (let card of this.canvas.cards) {
+
+                if (card.images.length > 1) {
+                    card.selected_image = Math.floor(Math.random() * card.images.length);
+                }
+
                 if (!card.movable) {
                     continue;
                 }
                 let randomCard = this.canvas.cards[Math.floor(Math.random() * this.canvas.cards.length)];
-                if (!randomCard.movable) continue
+                if (!randomCard.movable) {
+                    continue;
+                }
                 let randomCardCoords = randomCard.getCoordinates();
                 randomCard.setCoordinates(...card.getCoordinates())
                 card.setCoordinates(...randomCardCoords)
@@ -634,7 +661,9 @@ class Main {
 
     private generateID(): number {
         if (this.canvas.cards.length > 0) {
-            return this.canvas.cards.slice(-1)[0].id + 1;
+            let h = Math.max(...this.canvas.cards.map(card => card.id));
+            console.log(h)
+            return h + 1
         }
         return 1;
     }
@@ -643,6 +672,14 @@ class Main {
         this.redraw();
         this.homeCanvas.redraw();
         this.finalCanvas.redraw();
+    }
+
+
+    private getClicked(x: number, y: number): Card {
+        for (let c of this.canvas.cards.slice().reverse()) {
+            if (c.isCLicked(x, y)) return c;
+        }
+        return null;
     }
 
 

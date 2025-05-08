@@ -1,5 +1,4 @@
 const enum Types {
-    ADD = 'add',
     MOVE = 'move',
     RUN = 'run',
     RESIZE = 'resize'
@@ -11,8 +10,3 @@ const enum Sides {
     BL = 'bottom-left',
     BR = 'bottom-right'
 }
-
-// ?
-// const enum Categories {
-//     NOCATEGORY = 'white'
-// }
