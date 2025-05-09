@@ -14,7 +14,6 @@ class Main {
     outlineButton = document.getElementById('outline_cards') as HTMLInputElement;
     gridButton = document.getElementById('show_grid') as HTMLInputElement;
 
-
     finalCanvas: Canvas;
     homeCanvas: Canvas;
 
@@ -36,8 +35,6 @@ class Main {
         this.initSubmitButton();
         this.initBgSubmitButton();
         this.initContextMenu();
-
-
     }
 
 
@@ -434,7 +431,7 @@ class Main {
     }
 
     private isSamePosition(card1: Card, card2: Card): boolean {
-        return !(Math.abs(card1.x - card2.x) > 20 || Math.abs(card1.y - card2.y) > 20);
+        return !(Math.abs(card1.x - card2.x) > 5 || Math.abs(card1.y - card2.y) > 5);
     }
 
     public checkSolution(): void {

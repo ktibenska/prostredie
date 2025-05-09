@@ -335,7 +335,7 @@ var Main = /** @class */ (function () {
         }
     };
     Main.prototype.isSamePosition = function (card1, card2) {
-        return !(Math.abs(card1.x - card2.x) > 20 || Math.abs(card1.y - card2.y) > 20);
+        return !(Math.abs(card1.x - card2.x) > 5 || Math.abs(card1.y - card2.y) > 5);
     };
     Main.prototype.checkSolution = function () {
         var ok = true;

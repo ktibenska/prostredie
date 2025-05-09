@@ -49,9 +49,7 @@ class Buttons {
             }
         });
 
-
         document.querySelectorAll(".color-btn").forEach(button => {
-
             button.addEventListener("click", (e) => {
                 const color = (e.target as HTMLButtonElement).style.backgroundColor;
 
@@ -60,7 +58,6 @@ class Buttons {
                 document.querySelectorAll(".color-btn").forEach(btn => {
                     btn.classList.remove("selected-color");
                 });
-
 
                 const target = e.target as HTMLElement;
                 target.classList.add('selected-color');
@@ -171,7 +168,6 @@ class Buttons {
                 reader.readAsText(files[0]);
             }
         });
-
 
         this.duplicateCardCtxBtn = document.getElementById('duplicate_card');
         this.duplicateCardCtxBtn.addEventListener('mouseup', () => {
