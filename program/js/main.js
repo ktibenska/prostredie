@@ -175,9 +175,8 @@ var Main = /** @class */ (function () {
         if (e.button !== 0)
             return;
         if (this.selected != null) {
-            var grid = 10;
-            var x = Math.round(this.selected.x / grid) * grid;
-            var y = Math.round(this.selected.y / grid) * grid;
+            var x = this.roundToGrid(this.selected.x);
+            var y = this.roundToGrid(this.selected.y);
             this.selected.setCoordinates(x, y);
         }
         this.selected = null;
@@ -214,6 +213,10 @@ var Main = /** @class */ (function () {
         this.canvas.clear();
         this.homeCanvas.clear();
         this.finalCanvas.clear();
+    };
+    Main.prototype.roundToGrid = function (number) {
+        var grid = 10;
+        return Math.round(number / grid) * grid;
     };
     // functions for buttons
     Main.prototype.runApplication = function () {
@@ -309,7 +312,21 @@ var Main = /** @class */ (function () {
         }
         return true;
     };
-    //adds cards from homestate to canvas, sorts all movable cards
+    //moves cards on canvas into home(t) or final(f) state positions
+    Main.prototype.moveCardsToState = function (home) {
+        var stateCanvas = this.homeCanvas;
+        if (!home) {
+            stateCanvas = this.finalCanvas;
+        }
+        for (var _i = 0, _a = this.canvas.cards; _i < _a.length; _i++) {
+            var c = _a[_i];
+            var card = stateCanvas.getCardByID(c.id);
+            if (card != null) {
+                c.setCoordinates(card.x, card.y);
+            }
+        }
+    };
+    // adds cards from home state to canvas, sorts all movable cards
     Main.prototype.sortCards = function () {
         for (var _i = 0, _a = this.homeCanvas.cards; _i < _a.length; _i++) {
             var card = _a[_i];
@@ -431,6 +448,12 @@ var Main = /** @class */ (function () {
         }
         return null;
     };
+    Main.prototype.startCoordinate = function (x) {
+        if (x) {
+            return this.roundToGrid(this.canvas.canvas.width / 3);
+        }
+        return this.roundToGrid(this.canvas.canvas.height / 3);
+    };
     Main.prototype.initSubmitButton = function () {
         var _this = this;
         this.submitButton.addEventListener('click', function () {
@@ -443,7 +466,7 @@ var Main = /** @class */ (function () {
                     message.style.visibility = 'visible';
                     return;
                 }
-                c = new ImageCard(_this.x, _this.y, _this.generateID());
+                c = new ImageCard(_this.startCoordinate(true), _this.startCoordinate(false), _this.generateID());
                 var filesArray = [];
                 for (var i = 0; i < input.files.length; i++) {
                     filesArray.push(input.files[i]);
@@ -463,7 +486,7 @@ var Main = /** @class */ (function () {
                 });
             }
             else {
-                c = new TextCard(_this.x, _this.y, _this.generateID());
+                c = new TextCard(_this.startCoordinate(true), _this.startCoordinate(false), _this.generateID());
                 var text = document.getElementById('text_value');
                 c.text = ' ';
                 if (text.value)

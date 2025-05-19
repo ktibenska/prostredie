@@ -226,15 +226,12 @@ class Main {
         if (e.button !== 0) return;
 
         if (this.selected != null) {
-            let grid = 10;
-
-            let x = Math.round(this.selected.x / grid) * grid;
-            let y = Math.round(this.selected.y / grid) * grid;
+            let x = this.roundToGrid(this.selected.x);
+            let y = this.roundToGrid(this.selected.y);
 
             this.selected.setCoordinates(x, y);
         }
         this.selected = null;
-
         this.x = e.offsetX;
         this.y = e.offsetY;
         this.redraw();
@@ -276,6 +273,11 @@ class Main {
         this.canvas.clear();
         this.homeCanvas.clear();
         this.finalCanvas.clear();
+    }
+
+    private roundToGrid(number: number): number {
+        let grid = 10;
+        return Math.round(number / grid) * grid;
     }
 
 
@@ -401,7 +403,22 @@ class Main {
         return true;
     }
 
-    //adds cards from homestate to canvas, sorts all movable cards
+    //moves cards on canvas into home(t) or final(f) state positions
+    public moveCardsToState(home: boolean): void {
+        let stateCanvas = this.homeCanvas;
+        if (!home) {
+            stateCanvas = this.finalCanvas;
+        }
+        for (let c of this.canvas.cards) {
+            let card = stateCanvas.getCardByID(c.id);
+
+            if (card != null) {
+                c.setCoordinates(card.x, card.y);
+            }
+        }
+    }
+
+    // adds cards from home state to canvas, sorts all movable cards
     private sortCards(): void {
 
         for (let card of this.homeCanvas.cards) {
@@ -542,6 +559,13 @@ class Main {
         return null;
     }
 
+    private startCoordinate(x: boolean) {
+        if (x) {
+            return this.roundToGrid(this.canvas.canvas.width / 3);
+        }
+        return this.roundToGrid(this.canvas.canvas.height / 3);
+    }
+
 
     private initSubmitButton(): void {
         this.submitButton.addEventListener('click', () => {
@@ -558,7 +582,7 @@ class Main {
                     return;
                 }
 
-                c = new ImageCard(this.x, this.y, this.generateID());
+                c = new ImageCard(this.startCoordinate(true), this.startCoordinate(false), this.generateID());
                 const filesArray: File[] = [];
                 for (let i = 0; i < input.files.length; i++) {
                     filesArray.push(input.files[i]);
@@ -581,7 +605,7 @@ class Main {
                 });
 
             } else {
-                c = new TextCard(this.x, this.y, this.generateID());
+                c = new TextCard(this.startCoordinate(true), this.startCoordinate(false), this.generateID());
                 let text = document.getElementById('text_value') as HTMLInputElement;
                 c.text = ' '
                 if (text.value) c.text = text.value;

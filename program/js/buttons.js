@@ -137,6 +137,16 @@ var Buttons = /** @class */ (function () {
         this.showGridBtn.addEventListener('mouseup', function () {
             _this.main.gridOn(!_this.showGridBtn.checked);
         });
+        this.showHomeStateBtn = document.getElementById('show_home_state_button');
+        this.showHomeStateBtn.addEventListener('mouseup', function () {
+            _this.main.moveCardsToState(true);
+            _this.main.redraw();
+        });
+        this.showFinalStateBtn = document.getElementById('show_final_state_button');
+        this.showFinalStateBtn.addEventListener('mouseup', function () {
+            _this.main.moveCardsToState(false);
+            _this.main.redraw();
+        });
     };
     Buttons.prototype.buttonsHidden = function (hidden) {
         this.closeButton.hidden = !hidden;

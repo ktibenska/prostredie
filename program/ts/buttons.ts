@@ -4,6 +4,9 @@ class Buttons {
     finalStateButton: HTMLElement;
     homeStateButton: HTMLElement;
 
+    showFinalStateBtn: HTMLElement;
+    showHomeStateBtn: HTMLElement;
+
     runButton: HTMLElement;
 
     txtRadio: HTMLElement;
@@ -198,6 +201,20 @@ class Buttons {
         this.showGridBtn.addEventListener('mouseup', () => {
             this.main.gridOn(!this.showGridBtn.checked);
         });
+
+
+        this.showHomeStateBtn = document.getElementById('show_home_state_button');
+        this.showHomeStateBtn.addEventListener('mouseup', () => {
+            this.main.moveCardsToState(true);
+            this.main.redraw();
+        });
+
+        this.showFinalStateBtn = document.getElementById('show_final_state_button');
+        this.showFinalStateBtn.addEventListener('mouseup', () => {
+            this.main.moveCardsToState(false);
+            this.main.redraw();
+        });
+
     }
 
 
