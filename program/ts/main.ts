@@ -414,6 +414,11 @@ class Main {
 
             if (card != null) {
                 c.setCoordinates(card.x, card.y);
+
+                if (card instanceof ImageCard){
+                    c.selected_image = card.selected_image;
+                }
+
             }
         }
     }

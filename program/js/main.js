@@ -323,6 +323,9 @@ var Main = /** @class */ (function () {
             var card = stateCanvas.getCardByID(c.id);
             if (card != null) {
                 c.setCoordinates(card.x, card.y);
+                if (card instanceof ImageCard) {
+                    c.selected_image = card.selected_image;
+                }
             }
         }
     };
